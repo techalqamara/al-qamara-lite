@@ -1,0 +1,4956 @@
+/* =====================================================================
+   AL QAMARA — custom.css
+   Base theme stylesheet  |  v1.0.0
+   =====================================================================
+
+   TABLE OF CONTENTS
+   -----------------
+   01 · ROOT — COLOR SYSTEM
+   02 · GLOBAL / BASE
+   03 · HEADER / NAVBAR
+   04 · SECTION HEADER  (shared utility)
+   05 · HOMEPAGE SECTIONS
+   06 · ARCHIVE / BLOG LIST
+   07 · SINGLE POST
+   08 · PAGE  (static page — page.php)
+   09 · SEARCH
+   10 · COMMENTS
+   11 · FOOTER
+   12 · PAGE TEMPLATES
+   13 · BOOTSTRAP & BRAND OVERRIDES
+
+   ===================================================================== */
+
+/* =====================================================================
+   01 · ROOT — COLOR SYSTEM
+   Change any value here to re-skin the entire theme from one place.
+   ===================================================================== */
+
+:root {
+    /* Brand — primary (deep navy) */
+    --alqamara-primary:          #0f172a;
+    --alqamara-primary-dark:     #060b12;
+
+    /* Brand — accent (antique gold) */
+    --alqamara-accent:           #b8912a;
+    --alqamara-accent-dark:      #9a7820;
+
+    /* Backgrounds & surfaces */
+    --alqamara-bg:               #ffffff;
+    --alqamara-surface:          #f7f4ec;
+    --alqamara-tint:             #f3efe3;
+    --alqamara-white:            #ffffff;
+
+    /* Homepage section alternating backgrounds
+       --alqamara-section-light → pure white  (even sections)
+       --alqamara-section-warm  → warm cream  (odd sections, harmonises with gold accent)
+       Change these two values to re-skin all section backgrounds at once. */
+    --alqamara-section-light:    #ffffff;
+    --alqamara-section-warm:     #fdf9f0;
+
+    /* Borders */
+    --alqamara-border:           #e5e2d6;
+
+    /* Text */
+    --alqamara-heading:          #0f172a;
+    --alqamara-text:             #333333;
+    --alqamara-muted:            #6c757d;
+    --alqamara-faint:            #9aa3b2;
+    --alqamara-ink:              #14182a;
+
+    /* On-dark  (text over navy backgrounds) */
+    --alqamara-on-dark:          #ffffff;
+    --alqamara-on-dark-muted:    #c3c9d6;
+
+    /* Third-party brand */
+
+    /* Bootstrap theme-colour overrides — keeps BS components on-brand */
+    --bs-primary:           #0f172a;
+    --bs-primary-rgb:       20,33,61;
+    --bs-secondary:         #b8912a;
+    --bs-secondary-rgb:     184,145,42;
+    --bs-link-color:        #0f172a;
+    --bs-link-color-rgb:    20,33,61;
+    --bs-link-hover-color:  #060b12;
+}
+
+/* =====================================================================
+   02 · GLOBAL / BASE
+   ===================================================================== */
+
+/* Page-wide safety net against any single element (e.g. a wide comparison
+   table) pushing the whole document past the viewport width — deliberately
+   on `html` ONLY, not `body`
+   regression). Two things had to be learned the hard way here:
+
+   1. Per the CSS Overflow spec, whenever overflow-x is set to a non-visible
+      value, the browser is REQUIRED to compute overflow-y as `auto`
+      instead of `visible` — writing `overflow-y: visible` explicitly does
+      NOT prevent this, the spec overrides it regardless. So overflow-x:
+      hidden always drags overflow-y along with it to `auto` on whichever
+      element(s) it's set on; there's no way around that part.
+
+   2. The actual bug was applying overflow-x:hidden to BOTH html and body.
+      That gave `<body>` its own non-visible overflow (auto, per #1), which
+      makes body a scroll-container candidate — and any `position:sticky`
+      descendant (the header navbar) then sticks relative to BODY's box
+      instead of the true viewport. Since body itself never actually
+      scrolls (html does, confirmed via document.scrollingElement), the
+      sticky navbar just scrolled away with the page instead of sticking —
+      confirmed live via getBoundingClientRect.top going thousands of
+      pixels negative instead of clamping at 0.
+
+   Fix: overflow-x:hidden on `html` alone is already enough to clip
+   horizontal overflow for the whole viewport (html is what governs the
+   viewport's scrollbox here — confirmed via document.scrollingElement).
+   Leaving `body` completely untouched (both axes stay their true default
+   `visible`) means body is never a scroll-container candidate, so
+   position:sticky correctly resolves against the viewport again —
+   confirmed live: scrollY 2001, sticky header rectTop back to 0. */
+html {
+    overflow-x: hidden;
+}
+
+body {
+    background: var(--alqamara-content-bg, #fbfbfb);
+    color: var(--alqamara-text);
+}
+
+a {
+    text-decoration: none;
+    color: var(--alqamara-ink);
+}
+
+/*
+ * ── Content-area anchor hover ─────────────────────────────────────────────────
+ * Scope: post/page body text, sidebar widget lists, and card excerpts only.
+ * Excluded: header, footer, navbar, breadcrumb, headings, buttons, badges.
+ * Rule: ink-colored links → accent on hover.
+ */
+/* body padding-top: removed — navbar uses position:sticky, no padding needed */
+
+/* ---- Spacing utilities ---- */
+.my-6 { margin-top: 6rem;    margin-bottom: 6rem; }
+.py-6 { padding-top: 6rem;   padding-bottom: 6rem; }
+
+/* ---- Button ---- */
+.btn-custom {
+    background: var(--alqamara-primary);
+    color: var(--alqamara-white);
+    padding: 10px 24px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 5px;
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.btn-custom:hover {
+    background: var(--alqamara-primary-dark);
+    color: var(--alqamara-white);
+    transform: translateX(3px);
+}
+
+.btn-custom i { font-size: 12px; }
+
+.btn-outline-custom {
+    background: transparent;
+    color: var(--alqamara-accent);
+    border: 1.5px solid var(--alqamara-accent);
+    padding: 10px 24px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 5px;
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.btn-outline-custom:hover {
+    background: var(--alqamara-accent);
+    color: #fff;
+    transform: translateX(3px);
+}
+
+.btn-outline-custom i { font-size: 12px; }
+
+/* Accent color utility — used on icons in project sidebar */
+.text-accent { color: var(--alqamara-accent) !important; }
+
+/* ---- Spinner ---- */
+#spinner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    z-index: 99999;
+}
+
+#spinner.show {
+    transition: opacity .5s ease-out, visibility 0s linear 0s;
+    visibility: visible;
+    opacity: 1;
+    /* Without JavaScript nothing removes .show, so hide the spinner by itself after 4s. */
+    animation: alqamara-spinner-fallback .01s linear 4s forwards;
+}
+
+@keyframes alqamara-spinner-fallback {
+    to {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
+
+/* ---- Back to top (+ scroll progress ring) ----
+   `.alqamara-btt-wrap` now owns the fixed positioning (was on #back-to-top
+   directly) — it's a 56x56 box. The button itself is absolutely centered
+   inside, shrunk to 44x44 (was 48x48) specifically so there's a visible
+   ~2px gap between the button's own edge and the ring's inner edge —
+   without this gap the ring's stroke touched the button directly and
+   read as one blurry shape rather than a distinct ring around it. */
+.alqamara-btt-wrap {
+    display: none; /* jQuery fadeIn/fadeOut controls visibility, same as before */
+    position: fixed;
+    right: 17px;   /* 20px - 3px, so the ring's outer edge still lines up
+                      with where the plain button used to sit */
+    bottom: 17px;
+    width: 56px;
+    height: 56px;
+    z-index: 999;
+}
+
+.alqamara-btt-ring {
+    position: absolute;
+    inset: 0;
+    pointer-events: none; /* never blocks clicks on the button underneath */
+    transform: rotate(-90deg); /* so progress starts at 12 o'clock, not 3 o'clock */
+}
+.alqamara-btt-ring-track,
+.alqamara-btt-ring-progress {
+    fill: none;
+    stroke-width: 3;
+}
+.alqamara-btt-ring-track {
+    stroke: rgba(15, 23, 42, .1); /* faint --alqamara-primary tint — visible "empty" track */
+}
+.alqamara-btt-ring-progress {
+    stroke: var(--alqamara-accent, #b8912a);
+    stroke-linecap: round;
+    /* stroke-dasharray / stroke-dashoffset are set inline by JS (js/main.js,
+       section 8) based on the circle's own real circumference (2*PI*r) and
+       the current page scroll percentage — not hard-coded here. */
+    transition: stroke-dashoffset .1s linear;
+}
+
+#back-to-top {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    line-height: 44px;   /* vertically centers the icon via text-align */
+    text-align: center;
+    background: var(--alqamara-primary) !important;
+    border-color: var(--alqamara-primary) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,.2);
+}
+
+#back-to-top:hover {
+    background: var(--alqamara-accent) !important;
+    border-color: var(--alqamara-accent) !important;
+    color: var(--alqamara-primary) !important;
+}
+
+/* Lift floating buttons above mobile bottom bar */
+@media (max-width: 991.98px) {
+    body.alqamara-shop-header .alqamara-btt-wrap  { bottom: calc(58px + 9px); } }
+
+/* =====================================================================
+   03 · HEADER / NAVBAR
+   ===================================================================== */
+
+/* ---- Logo ----
+   !important is required here: WooCommerce's own bundled CSS ships
+   ".woocommerce img, .woocommerce-page img { height:auto; max-width:100% }"
+   (see woocommerce-layout.css), which has HIGHER specificity than a single
+   class selector and silently wins on every WooCommerce-templated page
+   (shop, single product, cart, checkout, my-account) — stretching the logo
+   to an oversized, aspect-scaled height instead of the intended fixed size.
+   Non-WooCommerce pages (home, blog, static pages) were never affected,
+   which is why this only surfaced now that a real logo image exists to
+   render. Same !important pattern already used for this exact WC-override
+   problem elsewhere in woocommerce.css (search "unless we use !important"). */
+.custom-logo {
+    width: 100% !important;
+    max-width: 190px !important; /* was rendering ~282px wide with no cap at all —
+                                     ate into the space the nav menu needed for more
+                                     items; capped */
+    height: 65px !important;
+    object-fit: contain !important; /* prevents distortion when max-width clamps
+                                        below the logo's natural aspect-ratio width —
+                                        without this the image would squish
+                                        horizontally instead of scaling down cleanly */
+}
+
+/* Mobile: shorter logo so the navbar row stays compact (matches the
+   pre-logo text-fallback height instead of stretching to ~91px). Desktop
+   65px is untouched — same "width:100%; height:Xpx" pattern, only the
+   height value changes, so the aspect-ratio-preserving behavior stays
+   identical to the desktop rule. */
+@media (max-width: 991.98px) {
+    .custom-logo {
+        height: 36px !important;
+    }
+}
+
+/* ---- Transparent-header logo swap (Single Row layout, home page hero) ----
+   alqamara_get_dual_logo (inc/helpers.php) outputs BOTH images as
+   siblings only in that one case; every other page/layout still outputs a
+   single .custom-logo with neither of these two classes, so this block
+   simply never matches there. Toggled purely by the existing `.scrolled`
+   class (js/main.js already adds/removes it on scroll on every viewport
+   width, desktop and mobile alike) — no extra JS, no viewport-specific
+   override needed. */
+.alqamara-logo-solid        { display: none; }
+.alqamara-logo-transparent  { display: inline-block; }
+.navbar-transparent.scrolled .alqamara-logo-solid       { display: inline-block; }
+.navbar-transparent.scrolled .alqamara-logo-transparent { display: none; }
+
+/* ---- Navbar base ---- */
+.alqamara-navbar-wrap {
+    position: relative;
+    z-index: 1030;
+    transition: transform 0.3s ease, background 0.5s ease;
+}
+
+/* ---- Mobile navbar row: force logo + search/hamburger icons to stay on
+   one line ----
+   Bootstrap's `.navbar` is `flex-wrap: wrap` by default, and this theme's
+   mobile header doesn't use Bootstrap's own collapse pattern (custom
+   toggler + off-canvas menu instead — no `.navbar-collapse` in the
+   markup), so nothing below the lg breakpoint was overriding that default.
+   At very narrow widths (~320px — smaller than virtually any real phone
+   today, but exactly what the WP Customizer's own "mobile" device-preview
+   toggle simulates) the row had just enough combined content width to
+   trigger a wrap, dropping the logo onto its own line above the search/
+   hamburger icons instead of sharing the row with them (found via the
+   Customizer's mobile preview,
+   than 320px, never showed this). `nowrap` here removes the ambiguity
+   outright rather than trying to reason about the exact flex-basis math
+   that triggered it. */
+@media (max-width: 991.98px) {
+    .alqamara-navbar-wrap .navbar {
+        flex-wrap: nowrap !important;
+    }
+}
+
+@media (max-width: 991px) {
+    .alqamara-navbar-wrap.navbar-hidden {
+        transform: translateY(-100%);
+    }
+}
+
+.alqamara-is-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+.navbar-transparent {
+    background: transparent !important;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Scrolled state — solid background (custom color or primary fallback) */
+.navbar-transparent.scrolled {
+    background: var(--alqamara-header-bg, var(--alqamara-primary)) !important;
+    box-shadow: 0 2px 20px rgba(0,0,0,.18);
+}
+
+/* Non-home pages always show solid background */
+body:not(.home):not(.front-page) .navbar-transparent {
+    background: var(--alqamara-header-bg, var(--alqamara-primary)) !important;
+}
+
+/* Nav links */
+.navbar .navbar-nav .nav-link {
+    padding: 28px 14px; /* horizontal reduced 18px → 14px
+ to fit more menu items; vertical
+                            28px left untouched — that sets the header height */
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+}
+
+/* WCAG — restores a visible keyboard-focus indicator on nav links (the
+   outline:none above removed the mouse-click focus ring, which also
+   silently removed it for keyboard/Tab users — a real 2.4.7 Focus Visible
+   failure). :focus-visible keeps the mouse-click experience unchanged
+   (no ring on click) while giving keyboard users a clear, visible ring. */
+.navbar .navbar-nav .nav-link:focus-visible {
+    outline: 2px solid var(--alqamara-accent, #c9a15a);
+    outline-offset: -2px;
+}
+
+/* Over light hero (transparent state) — --alqamara-hero-header-ink is only
+   defined (functions.php) when the "Hero Header Text Color" Customizer
+   control is explicitly set; otherwise this falls back to the existing
+   fixed --alqamara-ink default, unchanged. */
+.navbar-transparent .navbar-nav .nav-link {
+    color: var(--alqamara-hero-header-ink, var(--alqamara-ink));
+}
+
+/* Solid bar — ink auto-adapts to whatever Header Background Color is set
+   (--alqamara-header-ink, computed in functions.php; falls back to white for
+   safety if the var is somehow missing). Was hardcoded to always-white
+   here — real bug, user set Header Background Color to white and this
+   never budged. */
+.navbar-transparent.scrolled .navbar-nav .nav-link,
+body:not(.home):not(.front-page) .navbar-transparent .navbar-nav .nav-link {
+    color: var(--alqamara-header-ink, var(--alqamara-on-dark));
+}
+
+/* Menu hover on inner pages the "ink adapts to the header colour" rules above
+   (body:not(.home) ... and .scrolled) are more specific than the general hover/active rule, so on every
+   page except the top of the homepage the hovered and the current menu item stayed the normal colour.
+   Same accent colour as the homepage state, restated at the same specificity. */
+.navbar-transparent.scrolled .navbar-nav .nav-link:hover,
+.navbar-transparent.scrolled .navbar-nav .nav-link.active,
+body:not(.home):not(.front-page) .navbar-transparent .navbar-nav .nav-link:hover,
+body:not(.home):not(.front-page) .navbar-transparent .navbar-nav .nav-link.active,
+.alqamara-header-solid .navbar-transparent .navbar-nav .nav-link:hover,
+.alqamara-header-solid .navbar-transparent .navbar-nav .nav-link.active {
+    color: var(--alqamara-accent);
+}
+
+.navbar-transparent .alqamara-nav-icon {
+    color: var(--alqamara-hero-header-ink, var(--alqamara-ink)) !important;
+}
+.navbar-transparent.scrolled .alqamara-nav-icon,
+body:not(.home):not(.front-page) .navbar-transparent .alqamara-nav-icon {
+    color: var(--alqamara-header-ink, var(--alqamara-on-dark)) !important;
+}
+
+/* Hover & active — gold */
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .nav-link.active {
+    color: var(--alqamara-accent);
+}
+
+/* Brand / logo colour (text-fallback only — image logos ignore `color`) */
+.navbar-transparent.scrolled .navbar-brand,
+body:not(.home):not(.front-page) .navbar-transparent .navbar-brand {
+    color: var(--alqamara-header-ink, #fff);
+}
+
+/* ---- Mobile toggler ---- */
+/* Border/box look removed — plain icon
+   reads cleaner/more modern, matching how most mobile e-commerce
+   headers treat these icons (no visible button boundary). */
+.mobile-toggler {
+    background: none;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.mobile-toggler .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280%2C0%2C0%2C0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Invert icon to white on a dark bar, leave it dark on a light one —
+   --alqamara-header-toggler-filter is computed alongside --alqamara-header-ink in
+   functions.php (same source-of-truth, always in sync). */
+.navbar-transparent.scrolled .mobile-toggler .navbar-toggler-icon,
+body:not(.home):not(.front-page) .mobile-toggler .navbar-toggler-icon {
+    filter: var(--alqamara-header-toggler-filter, brightness(0) invert(1));
+}
+
+/* ---- Navbar CTA button (outline gold) ----
+   Transparent state split out from scrolled/non-home so it can respect
+   --alqamara-hero-header-ink (falls back to the original --alqamara-accent when the
+   override isn't set). */
+.navbar-transparent .btn-custom {
+    background: transparent;
+    color: var(--alqamara-hero-header-ink, var(--alqamara-accent));
+    border: 1.5px solid var(--alqamara-hero-header-ink, var(--alqamara-accent));
+}
+.navbar-transparent.scrolled .btn-custom,
+body:not(.home):not(.front-page) .navbar .btn-custom {
+    background: transparent;
+    color: var(--alqamara-accent);
+    border: 1.5px solid var(--alqamara-accent);
+}
+
+.navbar-transparent .btn-custom:hover,
+.navbar-transparent.scrolled .btn-custom:hover,
+body:not(.home):not(.front-page) .navbar .btn-custom:hover {
+    background: var(--alqamara-accent);
+    color: var(--alqamara-primary-dark);
+    transform: none;
+}
+
+/* ---- Dropdown arrow ---- */
+/* Hide Bootstrap's default caret; we use a custom FA icon */
+.navbar .nav-link.dropdown-toggle::after,
+.navbar .dropdown-toggle::after {
+    display: none !important;
+}
+
+.dropdown-arrow {
+    font-size: 11px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+@media (min-width: 992px) {
+    /* Hover-open simple dropdown — also opens on keyboard focus anywhere
+       inside it (:focus-within), so it's reachable without a mouse. */
+    .dropdown:hover > .dropdown-menu,
+    .dropdown:focus-within > .dropdown-menu {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+        margin-top: 0;
+    }
+
+    /* Rotate arrow on hover or keyboard focus */
+    .dropdown:hover > .nav-link .dropdown-arrow,
+    .dropdown:focus-within > .nav-link .dropdown-arrow {
+        transform: rotate(180deg);
+    }
+
+    /* Keep arrow rotated when dropdown is programmatically open */
+    .dropdown.show > .nav-link .dropdown-arrow {
+        transform: rotate(180deg);
+    }
+}
+
+/* ---- Dropdown panel ---- */
+.dropdown-menu {
+    border: none;
+    border-top: 3px solid var(--alqamara-primary);
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 8px 0;
+    min-width: 220px;
+    margin-top: 0 !important;
+}
+
+.dropdown-item {
+    font-size: 14px;
+    color: var(--alqamara-text);
+    padding: 9px 20px;
+    transition: color 0.2s ease, background 0.2s ease, padding-left 0.2s ease;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item.active {
+    background: var(--alqamara-tint);
+    color: var(--alqamara-primary);
+    padding-left: 26px;
+}
+
+/* ---- Submenu (nested dropdown — rendered by class-walkers.php) ---- */
+.dropdown-submenu-item {
+    position: relative;
+}
+
+.dropdown-submenu {
+    top: 0 !important;
+    left: 100% !important;
+    margin-top: -8px !important;
+    display: none;
+}
+
+.dropdown-submenu-item:hover > .dropdown-submenu {
+    display: block;
+}
+
+/* ---- Mobile overlay & menu ---- */
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 1040;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-overlay.active { display: block; opacity: 1; }
+
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 300px;
+    max-width: 88vw; /* safety margin on very narrow screens (e.g. the
+       Customizer's 320px device preview) so the drawer never sits flush
+       against the edge with no overlay visible; irrelevant on real phones
+       (375px+), where 300px is already well under 88vw. */
+    height: 100vh;
+    height: 100dvh; /* accounts for mobile browser address bar */
+    background: var(--alqamara-white);
+    z-index: 1050;
+    transition: right 0.35s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.15);
+}
+
+.mobile-menu.open { right: 0; }
+
+@media (min-width: 992px) {
+    .mobile-menu,
+    .mobile-overlay { display: none !important; }
+}
+
+.mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--alqamara-surface);
+}
+
+/* Header strip (logo + close button) uses the same Header Background Color
+   as the main site header (--alqamara-header-bg, falls back to Global Primary
+   Color) instead of staying hardcoded white — matching the main header's
+   own logo area which already sits on this same background. Scoped to
+   `#mobileMenu` specifically — `.mobile-menu-
+   header` is ALSO reused by the Cart drawer (`.alqamara-cart-drawer`) for its
+   "Your Cart" title bar, whose text is hardcoded dark navy
+   (.alqamara-cart-drawer .mobile-menu-header span below); applying the header
+   background there too would risk dark-navy-on-dark-navy if the header
+   color is ever set dark. The Cart drawer strip intentionally stays plain
+   white regardless of Header Background Color.
+   Note: when Header Background Color is set to white (as it currently is
+   on this site), this strip will correctly render white too, blending
+   into the rest of the drawer — that's the color matching the main header
+   exactly as requested, not a bug; the `border-bottom` above still gives
+   a visible seam either way. */
+#mobileMenu .mobile-menu-header {
+    background: var(--alqamara-header-bg, var(--alqamara-primary));
+}
+/* Site-title text fallback (used when no custom logo image is set — see
+   alqamara_get_logo in inc/helpers.php) inside the mobile slide-in
+   menu's header strip. Without this rule, `.site-title` only inherited
+   the theme's generic dark link color (--alqamara-ink, #14182a), which is
+   nearly identical to this strip's dark navy background (--alqamara-header-bg
+   / --alqamara-primary, #0f172a by default) — the two colors differ by only a
+   few RGB points, so the site name became effectively invisible (found
+   by the user on a real phone,. Reuses the same auto-contrast
+   pattern already used for the main header's `.navbar-brand`
+   (--alqamara-header-ink, computed in functions.php from whichever background
+   actually applies), so this stays correct automatically if Header
+   Background Color is ever changed to something light instead of
+   hardcoding white. Scoped to `#mobileMenu` only — the Cart drawer's
+   `.mobile-menu-header span` right below intentionally keeps its own
+   separate hardcoded dark color, since that strip always stays plain
+   white regardless of Header Background Color. */
+#mobileMenu .mobile-menu-header .site-title {
+    color: var(--alqamara-header-ink, #fff);
+}
+.alqamara-cart-drawer .mobile-menu-header span {
+    font-size  : 1.1rem;
+    font-weight: 700;
+    color      : var(--alqamara-primary, #0f172a);
+    letter-spacing: -.01em;
+}
+/* The <a> wrapping the logo is a flex child of .mobile-menu-header; give it
+   room to shrink instead of the default flex min-width:auto (which, for a
+   replaced element like <img>, refuses to shrink below the image's
+   aspect-ratio-computed width). Without this, a wide logo file with a
+   height:40px-but-no-max-width constraint doesn't shrink at all and can
+   overlap the close button next to it (user report on a real phone,
+e
+   the placeholder logo used during testing happened to be narrow). */
+.mobile-menu-header a { min-width: 0; }
+
+.mobile-logo {
+    /* !important on every sizing property — same fix `.custom-logo` already
+       needed. WooCommerce core's own bundled stylesheet
+       (woocommerce-layout.css, not a theme file) ships
+       `.woocommerce img, .woocommerce-page img { height:auto; max-width:100% }`
+       — specificity (0,1,1), beats a plain `.mobile-logo` (0,1,0). WordPress
+       adds the `woocommerce`/`woocommerce-page` body classes on Shop/Cart/
+       Account pages, so on those pages only, this logo was silently losing
+       its fixed size and scaling up by its own aspect ratio
+       user report: the logo grew slightly on any WooCommerce page). */
+    height: 40px !important;
+    max-width: 150px !important;  /* hard cap so an unusually wide logo file
+                           scales down by width too, instead of only being
+                           height-capped and overflowing into the close
+                           button. */
+    width: auto !important;
+    object-fit: contain !important;
+}
+
+.mobile-close-btn {
+    background: var(--alqamara-surface);
+    border: none;
+    border-radius: 50%;
+    /* Circle trimmed 36px → 30px and the glyph 16px → 14px
+       user feedback: the white circle behind the × read as too large next
+       to the 40px-tall logo). Still comfortably above the ~24px minimum
+       for a reliable touch target, just less visually heavy. */
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;   /* never let the close button itself get squeezed */
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--alqamara-text);
+    transition: background 0.2s;
+}
+
+.mobile-close-btn:hover { background: var(--alqamara-border); }
+
+.mobile-nav-links {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 0;
+}
+
+.mobile-nav-link {
+    display: block;
+    padding: 13px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--alqamara-text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--alqamara-surface);
+    transition: color 0.2s, background 0.2s;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+    color: var(--alqamara-primary) !important;
+    background: var(--alqamara-tint) !important;
+    font-weight: 600;
+}
+
+.mobile-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+/* Groups the leading icon + title into a single flex item so
+   .mobile-dropdown-toggle's space-between only ever splits the row into
+   [label | arrow] — not [icon | title | arrow], which used to spread the
+   title toward the middle whenever an icon was present. */
+.mobile-dropdown-label {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.mobile-dropdown-menu      { display: none; background: var(--alqamara-surface); }
+.mobile-dropdown-menu.open { display: block; }
+
+.mobile-dropdown-section {
+    display: flex;
+    align-items: center;
+    padding: 8px 20px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--alqamara-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--alqamara-tint);
+}
+
+.mobile-dropdown-sub {
+    padding: 6px 24px 2px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--alqamara-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.mobile-dropdown-item {
+    display: block;
+    padding: 9px 32px;
+    font-size: 13px;
+    color: var(--alqamara-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--alqamara-surface);
+    transition: color 0.2s, background 0.2s;
+}
+
+.mobile-dropdown-item:hover,
+.mobile-dropdown-item.active {
+    color: var(--alqamara-primary) !important;
+    background: var(--alqamara-tint) !important;
+    font-weight: 600;
+}
+
+
+.mobile-menu-footer {
+    padding: 20px;
+    border-top: 1px solid var(--alqamara-surface);
+}
+
+/* ---- WordPress admin bar offset ----
+   >=783px   : admin bar fixed  32px  → header top: 32px
+   601-782px : admin bar fixed  46px  → header top: 46px
+   <=600px   : admin bar position:absolute — scrolls away with page,
+               header stays at top:0 (admin bar briefly overlaps, then scrolls away) */
+.admin-bar .alqamara-is-sticky { top: 32px; }
+.admin-bar .mobile-menu     { top: 32px; height: calc(100dvh - 32px); }
+
+@media screen and (max-width: 782px) {
+    .admin-bar .alqamara-is-sticky { top: 46px; }
+    .admin-bar .mobile-menu     { top: 46px; height: calc(100dvh - 46px); }
+}
+
+@media screen and (max-width: 600px) {
+    /* Header starts below admin bar on page load; JS moves it to top:0 after scroll */
+    .admin-bar .alqamara-is-sticky { top: 46px; transition: top 0.2s ease; }
+    .admin-bar .mobile-menu     { top: 46px; height: calc(100dvh - 46px); }
+
+    /* JS adds this class once admin bar has scrolled away */
+    .admin-bar-gone .alqamara-is-sticky { top: 0; }
+    .admin-bar-gone .mobile-menu     { top: 0; height: 100dvh; }
+}
+
+/* ---- Nav icon visibility (text-shadow on any bg) ---- */
+.alqamara-nav-icon { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); }
+
+/* !important required — Bootstrap's spacing utilities (`gap-1`, `p-2`)
+   are themselves declared with !important in bootstrap.min.css, so a
+   plain override here would silently lose regardless of selector
+   specificity or source order.
+   First attempt tightened both gap AND icon padding (~14px between
+   glyphs) — user felt that was too cramped and asked to go back close
+   to the original ~20px, just trimmed slightly to 18px. Icon padding
+   reverted to Bootstrap's original 8px (p-2, untouched); only the gap
+   is now overridden, 4px → 2px, which alone accounts for the full 2px
+   reduction (8 + 2 + 8 = 18px). */
+.alqamara-header-icons { gap: 0.125rem !important; }
+.alqamara-no-caret::after { display: none !important; }
+
+/* ---- Solid header on non-front-page (class set in header.php) ---- */
+/* --alqamara-header-bg is set only when a custom color is saved in Customizer;
+   falls back to --alqamara-primary (Global Primary Color) when not defined. */
+.alqamara-header-solid { background: var(--alqamara-header-bg, var(--alqamara-primary)) !important; }
+
+/* ---- Text colours inside alqamara-header-solid (non-sticky front page or any solid-bg state) ---- */
+/* Ink auto-adapts to Header Background Color via --alqamara-header-ink — was
+   hardcoded white here too (same bug as the .navbar-transparent.scrolled
+   rules above; this block duplicates them for the .alqamara-header-solid case,
+   which can be present without .scrolled — e.g. "Solid Background Header
+   on Homepage" toggle on). Fixed in the same pass,*/
+.alqamara-header-solid .navbar-transparent .navbar-nav .nav-link   { color: var(--alqamara-header-ink, var(--alqamara-on-dark)); }
+.alqamara-header-solid .navbar-transparent .navbar-brand            { color: var(--alqamara-header-ink, #fff); }
+.alqamara-header-solid .mobile-toggler .navbar-toggler-icon         { filter: var(--alqamara-header-toggler-filter, brightness(0) invert(1)); }
+.alqamara-header-solid .navbar .btn-custom {
+    background: transparent;
+    color: var(--alqamara-accent);
+    border: 1.5px solid var(--alqamara-accent);
+}
+.alqamara-header-solid .navbar .btn-custom:hover {
+    background: var(--alqamara-accent);
+    color: var(--alqamara-primary-dark);
+}
+.alqamara-header-solid .alqamara-nav-icon { color: var(--alqamara-header-ink, #fff) !important; }
+
+/* ---- Search inline dropdown (positioning only — styles via unified search rules below) ---- */
+.alqamara-search-dd { border-radius: 8px; right: 0; left: auto; }
+@media (min-width: 992px) { .alqamara-search-dd { min-width: 300px; } }
+/* Below 992px this dropdown is also used by the mobile search icon (see
+   header.php) — give it a sensible width instead of Bootstrap's default
+   content-hugging size, capped so it can't overflow narrow screens.
+   (Tried near-full viewport width here first; on a real phone it pushed
+   past the LEFT edge of the screen, since the dropdown is right-anchored
+   to the icon and a real device's available width differs from what the
+   desktop-simulated test predicted. Reverted to this capped size, which
+   the user confirmed looks correct on a real device.) */
+@media (max-width: 991.98px) { .alqamara-search-dd { min-width: 260px; max-width: calc(100vw - 2rem); } }
+/* Narrower phones (~320-340px — matches the WP Customizer's own mobile
+   preview width) — 260px doesn't leave enough room between the
+   right-anchored dropdown (dropdown-menu-end: right edge pinned to the
+   search icon, extending leftward) and the screen's left edge once the
+   icon itself sits close to the right edge. Found via the Customizer's
+   mobile preview and confirmed by computed position — the dropdown's
+   left edge was at -23px, genuinely off-screen (user feedback,
+. Scoped tightly so ordinary phones (~375px+) keep the
+   original 260px width, already confirmed correct on a real device per
+   the comment above. */
+@media (max-width: 340px) { .alqamara-search-dd { min-width: 220px; } }
+.alqamara-search-dd .search-form-inner { flex: 1; }
+
+/* ---- Mobile search icon ----
+   Border/box look removed, same as
+   .mobile-toggler next to it — see that rule's comment. Fixed height +
+   flex-centering kept as-is (unrelated to the border, still needed):
+   the icon (Bootstrap Icons font, fs-5) inherits the site's unitless
+   line-height ratio and computes its OWN line box (~30px) independently
+   of the button's, unlike .mobile-toggler's icon (a fixed-size 24px
+   background-image span) — so matching padding/line-height alone left
+   this button a few pixels taller. */
+.alqamara-mobile-search-btn {
+    display         : inline-flex;
+    align-items     : center;
+    justify-content : center;
+    height          : 38px;
+    padding         : 6px 10px !important;
+    border          : none;
+}
+
+/* Color — was hardcoded rgba(0,0,0,.8)/#fff (plain black/white toggle by
+   scroll-state only), which ignored a custom Header Background Color: the
+   hamburger next to it auto-contrasts via --alqamara-header-toggler-filter
+   (computed from the actual configured color's lightness in functions.php),
+   but this button stayed stuck at pure black/white regardless — so on a
+   mid-tone custom header color the two icons could visibly mismatch, and on
+   some colors the search icon effectively disappeared (real bug, user
+   report.
+   Fixed to use the same --alqamara-header-ink auto-contrast variable every other
+   header icon uses (.alqamara-nav-icon, .navbar-brand, nav links) so it always
+   matches them exactly, on any header color, not just the theme default. */
+.alqamara-mobile-search-btn { color: var(--alqamara-ink) !important; }
+
+.navbar-transparent.scrolled .alqamara-mobile-search-btn,
+body:not(.home):not(.front-page) .alqamara-mobile-search-btn,
+.alqamara-header-solid .alqamara-mobile-search-btn {
+    color: var(--alqamara-header-ink, var(--alqamara-on-dark)) !important;
+}
+
+/* ---- Account dropdown ---- */
+.alqamara-account-dropdown { min-width: 190px; border-radius: 8px; }
+.alqamara-account-dropdown .dropdown-item { font-size: .875rem; border-radius: 6px; }
+.alqamara-account-dropdown .dropdown-item:hover { background: var(--alqamara-tint); }
+
+/* ---- CSS hover for account + cart (no data-bs-toggle → no Popper conflict) ---- */
+/* Position manually: right edge of menu = right edge of .dropdown parent              */
+.alqamara-account-dd .dropdown-menu,
+.alqamara-cart-dd    .dropdown-menu {
+    right: 0;
+    left: auto;
+    top: 100%;
+}
+@media (min-width: 992px) {
+    .alqamara-account-dd:hover > .dropdown-menu,
+    .alqamara-cart-dd:hover    > .dropdown-menu { display: block; }
+}
+
+/* ---- Cart hover preview ---- */
+.alqamara-cart-preview { border-radius: 8px; min-width: 240px; }
+
+/* ── Mini cart — sticky footer layout ────────────────────────────────────── */
+.alqamara-cart-drawer {
+    display       : flex !important;
+    flex-direction: column !important;
+}
+.alqamara-cart-drawer-body {
+    flex    : 1 !important;
+    overflow: hidden !important;
+    padding : 0 !important;          /* remove Bootstrap p-3; padded per-section */
+    display : flex !important;
+    flex-direction: column !important;
+}
+.alqamara-cart-drawer-body .woocommerce,
+.alqamara-cart-drawer-body .widget_shopping_cart_content {
+    flex          : 1;
+    overflow      : hidden;
+    display       : flex;
+    flex-direction: column;
+}
+
+/* Mini cart buttons — theme colors (both dropdown preview & drawer) */
+.alqamara-cart-preview .btn-outline-secondary,
+.alqamara-cart-drawer  .btn-outline-secondary {
+    color       : var(--alqamara-accent, #b8912a);
+    border-color: var(--alqamara-accent, #b8912a);
+    background  : transparent;
+    transition  : background .2s, color .2s;
+}
+.alqamara-cart-preview .btn-outline-secondary:hover,
+.alqamara-cart-preview .btn-outline-secondary:focus,
+.alqamara-cart-drawer  .btn-outline-secondary:hover,
+.alqamara-cart-drawer  .btn-outline-secondary:focus {
+    background  : var(--alqamara-accent, #b8912a);
+    border-color: var(--alqamara-accent, #b8912a);
+    color       : #fff;
+}
+.alqamara-cart-preview .btn-primary,
+.alqamara-cart-drawer  .btn-primary {
+    background  : var(--alqamara-accent, #b8912a);
+    border-color: var(--alqamara-accent, #b8912a);
+    color       : #fff;
+    transition  : background .2s, border-color .2s;
+}
+.alqamara-cart-preview .btn-primary:hover,
+.alqamara-cart-preview .btn-primary:focus,
+.alqamara-cart-drawer  .btn-primary:hover,
+.alqamara-cart-drawer  .btn-primary:focus {
+    background  : var(--alqamara-accent-dark, #9a7821);
+    border-color: var(--alqamara-accent-dark, #9a7821);
+    color       : #fff;
+}
+
+/* Popup preview (hover dropdown) — override navbar btn-custom so Checkout is solid gold */
+.alqamara-cart-preview-inner .btn-custom,
+.alqamara-cart-preview-inner .btn-outline-custom {
+    display      : flex !important;
+    align-items  : center !important;
+    justify-content: center !important;
+    text-align   : center !important;
+    transform    : none !important;
+    padding      : .35rem .6rem;
+    font-size    : .8rem;
+    border-radius: 4px;
+}
+.alqamara-cart-preview-inner .btn-custom {
+    background   : var(--alqamara-accent, #b8912a) !important;
+    border-color : var(--alqamara-accent, #b8912a) !important;
+    color        : #fff !important;
+}
+.alqamara-cart-preview-inner .btn-custom:hover {
+    background   : var(--alqamara-accent-dark, #9a7821) !important;
+    border-color : var(--alqamara-accent-dark, #9a7821) !important;
+}
+.alqamara-cart-preview-inner .btn-outline-custom {
+    color        : var(--alqamara-accent, #b8912a) !important;
+    border-color : var(--alqamara-accent, #b8912a) !important;
+    background   : transparent !important;
+}
+.alqamara-cart-preview-inner .btn-outline-custom:hover {
+    background   : var(--alqamara-accent, #b8912a) !important;
+    color        : #fff !important;
+}
+
+/* ---- Cart drawer — matches mobile menu width ---- */
+.alqamara-cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 300px;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--alqamara-white);
+    z-index: 1060;
+    box-shadow: -5px 0 20px rgba(0,0,0,.15);
+    transition: right .35s ease;
+    display: flex;
+    flex-direction: column;
+}
+.alqamara-cart-drawer.is-open { right: 0; }
+
+.alqamara-cart-drawer-body { flex: 1; overflow-y: auto; padding-bottom: 0; }
+
+/* Sticky footer buttons inside mini cart */
+.alqamara-cart-drawer .woocommerce-mini-cart__buttons {
+    position: sticky;
+    bottom: 0;
+    background: var(--alqamara-white);
+    padding: .75rem 1rem 1rem;
+    margin: 0 -1rem -1rem;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+.alqamara-cart-drawer .woocommerce-mini-cart__buttons a,
+.alqamara-cart-drawer .woocommerce-mini-cart__buttons .button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: .55rem 1rem;
+    border-radius: 6px;
+    font-size: .875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .2s, color .2s, border-color .2s;
+}
+/* View Cart — gold outline */
+.alqamara-cart-drawer .woocommerce-mini-cart__buttons .button.wc-forward:not(.checkout) {
+    background: transparent !important;
+    border: 1.5px solid var(--alqamara-accent, #b8912a);
+    color: var(--alqamara-accent, #b8912a) !important;
+}
+.alqamara-cart-drawer .woocommerce-mini-cart__buttons .button.wc-forward:not(.checkout):hover {
+    background: var(--alqamara-accent, #b8912a);
+    color: #fff !important;
+}
+/* Checkout — gold solid */
+.alqamara-cart-drawer .woocommerce-mini-cart__buttons .button.checkout {
+    background: var(--alqamara-accent, #b8912a);
+    color: #fff !important;
+    border: none;
+}
+.alqamara-cart-drawer .woocommerce-mini-cart__buttons .button.checkout:hover {
+    background: var(--alqamara-primary, #0f172a) !important;
+    color: #fff !important;
+}
+
+.alqamara-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 1059;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .35s ease;
+}
+.alqamara-drawer-overlay.is-active { opacity: 1; visibility: visible; }
+
+/* ---- Mobile bottom bar ---- */
+.alqamara-mobile-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 58px;
+    background: #fff;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 1040;
+    box-shadow: 0 -2px 12px rgba(0,0,0,.07);
+}
+
+/* Resting color deliberately darker than the theme's usual "muted" gray
+   (--alqamara-muted, #6c757d) — on a white bar background that lighter shade
+   didn't have enough contrast to be noticed at a glance. This is a
+   dedicated, slightly-darker shade just for this bar — darkened again
+
+   contrast at rest across all 5 icons now that Cart no longer gets its
+   own permanent accent tint (see .alqamara-mobile-bar-cart note below) — all
+   five icons need to read clearly on their own. */
+.alqamara-mobile-bar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    color: #2d3348;
+    text-decoration: none;
+    font-size: .65rem;
+    padding: .35rem .75rem;
+    cursor: pointer;
+    transition: color .2s;
+    min-width: 0;   /* let flex shrink these below their content width
+                       instead of forcing the bar wider than the screen */
+}
+
+/* Very narrow phones (320px class devices): 5 items × (40px icon glyph +
+   2 × .75rem padding) just barely exceeds the available width, clipping a
+   few px off the last icon. Tighten the horizontal padding only at this
+   size — the icons themselves stay the same, they just sit closer. */
+@media (max-width: 360px) {
+    .alqamara-mobile-bar-item { padding-left: .35rem; padding-right: .35rem; }
+}
+/* Box is a few px larger than the glyph itself on every side (icon glyph
+   is ~20px at this font-size) — gives the active-state pill background
+   below some visible breathing room instead of hugging the icon outline
+   tightly. */
+.alqamara-mobile-bar-item i {
+    font-size: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 34px;
+    border-radius: 999px;
+    transition: background-color .2s, color .2s;
+}
+.alqamara-mob-cart-wrap { position: relative; }
+.alqamara-mob-cart-wrap .alqamara-badge { z-index: 2; }
+/* `.alqamara-mob-cart-badge` positioning rule now lives further down, merged
+   with `.alqamara-mobile-bar-badge` since both icons share the same wrapper
+   structure — see that combined rule for the explanation. */
+
+/* Active-tab pill: a soft accent-tinted rounded background behind the
+   icon only (not the whole item), so the current tab is immediately
+   visible instead of relying on a color change alone. `.active` is set
+   server-side in header.php based on the current page (Shop/Cart/
+   Account) — previously this class existed in CSS but was never actually
+   applied anywhere, so the bar had no working current-page indicator. */
+.alqamara-mobile-bar-item:hover,
+.alqamara-mobile-bar-item.active { color: var(--alqamara-primary); }
+.alqamara-mobile-bar-item.active i {
+    background: rgba(184, 145, 42, .16); /* --alqamara-accent at low opacity */
+    color: var(--alqamara-accent);
+}
+
+
+/* Push page content above mobile bar when active */
+body.alqamara-shop-header { padding-bottom: 58px; }
+
+@media (min-width: 992px) {
+    body.alqamara-shop-header { padding-bottom: 0; }
+}
+
+/* ---- Top Bar ---- */
+.alqamara-topbar {
+    position: relative;
+    z-index: 1032;
+    background: var(--alqamara-topbar-bg, var(--alqamara-primary));
+    color: var(--alqamara-topbar-ink, rgba(255,255,255,.75));
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.alqamara-topbar-link {
+    color: var(--alqamara-topbar-ink, rgba(255,255,255,.7));
+    transition: color .2s;
+}
+.alqamara-topbar-link:hover { color: var(--alqamara-topbar-ink, #fff); }
+
+.alqamara-badge,
+.alqamara-cart-badge {
+    font-size      : .6rem !important;
+    background-color: var(--alqamara-accent) !important;
+    color          : #fff !important;
+    border         : none !important;
+}
+
+.alqamara-header-badge {
+    position: absolute !important;
+    top     : 5px !important; /* nudged 1px up, was 6px */
+    right   : 3px !important; /* nudged 1px right, was 4px */
+    left    : auto !important;
+    bottom  : auto !important;
+    transform: none !important;
+}
+
+.alqamara-mob-cart-badge {
+    position: absolute !important;
+    top     : 2px !important;
+    right   : 4px !important;
+    left    : auto !important;
+    bottom  : auto !important;
+    transform: none !important;
+}
+
+/* ---- Search overlay (legacy — removed; replaced by .alqamara-search-dd dropdown) ---- */
+
+/* =====================================================================
+   04 · SECTION HEADER  (shared decorative heading — used across pages)
+   ===================================================================== */
+
+.section-header {
+    position: relative;
+    padding-top: 25px;
+}
+
+/* Double-line decoration: navy line + gold line */
+.section-header::before {
+    position: absolute;
+    content: "";
+    width: 60px;
+    height: 2px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--alqamara-primary);
+}
+
+.section-header::after {
+    position: absolute;
+    content: "";
+    width: 90px;
+    height: 2px;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--alqamara-accent);
+}
+
+.section-header.text-start::before,
+.section-header.text-start::after {
+    left: 0;
+    transform: translateX(0);
+}
+
+/* =====================================================================
+   05 · HOMEPAGE SECTIONS
+   ===================================================================== */
+
+/* ------------------------------------------------------------------
+   HERO
+   ------------------------------------------------------------------ */
+.hero-section {
+    position        : relative;
+    width           : 100%;
+    min-height      : 100vh;
+    min-height      : 100dvh;
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    overflow        : hidden;
+    /* Pull hero up so background extends behind topbar + navbar */
+    margin-top      : calc(-1 * var(--alqamara-header-total-h, 0px));
+    /* Section-level padding — clears header at top, gives breathing room below.
+       Any content inside (title, widget, video, image) benefits automatically. */
+    padding-top     : calc(var(--alqamara-header-total-h, 80px) + 2.5rem);
+    padding-bottom  : 4rem;
+    box-sizing      : border-box;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        min-height    : 85vh;
+        min-height    : 85dvh;
+        padding-top   : calc(var(--alqamara-header-total-h, 80px) + 1.5rem);
+        padding-bottom: 3.5rem; /* extra room above mobile bottom bar */
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        min-height    : auto;
+        padding-bottom: 4rem; /* mobile bar is ~56px, add buffer */
+    }
+}
+
+/* ---- Solid Background Header on Homepage (body class set in functions.php) ----
+   The negative margin-top above pulls Hero's background up behind the header —
+   correct when the header is transparent (you can still see the background
+   through it), wrong when the header is solid (that same slice of Hero would
+   be hidden behind an opaque bar instead). Cancel the overlap here so Hero
+   starts right below the header with nothing cropped. Only applies when Hero
+   itself is on (functions.php only adds this class in that case). */
+body.alqamara-header-solid-home .hero-section {
+    margin-top  : 0;
+    padding-top : 2.5rem;
+}
+
+@media (max-width: 768px) {
+    body.alqamara-header-solid-home .hero-section {
+        padding-top: 1.5rem;
+    }
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.15);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    /* No padding here — .hero-section handles top/bottom spacing for ALL content.
+       This means widgets, videos, images placed directly in the hero also get
+       proper spacing without needing .hero-content wrapper. */
+    width: 100%;
+}
+
+.hero-title {
+    color: var(--alqamara-text);
+    max-width: 95%;
+    line-height: 1.3;
+    font-size: 2.0rem;
+}
+
+.hero-subtitle {
+    color: var(--alqamara-text);
+    max-width: 95%;
+    line-height: 1.3;
+    font-size: 1.2rem;
+}
+
+/* ── Decorative hero circles ─────────────────────────────────────────────────
+   Reverted back to small/subtle flat circles — the
+   large soft-blob treatment (780px/620px, visible circular body) was tried
+   per a reference screenshot, but the user decided against it: too heavy/
+   dark-feeling on mobile, where a circle that size dwarfs the viewport.
+   Back to the original small, low-opacity, hard-edge-but-barely-visible
+   circles, keeping only the color SWAP that was explicitly requested and
+   confirmed earlier: top-right = primary/navy tint, bottom-left = accent/
+   gold tint (opposite of the theme's original assignment). Sizes now also
+   shrink on mobile so they stay a quiet corner accent instead of dominating
+   a small viewport. */
+.hero-circle {
+    position       : absolute;
+    border-radius  : 50%;
+    pointer-events : none;
+}
+.hero-circle-tr {
+    width      : 680px;
+    height     : 680px;
+    background : color-mix(in srgb, var(--alqamara-primary) 7%, transparent);
+    top        : -180px;
+    right      : -140px;
+}
+.hero-circle-bl {
+    width      : 480px;
+    height     : 480px;
+    background : color-mix(in srgb, var(--alqamara-accent) 6%, transparent);
+    bottom     : -140px;
+    left       : -100px;
+}
+
+@media (max-width: 768px) {
+    .hero-circle-tr { width: 380px; height: 380px; top: -100px; right: -80px; }
+    .hero-circle-bl { width: 280px; height: 280px; bottom: -80px; left: -60px; }
+}
+
+/* ── Hero title / subtitle overrides (better sizing & color) ──────────────── */
+.hero-title {
+    font-size   : clamp(1.9rem, 3.5vw, 2.8rem);
+    font-weight : 700;
+    color       : var(--alqamara-primary, #0f172a);
+    line-height : 1.3;
+    max-width   : 820px;
+    margin      : 0 auto 1.25rem;
+}
+
+.hero-subtitle {
+    font-size   : 1.05rem;
+    /* Scoped override, NOT a change to --alqamara-muted itself — that variable
+       is shared by 30+ other places site-wide (meta text, breadcrumbs,
+       etc.) and changing it globally would move all of them, not just
+       this. User felt the hero subtitle specifically read too light
+       against the new near-white hero background
+       darker than --alqamara-muted (#6c757d) but not as dark as full body text. */
+    color       : #4b5563;
+    max-width   : 680px;
+    margin      : 0 auto 2.25rem;
+    line-height : 1.75;
+}
+
+/* Hero alignment — left/right override auto-centering margin */
+.hero-content.text-start .hero-title,
+.hero-content.text-start .hero-subtitle {
+    margin-left : 0 !important;
+    margin-right: auto !important;
+}
+.hero-content.text-end .hero-title,
+.hero-content.text-end .hero-subtitle {
+    margin-left : auto !important;
+    margin-right: 0 !important;
+}
+
+/* Hero buttons — dark navy fill + outline */
+.btn-hero-primary {
+    background    : var(--alqamara-primary, #0f172a);
+    border        : 2px solid var(--alqamara-primary, #0f172a);
+    color         : #fff;
+    padding       : 11px 30px;
+    font-size     : 1rem;
+    font-weight   : 600;
+    border-radius : 5px;
+    transition    : all .25s ease;
+    text-decoration: none;
+    display       : inline-flex;
+    align-items   : center;
+}
+.btn-hero-primary:hover {
+    background   : transparent;
+    color        : var(--alqamara-primary, #0f172a);
+}
+
+.btn-hero-secondary {
+    /* Solid accent (gold) fill — not an outline. First tried an outline
+       button here but the user pointed out an outline sits on
+       top of an arbitrary uploaded photo, so depending on the photo's own
+       colors it can lose contrast and stop reading as a button at all. A
+       solid fill has no such risk, and matches the site's real WooCommerce
+       "Add to Cart" button treatment exactly (css/woocommerce.css — solid
+       var(--alqamara-accent), white text, no border) rather than the unrelated,
+       unused .btn-gold utility class, so the hero row now uses the same
+       visual language as every other primary action on the site. */
+    background    : var(--alqamara-accent, #b8912a);
+    border        : none;
+    color         : #fff;
+    padding       : 11px 30px;
+    font-size     : 1rem;
+    font-weight   : 600;
+    border-radius : 5px;
+    transition    : all .25s ease;
+    text-decoration: none;
+    display       : inline-flex;
+    align-items   : center;
+}
+.btn-hero-secondary:hover {
+    background   : var(--alqamara-accent-dark, #9a7821);
+    color        : #fff;
+}
+
+@media (max-width: 768px) {
+    /* Extra top gap on mobile only — the
+       heading sat a bit too close to the header/circle area on small
+       screens; pushes it down ~18px without touching desktop spacing. */
+    .hero-title { font-size: 2rem; margin-top: 18px; }
+    /* Padding now lives on .hero-section — no override needed here */
+}
+@media (max-width: 576px) {
+    .hero-title         { font-size: 1.7rem; }
+    .btn-hero-primary,
+    .btn-hero-secondary { font-size: 14px; padding: 9px 20px; }
+}
+@media (max-width: 380px) {
+    .hero-title         { font-size: 1.4rem; }
+    .btn-hero-primary,
+    .btn-hero-secondary { font-size: 13px; padding: 8px 16px; }
+}
+
+/* ------------------------------------------------------------------
+   CUSTOMER FEEDBACK / TESTIMONIALS
+   ------------------------------------------------------------------ */
+.feedback-title   { font-size: 1.7rem; color: var(--alqamara-heading); }
+
+.feedback-card {
+    background: var(--alqamara-white);
+    border: 1.5px solid var(--alqamara-border);
+    border-radius: .25rem;
+    padding: 28px 26px 24px;
+    height: 100%;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feedback-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* Speech bubble tail — right side */
+.feedback-card::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    right: 30px;
+    left: auto;
+    width: 20px;
+    height: 12px;
+    background: var(--alqamara-white);
+    border-right: 1.5px solid var(--alqamara-border);
+    border-bottom: 1.5px solid var(--alqamara-border);
+    border-radius: 0 0 4px 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+.feedback-quote-icon { font-size: 20px; color: var(--alqamara-primary); opacity: 0.3; margin-bottom: 10px; }
+
+.feedback-text {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--alqamara-text);
+    line-height: 1.7;
+    margin-bottom: 18px;
+}
+
+.feedback-author { display: flex; align-items: flex-start; gap: 8px; }
+.feedback-dash   { font-size: 16px; color: var(--alqamara-primary); font-weight: 700; line-height: 1.4; }
+.feedback-name   { display: block; font-size: 13px; font-weight: 700; color: var(--alqamara-heading); }
+.feedback-org    { display: block; font-size: 12px; color: var(--alqamara-muted); }
+
+@media (max-width: 768px) {
+    .feedback-title { font-size: 1.4rem; }
+    
+}
+
+@media (max-width: 576px) {
+    .feedback-title        { font-size: 1.2rem; }
+    
+    .feedback-card         { padding: 22px 18px; }
+}
+
+/* ------------------------------------------------------------------
+   BRAND SECTIONS  (navy background — alqamara-brand-section, alqamara-soft)
+   ------------------------------------------------------------------ */
+.alqamara-eyebrow {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--alqamara-accent);
+    margin-bottom: 10px;
+}
+
+/* Section heading — golden underline */
+.alqamara-section-heading {
+    position: relative;
+    display: block;
+    padding-bottom: 16px;
+    margin-bottom: 10px;
+}
+
+.alqamara-section-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 48px;
+    height: 3px;
+    background: var(--alqamara-accent);
+    border-radius: 2px;
+}
+
+/* Center underline when parent or self has text-center */
+.text-center .alqamara-section-heading::after,
+.alqamara-section-heading.text-center::after {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.btn-gold {
+    background: var(--alqamara-accent);
+    color: var(--alqamara-primary);
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    transition: background .2s ease;
+}
+
+.btn-gold:hover {
+    background: var(--alqamara-accent-dark);
+    color: var(--alqamara-primary);
+}
+
+/* =====================================================================
+   06 · ARCHIVE / BLOG LIST
+   ===================================================================== */
+
+/* Page wrapper */
+.blog-page-wrapper   { background: var(--alqamara-content-bg, #fbfbfb); min-height: 100vh; }
+/* Banner
+   Gradient's 2nd stop was the site-wide --alqamara-primary-dark (#060b12, used
+   in many other places — footer bg, button hovers — so not safe to lighten
+   globally). That made the banner look much darker overall than just
+   lightening the default alqamara_banner_bg default alone would suggest
+
+   touch lighter). Fixed by deriving the 2nd stop from --alqamara-banner-bg
+   itself (darkened slightly for depth) instead of jumping to the site's
+   darkest shade — so lightening the Customizer default actually lightens
+   the whole banner, not just the first half of the gradient. */
+.blog-page-banner {
+    background: linear-gradient(135deg, var(--alqamara-banner-bg, var(--alqamara-primary)) 0%, color-mix(in srgb, var(--alqamara-banner-bg, var(--alqamara-primary)) 100%, black 22%) 100%);
+    padding: 60px 0 50px;
+    position: relative;
+    overflow: hidden;
+}
+
+.blog-page-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.blog-page-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: 5%;
+    width: 250px;
+    height: 250px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.blog-banner-inner { position: relative; z-index: 1; }
+
+.blog-banner-label {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255,255,255,0.12);
+    color: var(--alqamara-banner-text-color, rgba(255,255,255,0.9));
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 50px;
+    margin-bottom: 16px;
+}
+
+.blog-banner-title {
+    color: var(--alqamara-banner-title-color, var(--alqamara-white));
+    font-family: var(--bs-font-heading);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.2;
+}
+
+.blog-banner-subtitle {
+    color: var(--alqamara-banner-text-color, rgba(255,255,255,0.75));
+    font-size: 1rem;
+    max-width: 600px;
+    margin-bottom: 0;
+    line-height: 1.7;
+}
+.blog-banner-inner.text-center .blog-banner-subtitle { margin-left: auto; margin-right: auto; }
+.blog-banner-inner.text-center .page-breadcrumb      { justify-content: center; }
+.blog-banner-inner.text-center .single-banner-meta   { justify-content: center; }
+
+/* Container */
+.blog-container             { padding-top: 50px; padding-bottom: 60px; }
+.blog-container--no-banner  { padding-top: 24px; }
+
+/* Post card */
+.blog-post-card {
+    background: var(--alqamara-white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(26,95,168,0.07);
+    margin-bottom: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(26,95,168,0.07);
+}
+
+.blog-post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(26,95,168,0.14);
+}
+
+/* Thumbnail */
+.blog-post-thumb {
+    position: relative;
+    overflow: hidden;
+    height: 260px;
+}
+
+.blog-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.blog-post-card:hover .blog-thumb-img { transform: scale(1.05); }
+
+.blog-post-cat {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: var(--alqamara-primary);
+    color: var(--alqamara-white);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 50px;
+}
+
+/* Post body */
+.blog-post-body { padding: 24px 28px 28px; }
+
+/* Meta */
+.blog-post-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.blog-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+    color: var(--alqamara-muted);
+}
+
+.blog-meta-item i  { color: var(--alqamara-primary); font-size: 0.7rem; }
+.blog-meta-divider { color: var(--alqamara-border); font-size: 0.85rem; }
+
+/* Title */
+.blog-post-title {
+    font-family: var(--bs-font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.blog-post-title a { color: var(--alqamara-primary); text-decoration: none; transition: color 0.2s ease; }
+.blog-post-title a:hover { color: var(--alqamara-accent); }
+
+/* Excerpt */
+.blog-post-excerpt {
+    color: var(--alqamara-muted);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+/* Read more */
+.blog-read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--alqamara-primary);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.blog-read-more:hover   { color: var(--alqamara-primary-dark); }
+.blog-read-more i       { transition: transform 0.2s ease; }
+.blog-read-more:hover i { transform: translateX(4px); }
+
+/* No posts */
+.blog-no-posts {
+    background: var(--alqamara-white);
+    border-radius: 14px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: 0 2px 16px rgba(26,95,168,0.07);
+}
+
+.blog-no-posts-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--alqamara-tint);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.blog-no-posts-icon i { font-size: 1.8rem; color: var(--alqamara-primary); }
+.blog-no-posts h3     { font-family: var(--bs-font-heading); font-size: 1.4rem; font-weight: 700; color: var(--alqamara-ink); margin-bottom: 10px; }
+.blog-no-posts p      { color: var(--alqamara-muted); font-size: 0.95rem; margin-bottom: 0; }
+
+/* Pagination */
+.blog-pagination-wrap { margin-top: 10px; }
+
+.blog-pagination-wrap .alqamara-pagination ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.blog-pagination-wrap .alqamara-pagination li a,
+.blog-pagination-wrap .alqamara-pagination li span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--alqamara-white);
+    color: var(--alqamara-primary);
+    border: 1px solid rgba(26,95,168,0.2);
+    transition: all 0.2s ease;
+}
+
+.blog-pagination-wrap .alqamara-pagination li span.current,
+.blog-pagination-wrap .alqamara-pagination li a:hover {
+    background: var(--alqamara-primary);
+    color: var(--alqamara-white);
+    border-color: var(--alqamara-primary);
+}
+
+/* Sidebar */
+
+/* Sticky Sidebar (Customizer: Global Settings → Sidebar → "Sticky Sidebar",
+   theme_mod `alqamara_blog_sidebar_sticky`, default ON). Applies to the
+   blog/single-post sidebar ONLY (`.blog-sidebar`) — the WooCommerce Shop
+   Sidebar (`.alqamara-shop-sidebar`) has its own INDEPENDENT toggle instead
+   (`alqamara_shop_sidebar_sticky`, WooCommerce → Shop / Archive — see
+   css/woocommerce.css), deliberately kept separate since this theme serves
+   both content/blog sites and WooCommerce stores and a customer using it for
+   one purpose shouldn't have this choice forced onto the other area. Only
+   applies at the Bootstrap `lg` breakpoint (992px) and up, matching the
+   exact width where `.blog-sidebar` (single.php, `col-lg-4`) actually sits
+   beside the content instead of stacking below it. `top` reuses the same
+   sticky-header-offset variable the TOC feature's scroll-margin-top
+   already uses. Deliberately NO max-height/overflow-y capping here — see
+   the detailed reasoning already written up next to `.alqamara-shop-sidebar`'s
+   sticky rule in woocommerce.css: capping the sidebar to its own scrollable
+   box breaks down the moment more widgets get added below the visible cap,
+   so this theme lets position:sticky do its native thing (stop being
+   "stuck" once the sidebar's own bottom reaches the bottom of its column)
+   instead. Turned off via `functions.php`'s `body_class` filter
+   (`.alqamara-sidebar-not-sticky` class) when the Customizer toggle is
+   unchecked. */
+@media (min-width: 992px) {
+    body:not(.alqamara-sidebar-not-sticky) .blog-sidebar {
+        position: sticky;
+        top: calc(var(--alqamara-header-total-h, 80px) + 20px);
+        align-self: flex-start;
+    }
+}
+
+.blog-sidebar .widget {
+    background: var(--alqamara-white);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 16px rgba(26,95,168,0.07);
+    border: 1px solid rgba(26,95,168,0.07);
+}
+
+/* ── Blog sidebar — unified widget title style ───────────────────────────
+   Targets classic widget titles, Gutenberg block headings, and our custom
+   alqamara-pw-widget-title — all get the same look.
+   ─────────────────────────────────────────────────────────────────────── */
+.blog-sidebar .widget-title,
+.blog-sidebar .alqamara-pw-widget-title,
+.blog-sidebar .wp-block-heading {
+    font-family     : var(--bs-font-heading) !important;
+    font-size       : .82rem !important;
+    font-weight     : 700 !important;
+    color           : var(--alqamara-primary) !important;
+    text-transform  : uppercase !important;
+    letter-spacing  : .07em !important;
+    margin-bottom   : 14px !important;
+    padding-bottom  : 10px !important;
+    border-bottom   : 2px solid var(--alqamara-accent) !important;
+    line-height     : 1.3 !important;
+    width           : 100% !important;   /* fix: flex child was shrinking to text width */
+}
+
+/* Remove the original ::after decorative bar on our custom widget title —
+   it doubles up with the border-bottom we just added above              */
+.blog-sidebar .alqamara-pw-widget-title::after {
+    display : none !important;
+}
+
+/* Hide empty block headings (Gutenberg renders h2 even with no title set) */
+.blog-sidebar .wp-block-heading:empty {
+    display         : none !important;
+    margin-bottom   : 0 !important;
+    padding-bottom  : 0 !important;
+    border-bottom   : none !important;
+}
+
+/* Hide the Gutenberg Search block's built-in "Search" label
+   (it always renders regardless of whether a label was entered) */
+.blog-sidebar .wp-block-search__label {
+    display : none !important;
+}
+
+.blog-sidebar .widget ul                    { list-style: none; padding: 0; margin: 0; }
+.blog-sidebar .widget ul li                 { padding: 8px 0; border-bottom: 1px solid var(--alqamara-tint); font-size: 0.9rem; }
+.blog-sidebar .widget ul li:last-child      { border-bottom: none; padding-bottom: 0; }
+
+.blog-sidebar .widget ul li a {
+    color: var(--alqamara-text);
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: color 0.2s ease;
+}
+
+.blog-sidebar .widget ul li a:hover { color: var(--alqamara-accent); }
+
+/* Sidebar list arrows removed a small arrow after every item looked odd next to
+   the post counts and after the Recent Posts titles; the title colour change on hover is enough. */
+.blog-sidebar .widget ul li a::after {
+    content: none;
+}
+
+/* Post counts in the sidebar WordPress prints the count right after the link
+   (<a>Name</a> (4)), and the link above is a full-width flex row, so the count dropped onto a
+   line of its own. Each item is now one row: name on the left, the count in muted text on the right. Sub-categories still open on their own line underneath. */
+.blog-sidebar .widget ul li.cat-item,
+.blog-sidebar .widget .wp-block-archives-list > li,
+.blog-sidebar .widget_archive ul > li {
+    display     : flex;
+    flex-wrap   : wrap;
+    align-items : center;
+    column-gap  : 8px;
+    color       : var(--alqamara-muted, #64748b);
+}
+.blog-sidebar .widget ul li.cat-item > a,
+.blog-sidebar .widget .wp-block-archives-list > li > a,
+.blog-sidebar .widget_archive ul > li > a {
+    flex      : 1 1 0;
+    min-width : 0;
+}
+.blog-sidebar .widget ul li.cat-item > ul {
+    flex-basis : 100%;
+    order      : 5;
+}
+
+/* WooCommerce product list widgets — suppress the ::after arrow
+   (items are already styled as flex rows; the arrow clutters the layout) */
+.blog-sidebar .product_list_widget li a::after,
+.alqamara-shop-sidebar .product_list_widget li a::after {
+    display : none !important;
+}
+
+/* Search widget inside sidebar — handled by .search-form-inner rules below */
+
+@media (max-width: 576px) {
+    .blog-post-thumb { height: 200px; }
+    .blog-no-posts   { padding: 40px 20px; }
+}
+
+/* =====================================================================
+   07 · SINGLE POST
+   ===================================================================== */
+
+/* Banner meta */
+.single-banner-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.single-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.82rem;
+    color: var(--alqamara-banner-text-color, rgba(255,255,255,0.8));
+}
+
+.single-meta-item i       { font-size: 0.72rem; color: var(--alqamara-banner-text-color, rgba(255,255,255,0.6)); }
+.single-meta-item a       { color: var(--alqamara-banner-text-color, rgba(255,255,255,0.8)); text-decoration: none; transition: color 0.2s ease; }
+.single-meta-item a:hover { color: var(--alqamara-white); }
+.single-meta-sep          { color: var(--alqamara-banner-text-color, rgba(255,255,255,0.3)); font-size: 0.85rem; }
+
+/* Tags */
+.single-tags-wrap {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--alqamara-tint);
+    font-size: 0.88rem;
+    color: var(--alqamara-muted);
+}
+
+.single-tags-label { font-weight: 600; color: var(--alqamara-text); margin-right: 4px; }
+
+.single-tags-wrap a {
+    display: inline-block;
+    background: var(--alqamara-tint);
+    color: var(--alqamara-primary);
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    margin: 2px;
+    transition: all 0.2s ease;
+}
+
+.single-tags-wrap a:hover { background: var(--alqamara-primary); color: var(--alqamara-white); }
+
+/* ---- Author Box ---- */
+.single-author-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background: var(--alqamara-white);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(26,95,168,0.08);
+    box-shadow: 0 2px 12px rgba(26,95,168,0.05);
+}
+
+.author-box-avatar { flex-shrink: 0; line-height: 0; }
+
+.author-box-avatar img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: block;
+    object-fit: cover;
+}
+
+.author-box-body  { flex: 1; min-width: 0; }
+
+.author-box-name {
+    font-family: var(--bs-font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.author-box-name a { color: var(--alqamara-ink); text-decoration: none; }
+.author-box-name a:hover { color: var(--alqamara-accent); }
+
+.author-box-bio {
+    font-size: 0.92rem;
+    color: var(--alqamara-muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.author-box-social { display: flex; gap: 10px; }
+
+.author-box-social a {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--alqamara-tint);
+    color: var(--alqamara-primary);
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.author-box-social a:hover {
+    background: var(--alqamara-accent);
+    color: var(--alqamara-white);
+}
+
+@media (max-width: 576px) {
+    .single-author-box {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .author-box-social { justify-content: center; }
+}
+
+/* Post navigation */
+.single-post-nav { margin-bottom: 30px; }
+
+.single-nav-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: var(--alqamara-white);
+    border-radius: 12px;
+    padding: 18px 20px;
+    text-decoration: none;
+    border: 1px solid rgba(26,95,168,0.08);
+    box-shadow: 0 2px 12px rgba(26,95,168,0.05);
+    transition: all 0.2s ease;
+    height: 100%;
+}
+
+.single-nav-card:hover {
+    border-color: var(--alqamara-primary);
+    box-shadow: 0 4px 20px rgba(26,95,168,0.12);
+    transform: translateY(-2px);
+}
+
+.single-nav-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--alqamara-primary);
+}
+
+.single-nav-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--alqamara-ink);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.single-nav-next .single-nav-label,
+.single-nav-next .single-nav-title { text-align: right; }
+
+/* Related posts */
+.single-related-wrap  { margin-bottom: 30px; }
+
+.single-related-title {
+    font-family: var(--bs-font-heading);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--alqamara-ink);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--alqamara-tint);
+}
+
+.related-post-card {
+    background: var(--alqamara-white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(26,95,168,0.06);
+    border: 1px solid rgba(26,95,168,0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.related-post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(26,95,168,0.12);
+}
+
+.related-post-thumb { height: 140px; overflow: hidden; }
+
+.related-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.related-post-card:hover .related-thumb-img { transform: scale(1.05); }
+
+.related-post-body  { padding: 14px 16px; }
+
+.related-post-date {
+    font-size: 0.75rem;
+    color: var(--alqamara-muted);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.related-post-date i { color: var(--alqamara-primary); font-size: 0.7rem; }
+
+.related-post-title { font-size: 0.88rem; font-weight: 700; line-height: 1.4; margin-bottom: 0; }
+
+.related-post-title a {
+    color: var(--alqamara-ink);
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.2s ease;
+}
+
+.related-post-title a:hover { color: var(--alqamara-accent); }
+
+@media (max-width: 767px) {
+    .single-banner-meta { gap: 6px; }
+    .single-nav-card    { padding: 14px; }
+    .single-nav-title   { font-size: 0.82rem; }
+    .related-post-thumb { height: 120px; }
+}
+
+@media (max-width: 576px) {
+    .single-meta-sep    { display: none; }
+    .single-banner-meta { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+
+/* =====================================================================
+   08 · PAGE  (static page — page.php)
+   ===================================================================== */
+
+/* Breadcrumb */
+.page-breadcrumb {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.page-breadcrumb li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--alqamara-banner-text-color, rgba(255,255,255,0.65));
+}
+
+.page-breadcrumb li + li::before { content: '/'; color: var(--alqamara-banner-text-color, rgba(255,255,255,0.35)); }
+.page-breadcrumb li a            { color: var(--alqamara-banner-text-color, rgba(255,255,255,0.85)); text-decoration: none; transition: color 0.2s ease; }
+.page-breadcrumb li a:hover      { color: var(--alqamara-white); }
+
+/* Light bg override — used on white-background pages (e.g. single-service) */
+.alqamara-breadcrumb-light li            { color: #555; }
+.alqamara-breadcrumb-light li + li::before { color: #aaa; }
+.alqamara-breadcrumb-light li a          { color: var(--alqamara-accent); }
+.alqamara-breadcrumb-light li a:hover    { color: var(--alqamara-primary); }
+
+/* Container */
+.page-container             { padding-top: 50px; padding-bottom: 60px; }
+.page-container--no-banner  { padding-top: 24px; }
+
+/*
+ * Phone-width horizontal overflow fix — `.row.g-5` inside a `.container`.
+ *
+ * Bootstrap's grid balances three values: the container's side padding, the
+ * row's negative side margin, and the column's side padding. A plain
+ * `.container` pads 12px per side (`--bs-gutter-x: 1.5rem` ÷ 2), but `g-5`
+ * raises the row's own gutter to 3rem, so the row pulls itself out by 24px
+ * per side — 12px MORE than the container pads in. Above 576px that
+ * overhang is invisible, because `.container` is then max-width-constrained
+ * and has free space beside it to absorb it. Below 576px the container is
+ * full-width, so those 12px become real page overflow: the document scrolls
+ * ~12px to the right and shows an empty white strip down the right edge.
+ * Measured live at a 412px viewport: documentElement scrollWidth 409 vs
+ * clientWidth 397, with the row's right edge landing at exactly 409.
+ *
+ * Fix: below 576px, drop only the HORIZONTAL gutter back to 1.5rem, so the
+ * row's -12px margin again matches the container's +12px padding. This is
+ * visually a no-op: `--bs-gutter-x` drives the row's negative margin and the
+ * columns' padding together, so the content's inset stays exactly 12px from
+ * the viewport edge either way (12 − 24 + 24 = 12 − 12 + 12). The vertical
+ * gutter (`--bs-gutter-y`, also 3rem from `g-5`) is deliberately left alone,
+ * so the gap between stacked columns is unchanged, and every `col-lg-*` is
+ * already full-width at this size, so the horizontal gutter has nothing left
+ * to space apart anyway.
+ *
+ * Not scoped to one template on purpose: the same `.container > .row.g-5`
+ * pattern is used by the Guide template, page.php, single.php, index.php and
+ * the Project/Team/Testimonial singles — the overflow was reproduced on both
+ * a Guide page and a single post, so this is one shared root cause, not a
+ * per-template quirk. Deliberately NOT fixed with `overflow-x: hidden` on an
+ * ancestor: the Guide template's table of contents is `position: sticky`, and
+ * an `overflow` value on any ancestor silently kills sticky positioning.
+ */
+@media (max-width: 575.98px) {
+    .row.g-5 { --bs-gutter-x: 1.5rem; }
+}
+
+/* =====================================================================
+   AL QAMARA — BANNER FALLBACK STYLES
+   When full page banner is OFF in Customizer:
+     1. .alqamara-breadcrumb-bar  — thin white breadcrumb bar (full-width)
+     2. .alqamara-content-header  — title + meta inside the content column
+   Style matches WooCommerce / CPT single breadcrumb pattern:
+     pt-4 (1.5rem) gap + py-2 (0.5rem) nav = 2rem total from header.
+===================================================================== */
+
+/* 1. Thin breadcrumb bar — replaces full banner when banner is OFF */
+.alqamara-breadcrumb-bar {
+    background    : var(--alqamara-content-bg, #fbfbfb);
+    border-bottom : 1px solid #dee2e6;
+    padding-top   : 1.5rem; /* matches container pt-4 used in WC/CPT */
+}
+.alqamara-breadcrumb-bar nav {
+    padding       : .5rem 0; /* matches py-2 on CPT nav */
+}
+/* .page-breadcrumb default margin-bottom (12px) intentionally kept here —
+   it provides the gap between breadcrumb text and the border-bottom,
+   matching the CPT nav (py-2 + margin 12px) pattern. */
+
+/* 2. In-content title block (above thumbnail, inside content column) */
+.alqamara-content-header {
+    padding       : 36px 40px 1.25rem; /* top & sides match .page-body desktop */
+    margin-bottom : 0;
+    border-bottom : 1px solid #dee2e6;
+}
+.alqamara-content-title {
+    font-family : var(--bs-font-heading);
+    font-size   : clamp(1.4rem, 3vw, 1.85rem);
+    font-weight : 700;
+    color       : var(--alqamara-ink);
+    line-height : 1.3;
+    margin      : 0 0 .5rem;
+}
+
+/* Meta row — dark-text override of .single-meta-* for light content bg */
+.alqamara-content-meta                       { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: .5rem; }
+.alqamara-content-meta .single-meta-item    { color: var(--alqamara-muted); }
+.alqamara-content-meta .single-meta-item i  { color: var(--alqamara-accent); }
+.alqamara-content-meta .single-meta-item a  { color: var(--alqamara-muted); text-decoration: none; }
+.alqamara-content-meta .single-meta-item a:hover { color: var(--alqamara-accent); }
+.alqamara-content-meta .single-meta-sep     { color: #ced4da; font-size: 0.85rem; }
+
+/* Archive fallback header — no card wrapper, so reset padding to match container alignment */
+.alqamara-archive-header { padding: .75rem 0 1.25rem; margin-bottom: 1.5rem; }
+
+/* Archive fallback header (banner OFF) */
+.alqamara-archive-badge {
+    display      : inline-flex;
+    align-items  : center;
+    gap          : 6px;
+    font-size    : 0.72rem;
+    font-weight  : 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color        : var(--alqamara-accent);
+    background   : rgba(var(--alqamara-accent-rgb, 184,145,42), 0.08);
+    border       : 1px solid rgba(var(--alqamara-accent-rgb, 184,145,42), 0.2);
+    border-radius: 20px;
+    padding      : 4px 12px;
+    margin-bottom: .75rem;
+}
+.alqamara-archive-desc {
+    font-size    : 0.95rem;
+    color        : var(--alqamara-muted);
+    margin       : .4rem 0 0;
+    line-height  : 1.6;
+}
+.alqamara-archive-count {
+    font-size    : 0.82rem;
+    color        : var(--alqamara-muted);
+    margin       : .6rem 0 0;
+}
+
+/* Content card */
+.page-content-card {
+    background: var(--alqamara-white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(26,95,168,0.07);
+    border: 1px solid rgba(26,95,168,0.07);
+}
+
+/* Featured image */
+.page-featured-img     { width: 100%; }
+.page-featured-img img { width: 100%; height: auto; display: block; }
+
+/* Page body */
+.page-body { padding: 36px 40px 40px; }
+
+/* Entry content typography */
+.page-entry-content { font-size: 0.97rem; line-height: 1.8; color: var(--alqamara-text); }
+
+.page-entry-content h1,
+.page-entry-content h2,
+.page-entry-content h3,
+.page-entry-content h4,
+.page-entry-content h5,
+.page-entry-content h6 {
+    font-family: var(--bs-font-heading);
+    font-weight: 700;
+    color: var(--alqamara-ink);
+    margin-top: 1.8rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.3;
+}
+
+.page-entry-content h2 { font-size: 1.6rem; }
+.page-entry-content h3 { font-size: 1.35rem; }
+.page-entry-content h4 { font-size: 1.15rem; }
+
+/* Table of Contents jump-links land here — offset so the target heading
+   doesn't end up hidden under the sticky header. Reuses the same
+   --alqamara-header-total-h variable the sticky product gallery / mobile menu
+   already depend on (see js/main.js alqamaraSyncHeaderHeight). */
+.page-entry-content h2,
+.page-entry-content h3 {
+    scroll-margin-top: calc(var(--alqamara-header-total-h, 80px) + 20px);
+}
+
+.page-entry-content p  { margin-bottom: 1.2rem; }
+
+/* ---- Table of Contents box (inc/toc.php) ---- */
+html { scroll-behavior: smooth; }
+
+/* No underline by default, matching every other link family in the theme
+   (nav, sidebar, footer, TOC) — hover just shifts color. This only targets
+   real <a> links; it does NOT touch manual "Underline" text formatting a
+   user applies in the block editor (that renders as an inline style /
+   <u> tag with higher specificity than this class rule, so it always wins
+   and displays correctly regardless of this default). */
+/* .page-entry-content link colours: see "Content links" near the top of this file. */
+
+.page-entry-content ul,
+.page-entry-content ol { padding-left: 1.5rem; margin-bottom: 1.2rem; }
+
+.page-entry-content ul li,
+.page-entry-content ol li { margin-bottom: 0.4rem; }
+
+.page-entry-content blockquote {
+    border-left: 4px solid var(--alqamara-primary);
+    background: var(--alqamara-tint);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--alqamara-muted);
+}
+
+.page-entry-content img { max-width: 100%; height: auto; border-radius: 8px; margin: 1rem 0; }
+
+.page-entry-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+}
+
+.page-entry-content table th,
+.page-entry-content table td { padding: 10px 14px; border: 1px solid var(--alqamara-border); text-align: left; }
+
+.page-entry-content table th { background: var(--alqamara-primary); color: var(--alqamara-white); font-weight: 600; }
+.page-entry-content table tr:nth-child(even) { background: var(--alqamara-surface); }
+
+.page-entry-content pre {
+    background: var(--alqamara-surface);
+    border: 1px solid var(--alqamara-border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    font-size: 0.88rem;
+}
+
+.page-entry-content code {
+    background: var(--alqamara-tint);
+    color: var(--alqamara-primary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.88rem;
+}
+
+/* Page links (paginated content) */
+.page-links {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.page-links span,
+.page-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid rgba(26,95,168,0.2);
+}
+
+.page-links > span:first-child { width: auto; border: none; font-weight: 600; color: var(--alqamara-muted); }
+
+.page-links a {
+    background: var(--alqamara-white);
+    color: var(--alqamara-primary);
+    transition: all 0.2s ease;
+}
+
+.page-links a:hover,
+.page-links > span:not(:first-child) {
+    background: var(--alqamara-primary);
+    color: var(--alqamara-white);
+    border-color: var(--alqamara-primary);
+}
+
+@media (max-width: 991px) {
+    .page-body          { padding: 24px; }
+    .alqamara-content-header { padding: 24px 24px 1.25rem; }
+}
+
+@media (max-width: 576px) {
+    .page-body          { padding: 20px 16px; }
+    .alqamara-content-header { padding: 20px 16px 1.25rem; }
+}
+
+/* =====================================================================
+   09 · SEARCH FORMS — unified design
+   Same border-radius, border, background, and button style everywhere:
+   • get_search_form (.search-form-inner)
+   • WordPress Search Widget (.widget_search .search-form)
+   • Block Search Widget (.wp-block-search__inside-wrapper)
+   • Header dropdown (.alqamara-search-dd .search-form-inner / .search-form)
+   • Mobile slide menu (.mobile-menu-search .search-form-inner)
+   ===================================================================== */
+
+/* ── Shared variables ── */
+:root {
+    --alqamara-search-radius : 10px;
+    --alqamara-search-bg     : #fff;
+}
+
+/* ── Container ── */
+.search-form-inner,
+.widget_search .search-form,
+.widget .wp-block-search__inside-wrapper,
+.alqamara-search-dd .search-form {
+    display       : flex;
+    align-items   : stretch;
+    background    : var(--alqamara-search-bg);
+    border        : 1.5px solid var(--alqamara-border);
+    border-radius : var(--alqamara-search-radius);
+    overflow      : hidden;
+    transition    : border-color .2s, box-shadow .2s;
+}
+
+/* ── Focus ring ── */
+.search-form-inner:focus-within,
+.widget_search .search-form:focus-within,
+.widget .wp-block-search__inside-wrapper:focus-within,
+.alqamara-search-dd .search-form:focus-within {
+    border-color : var(--alqamara-primary);
+    box-shadow   : 0 0 0 3px rgba(13,27,62,.08);
+}
+
+/* ── Input ── */
+.search-form-inner .search-field,
+.widget_search .search-field,
+.widget .wp-block-search__input,
+.alqamara-search-dd .search-field,
+.search-form .search-field {
+    flex       : 1;
+    min-width  : 0;
+    border     : none !important;
+    outline    : none !important;
+    box-shadow : none !important;
+    background : transparent;
+    padding    : 10px 16px;
+    font-size  : .88rem;
+    color      : var(--alqamara-text);
+}
+
+.search-form .search-field::placeholder { color: var(--alqamara-faint); }
+
+/* ── Submit button ── */
+.search-form-inner .search-submit,
+.widget_search .search-submit,
+.widget .wp-block-search__button,
+.alqamara-search-dd .search-submit,
+.search-form .search-submit {
+    border          : none;
+    border-radius   : 0;
+    background      : var(--alqamara-primary);
+    color           : #fff;
+    padding         : 10px 16px;
+    font-size       : .88rem;
+    cursor          : pointer;
+    flex-shrink     : 0;
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    transition      : background .2s;
+}
+
+.search-form-inner .search-submit:hover,
+.widget_search .search-submit:hover,
+.widget .wp-block-search__button:hover,
+.alqamara-search-dd .search-submit:hover,
+.search-form .search-submit:hover {
+    background : var(--alqamara-accent);
+}
+
+/* `.alqamara-search-dd .search-form` (the outer <form>, not just its inner input+
+   button row) is ALSO display:flex — see the shared "Container" rule above,
+   originally written so it could double as the flex row for the classic WP
+   search widget's markup (whose input+button sit directly on the <form>,
+   with no inner wrapper). Our product search form nests input+button one
+   level deeper inside `.search-form-inner`, so before this results panel
+   existed the outer form only ever had that ONE flex child and the rule was
+   harmless. Adding `.alqamara-search-results` as a second direct child of that
+   same flex row squeezed the input down to a sliver instead of stacking
+   below it — fixed by wrapping the row and forcing the results panel onto
+   its own full-width line. */
+.alqamara-search-dd .search-form { flex-wrap: wrap; }
+
+@keyframes alqamara-search-spin { to { transform: rotate(360deg); } }
+
+/* "Try again" box on no-results page */
+.search-again-wrap {
+    background: var(--alqamara-white);
+    border-radius: 14px;
+    padding: 24px 28px;
+    box-shadow: 0 2px 16px rgba(26,95,168,0.07);
+    border: 1px solid rgba(26,95,168,0.07);
+}
+
+/* =====================================================================
+   10 · COMMENTS
+   ===================================================================== */
+
+.comments-section { border-top: 2px solid var(--alqamara-tint); padding-top: 40px; }
+
+.comments-heading {
+    font-family: var(--bs-font-heading);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--alqamara-ink);
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--alqamara-tint);
+}
+
+/* Comment list */
+.comment-list,
+.comment-list .children { list-style: none; padding: 0; margin: 0; }
+
+.comment-list .comment,
+.comment-list .pingback  { margin-bottom: 24px; }
+
+/* Comment card */
+.comment-body {
+    background: var(--alqamara-white);
+    border: 1px solid rgba(26,95,168,0.08);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(26,95,168,0.05);
+    position: relative;
+}
+
+.comment-awaiting-moderation {
+    display: inline-block;
+    background: #fff3cd;
+    color: #856404;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+}
+
+/* Comment header */
+.comment-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.comment-avatar { flex-shrink: 0; }
+
+.comment-avatar img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(26,95,168,0.15);
+}
+
+.comment-author-name         { font-weight: 700; font-size: 0.95rem; color: var(--alqamara-ink); margin-bottom: 2px; }
+.comment-author-name a       { color: var(--alqamara-ink); text-decoration: none; transition: color 0.2s ease; }
+.comment-author-name a:hover { color: var(--alqamara-primary); }
+
+.comment-meta-date {
+    font-size: 0.78rem;
+    color: var(--alqamara-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.comment-meta-date i { color: var(--alqamara-primary); font-size: 0.72rem; }
+
+/* Comment text */
+.comment-content p { font-size: 0.93rem; color: var(--alqamara-text); line-height: 1.75; margin-bottom: 0; }
+
+/* Reply link */
+.comment-reply-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--alqamara-primary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 12px;
+    transition: color 0.2s ease;
+}
+
+.comment-reply-link:hover { color: var(--alqamara-primary-dark); }
+
+/* Nested replies */
+.comment-list .children {
+    margin-top: 16px;
+    margin-left: 40px;
+    border-left: 3px solid rgba(26,95,168,0.12);
+    padding-left: 20px;
+}
+
+/* Comment navigation */
+.comment-navigation a { color: var(--alqamara-primary); font-size: 0.88rem; font-weight: 600; text-decoration: none; transition: color 0.2s ease; }
+.comment-navigation a:hover { color: var(--alqamara-primary-dark); }
+
+/* Comments closed notice */
+.comments-closed {
+    background: var(--alqamara-surface);
+    border: 1px solid var(--alqamara-border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    color: var(--alqamara-muted);
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+}
+
+/* Comment form */
+.comment-notes { font-size: 0.85rem; margin-bottom: 20px; }
+
+.comment-form .form-control {
+    border: 1.5px solid var(--alqamara-border);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    padding: 10px 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comment-form .form-control:focus {
+    border-color: var(--alqamara-primary);
+    box-shadow: 0 0 0 3px rgba(26,95,168,0.1);
+}
+
+.comment-form .form-label { font-size: 0.88rem; font-weight: 600; color: var(--alqamara-text); margin-bottom: 6px; }
+
+@media (max-width: 576px) {
+    .comment-list .children { margin-left: 16px; padding-left: 12px; }
+    .comment-body           { padding: 16px; }
+    .comment-avatar img     { width: 44px; height: 44px; }
+}
+
+/* =====================================================================
+   11 · POSTS WIDGET  (.alqamara-posts-widget / Alqamara_Posts_Widget)
+   ===================================================================== */
+
+/* ── Card shell ── */
+.alqamara-pw-card {
+    display        : flex;
+    flex-direction : column;
+    border         : 1px solid #e9ecef !important; /* !important overrides Bootstrap border-0 */
+    border-radius  : 10px;
+    overflow       : hidden;
+    background     : #fff;
+    transition     : box-shadow .25s ease, transform .25s ease, border-color .25s ease;
+}
+.alqamara-pw-card:hover {
+    box-shadow   : 0 8px 28px rgba(0,0,0,.1);
+    transform    : translateY(-3px);
+    border-color : var(--alqamara-accent, #b8912a) !important;
+}
+
+/* ── Thumbnail wrap — equal height for all cards ── */
+.alqamara-pw-thumb-wrap {
+    position     : relative;
+    overflow     : hidden;
+    aspect-ratio : 16 / 9;        /* blog/project/service cards */
+}
+.alqamara-pw-thumb-wrap--product {
+    aspect-ratio : 1 / 1;         /* products look better square */
+}
+.alqamara-pw-thumb-link { display: block; width: 100%; height: 100%; }
+/*
+ * Unified no-image placeholder — used by BOTH the Posts Widget (blog posts)
+ * AND WooCommerce product cards.  SVG data URI keeps it font-independent.
+ * The icon is a classic "image" outline (rectangle + mountain + sun).
+ */
+.alqamara-pw-no-thumb, .alqamara-cs-no-thumb {
+    background-color  : #f3f4f6;
+    background-image  : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='none' stroke='%23c8d0da' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpolyline points='21 15 16 10 5 21'/%3E%3C/svg%3E");
+    background-repeat : no-repeat;
+    background-position: center;
+    background-size   : 3rem;
+}
+.alqamara-pw-thumb {
+    width      : 100%;
+    height     : 100%;
+    display    : block;
+    object-fit : cover;
+    transition : transform .4s ease;
+}
+.alqamara-pw-card:hover .alqamara-pw-thumb { transform: scale(1.04); }
+
+/* ── Body ── */
+.alqamara-pw-body {
+    padding : 1rem 1.1rem 1.1rem;
+    gap     : .35rem;
+}
+
+/* ── Title ── */
+.alqamara-pw-title {
+    font-size   : 1rem;
+    font-weight : 700;
+    margin      : 0 0 .15rem;
+    line-height : 1.4;
+}
+.alqamara-pw-title a {
+    color           : var(--alqamara-primary, #0f172a);
+    text-decoration : none;
+    transition      : color .2s;
+}
+.alqamara-pw-title a:hover { color: var(--alqamara-accent); }
+
+/* ── Meta row (date + category badge) ── */
+.alqamara-pw-meta {
+    display     : flex;
+    flex-wrap   : wrap;
+    align-items : center;
+    gap         : .4rem;
+    margin      : 0 0 .1rem;
+}
+
+/* ── Date (inline inside meta row) ── */
+.alqamara-pw-date {
+    font-size   : .78rem;
+    color       : var(--alqamara-primary-muted, #6b7280);
+    display     : flex;
+    align-items : center;
+    gap         : .25rem;
+    white-space : nowrap;
+}
+
+/* ── Category badge ── */
+.alqamara-pw-cat-badge {
+    display         : inline-block;
+    font-size       : .72rem;
+    font-weight     : 600;
+    text-transform  : capitalize;
+    letter-spacing  : .04em;
+    color           : var(--alqamara-accent, #b8912a);
+    text-decoration : none;
+    transition      : color .2s;
+}
+.alqamara-pw-cat-badge:hover { color: var(--alqamara-accent-dark, #9a7821); }
+
+/* ── Excerpt ── */
+.alqamara-pw-excerpt {
+    font-size   : .875rem;
+    color       : var(--alqamara-primary-muted, #6b7280);
+    line-height : 1.6;
+    margin      : 0;
+}
+
+/* ── WooCommerce — price ── */
+/*
+ * DEL / INS / price SPANs are inline — white-space:nowrap keeps the range on one line
+ * without display:flex, which can trigger min-width expansion on narrow screens.
+ */
+.alqamara-pw-price {
+    margin      : .25rem 0;
+    font-size   : .82rem;        /* matches .alqamara-wpr-price (native WC widget) for
+                                     consistent price sizing wherever this widget
+                                     is placed alongside Top Rated Products. */
+    white-space : nowrap;
+    overflow    : hidden;
+    min-width   : 0;             /* prevent flex-item min-width expansion in parent */
+}
+/* Belt-and-suspenders: if WC outputs a .price wrapper, zero its own spacing */
+.alqamara-pw-price .price,
+.alqamara-pw-price span.price { margin: 0 !important; padding: 0 !important; }
+/* Color + weight now match .alqamara-wpr-price (native WC widget, woocommerce.css)
+ * exactly — was slate gray (#64748b) and font-weight 600, a visibly different
+ * "this is a price" signal than the accent-gold/bold treatment used
+ * everywhere else on the site (product cards, single product, Top Rated
+ * Products widget). Found via user comparison of the footer's "Top Rated
+ * Products" vs "WC Product" columns*/
+.alqamara-pw-price .woocommerce-Price-amount { font-weight: 700; color: var(--alqamara-accent, #b8912a); font-size: .82rem; }
+.alqamara-pw-price del { color: #9ca3af; font-size: .74rem; }
+.alqamara-pw-price ins { text-decoration: none; font-size: .82rem; color: var(--alqamara-accent, #b8912a); }
+
+/* ── WooCommerce — star rating (Bootstrap Icons, font-independent) ── */
+.alqamara-pw-rating       { margin: .2rem 0; display: flex; align-items: center; gap: .3rem; }
+.alqamara-pw-stars        { display: inline-flex; gap: .05rem; line-height: 1; }
+.alqamara-pw-stars .bi   { color: var(--alqamara-accent, #b8912a); font-size: .78rem; }
+.alqamara-pw-rcount       { font-size: .72rem; color: #9ca3af; }
+/* Keep WC default star-rating hidden — we render our own */
+.alqamara-pw-rating .star-rating { display: none; }
+
+/* ── WooCommerce — add to cart (widget card context) ── */
+
+/* ── WooCommerce — badge stack (Sale / Featured / New / Best Seller / Custom) ──
+   ALL badges share one stack, top-LEFT, one under another — same corner,
+   same pill shape/border-radius, only the background color differs per
+   type. Kept in a single flex container so badges never need individual
+   top/left math: add, remove, or reorder one and the others reflow
+   automatically. This also keeps every badge away from WooCommerce's own
+   full-screen gallery trigger (top-RIGHT on the single product page) with
+   no special-casing needed. See alqamara_render_product_badge and the
+   woocommerce_sale_flash filter in inc/woocommerce.php. */
+.alqamara-badge-stack {
+    position       : absolute;
+    top            : .55rem;
+    left           : .55rem;
+    z-index        : 2;
+    display        : flex;
+    flex-direction : column;
+    align-items    : flex-start;
+    gap            : .4rem;
+    max-width      : calc(100% - 1.1rem); /* never wider than the image */
+    pointer-events : none;
+}
+.alqamara-pw-sale-badge {
+    position       : static !important; /* flow children of .alqamara-badge-stack, not individually placed */
+    display        : inline-flex;
+    align-items    : center;
+    max-width      : 100%;
+    padding        : .3rem .6rem;
+    border-radius  : 999px;
+    font-size      : .64rem;
+    font-weight    : 700;
+    letter-spacing : .02em;
+    text-transform : uppercase;
+    color          : #fff;
+    box-shadow     : 0 2px 6px rgba(0,0,0,.2);
+    white-space    : nowrap;
+    overflow       : hidden;
+    text-overflow  : ellipsis;
+}
+.alqamara-pw-sale-badge         { background: var(--alqamara-accent, #b8912a); }       /* neutral gray — deliberately not red/alarming, just informational */
+
+
+/* Cart body (always-visible, for mobile / when no image) */
+.alqamara-pw-cart { margin-top: auto; }
+.alqamara-pw-cart .button,
+.alqamara-pw-cart .add_to_cart_button {
+    display         : block;
+    width           : 100%;
+    padding         : .5rem .9rem !important;  /* !important overrides WC plugin line-height:1 shrinkage */
+    line-height     : 1.4  !important;         /* WC plugin sets line-height:1 on .button; fix button height */
+    font-size       : .82rem !important;
+    font-weight     : 600;
+    border-radius   : 5px;
+    background      : var(--alqamara-accent, #b8912a) !important;
+    color           : #fff !important;
+    border          : none !important;
+    cursor          : pointer;
+    text-align      : center;
+    text-decoration : none;
+    transition      : background .2s;
+    box-sizing      : border-box;
+}
+.alqamara-pw-cart .button:hover,
+.alqamara-pw-cart .add_to_cart_button:hover {
+    background : var(--alqamara-accent-dark, #9a7821) !important;
+    color      : #fff !important;
+}
+
+/* ── Read More button — full-width, centered text ── */
+.alqamara-pw-readmore {
+    font-size   : .8rem;
+    font-weight : 600;
+    text-align  : center !important;
+    display     : block !important;
+}
+
+/* ── WooCommerce "View cart" link (shown after add-to-cart) ── */
+.alqamara-pw-cart .added_to_cart {
+    display         : block;
+    margin-top      : .4rem;
+    padding         : .35rem .75rem;
+    font-size       : .78rem;
+    font-weight     : 600;
+    text-align      : center;
+    text-decoration : none;
+    border          : 1.5px solid var(--alqamara-accent, #b8912a);
+    border-radius   : 5px;
+    color           : var(--alqamara-accent, #b8912a) !important;
+    background      : transparent;
+    transition      : background .2s, color .2s;
+}
+.alqamara-pw-cart .added_to_cart:hover {
+    background : var(--alqamara-accent, #b8912a);
+    color      : #fff !important;
+}
+
+/* ── Section head (title left + actions right) ── */
+.alqamara-pw-section-head {
+    display         : flex;
+    align-items     : center;
+    justify-content : space-between;
+    margin-bottom   : 1.5rem;
+    gap             : 1rem;
+}
+
+/* ── Widget title — same 2rem as .alqamara-section-title for consistency ── */
+.alqamara-pw-widget-title {
+    font-size   : 2rem;
+    font-weight : 700;
+    color       : var(--alqamara-primary, #0f172a);
+    margin      : 0;
+    position    : relative;
+    line-height : 1.3;
+}
+.alqamara-pw-widget-title::after {
+    content       : '';
+    display       : block;
+    width         : 40px;
+    height        : 4px;
+    background    : var(--alqamara-accent, #b8912a);
+    margin-top    : 8px;
+    border-radius : 2px;
+}
+
+/* ── Head actions (View All + nav group) ── */
+.alqamara-pw-head-actions {
+    display     : flex;
+    align-items : center;
+    gap         : .5rem;
+    flex-shrink : 0;
+}
+
+/* ── "View All" — uses global .btn-outline-custom; no extra CSS needed ── */
+
+/* ── External slider nav buttons (rounded-square, matches View All style) ── */
+.alqamara-pw-slider-nav-btns { display: flex; gap: .35rem; }
+.alqamara-pw-nav-btn {
+    width           : 42px;
+    height          : 42px;
+    border-radius   : 5px;
+    border          : 1.5px solid var(--alqamara-accent, #b8912a);
+    background      : transparent;
+    color           : var(--alqamara-accent, #b8912a);
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    font-size       : .9rem;
+    cursor          : pointer;
+    transition      : background .2s, color .2s;
+    line-height     : 1;
+    padding         : 0;
+}
+.alqamara-pw-nav-btn:hover {
+    background : var(--alqamara-accent, #b8912a);
+    color      : #fff;
+}
+
+/* ── Mobile — section head (title + View All + slider arrows) ──────────────
+   Title, "View All" button, and slider nav buttons were all still full
+   desktop size on mobile (no override existed anywhere), so on narrow
+   screens the three fought for space in one row and the title wrapped to
+   two lines. Shrink all three so they comfortably share one line. ── */
+@media (max-width: 575.98px) {
+    .alqamara-pw-section-head {
+        gap : .5rem;
+    }
+    .alqamara-pw-widget-title {
+        font-size : 1.15rem;
+    }
+    .alqamara-pw-widget-title::after {
+        margin-top : 5px;
+        height     : 3px;
+    }
+    .alqamara-pw-head-actions {
+        gap : .35rem;
+    }
+    .alqamara-pw-head-actions .btn-outline-custom {
+        padding   : .3rem .6rem !important;
+        font-size : .72rem;
+    }
+    .alqamara-pw-nav-btn {
+        width     : 32px;
+        height    : 32px;
+        font-size : .75rem;
+    }
+}
+
+/* ── Equal-height cards — columns stretch to match tallest in row ── */
+.alqamara-posts-grid > .alqamara-pw-col {
+    display        : flex;
+    flex-direction : column;
+}
+
+/*
+ * Widget grid — CSS Grid gives equal-height rows natively.
+ * --alqamara-cols is set inline by PHP (1–4 columns).
+ * Bootstrap column classes on .alqamara-pw-col are ignored by grid layout.
+ */
+.alqamara-posts-grid {
+    display               : grid;
+    grid-template-columns : repeat( var(--alqamara-cols, 3), 1fr );
+    gap                   : 1.5rem;
+    align-items           : stretch;   /* all cells same height per row */
+}
+@media (max-width: 991px) {
+    .alqamara-posts-grid {
+        grid-template-columns: repeat( min( var(--alqamara-cols, 3), 2 ), 1fr );
+    }
+}
+@media (max-width: 575px) {
+    /* Blog/post cards: 1 column on xs (text-heavy, needs full width) */
+    .alqamara-posts-grid { grid-template-columns: 1fr; }
+    /* Product cards: 2 columns on xs (visual cards, compact looks good) */
+    .alqamara-product-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Grid item — override Bootstrap col padding/width, be a flex column */
+.alqamara-pw-col {
+    padding        : 0 !important;   /* Bootstrap col gutter not needed (grid has gap) */
+    width          : auto !important;
+    flex           : none !important;
+    display        : flex;
+    flex-direction : column;
+}
+/* Card fills the full grid cell height */
+.alqamara-pw-col > .alqamara-pw-card { flex: 1; }
+
+/* ── Slider (Swiper) — shared by Posts Widget (.alqamara-posts-slider) and
+   Category Showcase Widget (.alqamara-cs-slider); identical mechanics, so the
+   selectors are just extended rather than duplicating the whole block. ── */
+.alqamara-posts-slider, .alqamara-cs-slider                 { overflow: hidden; }
+.alqamara-posts-slider .swiper-wrapper, .alqamara-cs-slider .swiper-wrapper { align-items: stretch; }
+
+/*
+ * Equal-height cards in Swiper:
+ * - swiper-slide gets height:auto so Swiper's flex stretch equalises heights
+ * - alqamara-pw-slide/alqamara-cs-slide fills that height (height:100%) but must NOT
+ *   have flex:1 or width:100% — those fight Swiper's inline width calculation
+ *   and break layout
+ * - The card inside gets flex:1 to fill the slide vertically
+ */
+.alqamara-posts-slider .swiper-slide, .alqamara-cs-slider .swiper-slide {
+    height : auto;      /* Swiper stretch via align-items on wrapper */
+    display: flex;
+    flex-direction: column;
+}
+.alqamara-posts-slider .alqamara-pw-slide, .alqamara-cs-slider .alqamara-cs-slide {
+    display       : flex;
+    flex-direction: column;
+    height        : 100%;   /* fill slide height, no flex:1 / width:100% */
+}
+.alqamara-posts-slider .alqamara-pw-slide > .alqamara-pw-card,
+.alqamara-cs-slider .alqamara-cs-slide > .alqamara-cs-card {
+    flex: 1;
+}
+/* Prevent Swiper from hiding our custom nav buttons (reused as-is by both widgets) */
+.alqamara-pw-nav-btn.swiper-button-lock {
+    display : flex !important;
+}
+
+/*
+ * Fallback layout when Swiper is not initialized (admin widget preview iframe).
+ * Swiper adds .swiper-initialized only after JS runs.
+ * Without it, slides default to 100% width — only 1 card shows.
+ * Fix: show exactly --alqamara-cols slides at equal widths, rest hidden.
+ * This mimics the real slider appearance in admin preview.
+ */
+.alqamara-posts-slider:not(.swiper-initialized), .alqamara-cs-slider:not(.swiper-initialized) {
+    overflow : hidden;
+}
+.alqamara-posts-slider:not(.swiper-initialized) .swiper-wrapper,
+.alqamara-cs-slider:not(.swiper-initialized) .swiper-wrapper {
+    display    : flex !important;
+    flex-wrap  : nowrap !important;
+    gap        : 24px;
+    transform  : none !important;
+    height     : auto !important;
+    align-items: stretch;
+}
+.alqamara-posts-slider:not(.swiper-initialized) .swiper-slide,
+.alqamara-cs-slider:not(.swiper-initialized) .swiper-slide {
+    flex        : 0 0 calc( (100% - (var(--alqamara-cols, 3) - 1) * 24px) / var(--alqamara-cols, 3) ) !important;
+    width       : calc( (100% - (var(--alqamara-cols, 3) - 1) * 24px) / var(--alqamara-cols, 3) ) !important;
+    min-width   : 0 !important;
+    height      : auto !important;
+    box-sizing  : border-box;
+}
+
+/* ── Dark footer context — invert card + section-head colors ── */
+.alqamara-footer .alqamara-pw-card {
+    background    : rgba(255,255,255,.06);
+    border-color  : rgba(255,255,255,.1);
+    color         : var(--alqamara-on-dark-muted);
+}
+.alqamara-footer .alqamara-pw-title,
+.alqamara-footer .alqamara-pw-title a          { color: var(--alqamara-on-dark-muted); }
+.alqamara-footer .alqamara-pw-date,
+.alqamara-footer .alqamara-pw-excerpt          { color: var(--alqamara-on-dark-muted); }
+.alqamara-footer .alqamara-pw-cat-badge        { color: var(--alqamara-accent); }
+.alqamara-footer .alqamara-pw-no-thumb, .alqamara-footer .alqamara-cs-no-thumb {
+    background-color : rgba(255,255,255,.06);
+    background-image : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='none' stroke='rgba(255%2C255%2C255%2C0.2)' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpolyline points='21 15 16 10 5 21'/%3E%3C/svg%3E");
+}
+.alqamara-footer .alqamara-pw-card:hover       { box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+/* Widget title — match existing footer h5 style (white, same underline) */
+.alqamara-footer .alqamara-pw-widget-title {
+    color          : #fff;
+    font-size      : 1.02rem !important;
+    font-weight    : 600 !important;
+    position       : relative !important;
+    padding-bottom : 10px !important;
+    margin-bottom  : 18px !important;
+}
+.alqamara-footer .alqamara-pw-widget-title::after {
+    content    : "" !important;
+    position   : absolute !important;
+    left       : 0 !important;
+    bottom     : 0 !important;
+    width      : 60% !important;
+    height     : 2px !important;
+    background : var(--alqamara-accent, #b8912a) !important;
+}
+.alqamara-footer .btn-outline-custom           { color: rgba(255,255,255,.8); border-color: rgba(255,255,255,.35); }
+.alqamara-footer .btn-outline-custom:hover     { background: var(--alqamara-accent); border-color: var(--alqamara-accent); color: #fff; }
+.alqamara-footer .alqamara-pw-nav-btn               { border-color: rgba(255,255,255,.35); color: rgba(255,255,255,.7); }
+.alqamara-footer .alqamara-pw-nav-btn:hover         { background: var(--alqamara-accent); border-color: var(--alqamara-accent); color: #fff; }
+
+/* =====================================================================
+   11B · CATEGORY SHOWCASE WIDGET  (.alqamara-cat-showcase-widget /
+         Alqamara_Category_Showcase_Widget)
+   ===================================================================== */
+
+/* ── Section head (title LEFT + slider nav RIGHT) — same layout as the
+   Posts Widget's .alqamara-pw-section-head. NOTE: this flex/space-between rule
+   was missing entirely in the v2 build — .alqamara-cs-section-head only had
+   margin-bottom, so the title <h3> and the nav-buttons <div> just stacked
+   as plain block elements (nav buttons landed left-aligned BELOW the title
+   instead of right-aligned beside it). Fixed to match .alqamara-pw-section-head
+   exactly. ── */
+.alqamara-cs-section-head {
+    display         : flex;
+    align-items     : center;
+    justify-content : space-between;
+    margin-bottom   : 1.5rem;
+    gap             : 1rem;
+}
+.alqamara-cs-widget-title {
+    font-size   : 2rem;
+    font-weight : 700;
+    color       : var(--alqamara-primary, #0f172a);
+    margin      : 0;
+    position    : relative;
+    line-height : 1.3;
+}
+.alqamara-cs-widget-title::after {
+    content       : '';
+    display       : block;
+    width         : 40px;
+    height        : 4px;
+    background    : var(--alqamara-accent, #b8912a);
+    margin-top    : 8px;
+    border-radius : 2px;
+}
+@media (max-width: 575.98px) {
+    .alqamara-cs-section-head       { gap: .5rem; }
+    .alqamara-cs-widget-title       { font-size: 1.15rem; }
+    .alqamara-cs-widget-title::after{ margin-top: 5px; height: 3px; }
+}
+/* NOTE on mobile nav-button sizing: Category Showcase's slider nav buttons
+   reuse the Posts Widget's exact .alqamara-pw-nav-btn class (not a separate
+   .alqamara-cs-nav-btn), so they already shrink to 32x32px on mobile via the
+   existing @media (max-width: 575.98px) { .alqamara-pw-nav-btn {...} } rule
+   near .alqamara-pw-section-head above — no duplicate rule needed here. */
+
+/* ── Grid — CSS Grid, --alqamara-cols set inline by PHP (1–6 columns) ── */
+.alqamara-cs-grid {
+    display               : grid;
+    grid-template-columns : repeat( var(--alqamara-cols, 4), 1fr );
+    gap                   : 1.25rem;
+}
+@media (max-width: 991px) {
+    .alqamara-cs-grid { grid-template-columns: repeat( min( var(--alqamara-cols, 4), 3 ), 1fr ); }
+}
+@media (max-width: 575px) {
+    .alqamara-cs-grid { grid-template-columns: repeat( min( var(--alqamara-cols, 4), 2 ), 1fr ); }
+}
+
+/* ── Card — image with a bottom gradient overlay (name + product count) ── */
+.alqamara-cs-card {
+    display       : block;
+    position      : relative;
+    border-radius : 10px;
+    overflow      : hidden;
+    text-decoration: none !important;
+    box-shadow    : 0 2px 10px rgba(0,0,0,.06);
+    transition    : box-shadow .25s ease, transform .25s ease;
+}
+.alqamara-cs-card:hover {
+    box-shadow : 0 8px 28px rgba(0,0,0,.14);
+    transform  : translateY(-3px);
+}
+.alqamara-cs-thumb-wrap {
+    position     : relative;
+    overflow     : hidden;
+    aspect-ratio : 1 / 1;
+    background   : #f3f4f6;
+}
+.alqamara-cs-thumb {
+    width      : 100%;
+    height     : 100%;
+    display    : block;
+    object-fit : cover;
+    transition : transform .4s ease;
+}
+.alqamara-cs-card:hover .alqamara-cs-thumb { transform: scale(1.06); }
+
+/* Bottom gradient overlay — name + count sit on top of the image */
+.alqamara-cs-overlay {
+    position   : absolute;
+    left       : 0;
+    right      : 0;
+    bottom     : 0;
+    padding    : 2rem .9rem .8rem;
+    background : linear-gradient( to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.32) 55%, rgba(0,0,0,0) 100% );
+    display        : flex;
+    flex-direction : column;
+    gap            : .15rem;
+}
+.alqamara-cs-name {
+    color       : #fff;
+    font-size   : .98rem;
+    font-weight : 600;
+    line-height : 1.3;
+}
+.alqamara-cs-count {
+    color     : rgba(255,255,255,.8);
+    font-size : .78rem;
+}
+
+/* ── Narrow sidebars / footer columns — single-column stacked list ──
+   Widget forces --alqamara-cols:1 server-side; shrink the card + overlay to
+   match the compact look used by the Posts Widget in the same contexts. */
+.blog-sidebar .alqamara-cs-grid,
+.alqamara-shop-sidebar .alqamara-cs-grid,
+.alqamara-footer-col .alqamara-cs-grid {
+    gap : .9rem;
+}
+.blog-sidebar .alqamara-cs-thumb-wrap,
+.alqamara-shop-sidebar .alqamara-cs-thumb-wrap,
+.alqamara-footer-col .alqamara-cs-thumb-wrap {
+    aspect-ratio : 21 / 9;
+}
+/* NOTE: .alqamara-cs-name stays white in every context — it sits on the photo's
+   own dark gradient overlay, not on the page background, so it never
+   needs the per-context color overrides the Posts Widget's plain-text
+   title requires. */
+
+/* Footer widget title — match Posts Widget's footer title treatment */
+.alqamara-footer .alqamara-cs-widget-title {
+    color          : #fff;
+    font-size      : 1.02rem !important;
+    font-weight    : 600 !important;
+    position       : relative !important;
+    padding-bottom : 10px !important;
+    margin-bottom  : 18px !important;
+}
+.alqamara-footer .alqamara-cs-widget-title::after {
+    content    : "" !important;
+    position   : absolute !important;
+    left       : 0 !important;
+    bottom     : 0 !important;
+    width      : 60% !important;
+    height     : 2px !important;
+    background : var(--alqamara-accent, #b8912a) !important;
+}
+
+/* ── Design Style: Circle / Outline ──────────────────────────────────
+   Same HTML as the default Box/Overlay style (.alqamara-cs-card > .alqamara-cs-thumb-wrap
+   > [.alqamara-cs-thumb img] + .alqamara-cs-overlay > .alqamara-cs-name/.alqamara-cs-count) —
+   only re-skinned via this modifier class on .alqamara-cs-wrap, no separate PHP
+   render path.
+   ──
+   IMPORTANT (found live-testing, several iterations to get right):
+   .alqamara-cs-thumb-wrap must NOT have a fixed height here. Box style fixes its
+   height (aspect-ratio 1/1) because the overlay sits ABSOLUTELY positioned
+   on top of the photo — that's fine, overlay doesn't need wrap to grow.
+   Circle style instead wants the overlay to sit BELOW the photo in normal
+   flow, so wrap's height must be auto and grow to contain both. overflow
+   :visible alone does NOT fix this — a visually-overflowing child never
+   grows an ancestor's auto-height (that's the whole point of overflow:
+   visible), so with a fixed-height wrap the overlay painted outside it but
+   every ancestor up to the Swiper root still sized/clipped to the old
+   (photo-only) height and hid it completely. Real fix: give the ROUND
+   SHAPE to .alqamara-cs-thumb (the image/placeholder itself) instead of the
+   wrap, and let the wrap be a plain auto-height flex column containing
+   both children in normal flow. ── */
+.alqamara-cs-style-circle .alqamara-cs-grid {
+    justify-items : center; /* center each card within its grid cell */
+}
+.alqamara-cs-style-circle .alqamara-cs-slide {
+    align-items : center; /* center each card within its slider slide */
+    height      : auto;   /* let the slide size to its natural content height */
+}
+.alqamara-cs-style-circle .alqamara-cs-card {
+    display        : flex;
+    flex-direction : column;
+    align-items    : center;
+    text-align     : center;
+    max-width      : 160px;
+    box-shadow     : none;
+    overflow       : visible; /* override base .alqamara-cs-card{overflow:hidden} */
+}
+/*
+ * Specificity note: the shared slider rule is
+ * ".alqamara-cs-slider .alqamara-cs-slide > .alqamara-cs-card { flex:1 }" (3 classes) —
+ * higher specificity than a plain ".alqamara-cs-style-circle .alqamara-cs-card"
+ * (2 classes). Matching the same 3-class shape here to win the cascade.
+ */
+.alqamara-cs-style-circle .alqamara-cs-slide > .alqamara-cs-card {
+    flex : none; /* size to natural content, don't stretch to slide height */
+}
+.alqamara-cs-style-circle .alqamara-cs-card:hover {
+    box-shadow : none;
+    transform  : none;
+}
+.alqamara-cs-style-circle .alqamara-cs-thumb-wrap {
+    /* background:none is required here — the BASE .alqamara-cs-thumb-wrap rule
+       (used by Box style, where the wrap IS the fixed-size photo frame)
+       sets background:#f3f4f6 as a loading-state/edge fallback behind the
+       image. In Circle style the wrap is no longer just the photo frame —
+       it's an auto-height flex column containing BOTH the circle AND the
+       name/count text below it — so that inherited gray background was
+       painting a rectangle behind the whole circle+text block, not just
+       the circle. Found via live inspection (getComputedStyle), not
+       visible from code review alone. */
+    display        : flex;
+    flex-direction : column;
+    align-items    : center;
+    width          : auto;
+    height         : auto;
+    aspect-ratio   : auto;   /* cancel Box style's 1/1 */
+    overflow       : visible;
+    background     : none;
+    /* Reserve a little headroom above the circle for the hover zoom
+       (.alqamara-cs-thumb scales to 1.08 on hover — on a 120px circle that's
+       ~9.6px of growth, split ~4.8px above/below its own box since the
+       scale grows from center). In slider mode the outer .alqamara-cs-slider
+       container is overflow:hidden and height-locked to exactly the
+       content's natural (non-hover) height by the shared Swiper
+       equal-height JS, so without this padding the top of the enlarged
+       circle got clipped by that boundary on hover. Padding here counts
+       toward the natural height measurement up front, so the room exists
+       before the hover even happens — found via live hover test. */
+    padding-top    : 6px;
+}
+.alqamara-cs-style-circle .alqamara-cs-thumb {
+    /* No padding/background here on purpose — a white ring behind the
+       photo (inside the border) was tried first, but it reads as a
+       redundant "box inside a box" once you already have the Box/Overlay
+       style elsewhere on the site, and it's not needed for a real photo
+       (object-fit:cover already fills the full circle). The border now
+       sits flush against the image. The no-image placeholder case still
+       gets its own light background from .alqamara-cs-no-thumb below (that
+       rule is untouched) so the icon stays visible on any page background. */
+    width           : 120px;
+    height          : 120px;
+    flex-shrink     : 0;
+    border-radius   : 50%;
+    /* Neutral border, not the accent gold — this widget can show either
+       WooCommerce product categories (accent-color contexts) or blog
+       categories (dark-navy contexts), so a brand-tied color would clash
+       in one of the two use cases. --alqamara-border is the theme's existing
+       neutral border color, already used everywhere else regardless of
+       blog/shop context. A subtle accent-color hover keeps some visual
+       interest without permanently committing to one palette. */
+    border          : 3px solid var(--alqamara-border, #e5e2d6);
+    box-sizing      : border-box;
+    object-fit      : cover;
+    transition      : border-color .25s ease, transform .4s ease;
+}
+.alqamara-cs-style-circle .alqamara-cs-card:hover .alqamara-cs-thumb {
+    border-color : var(--alqamara-accent, #b8912a);
+    transform     : scale(1.08);
+}
+.alqamara-cs-style-circle .alqamara-cs-overlay {
+    position       : static;
+    background     : none;
+    padding        : .7rem 0 0;
+    align-items    : center;
+    text-align     : center;
+}
+.alqamara-cs-style-circle .alqamara-cs-name {
+    color     : var(--alqamara-primary, #0f172a);
+    font-size : .95rem;
+}
+.alqamara-cs-style-circle .alqamara-cs-count {
+    color     : #64748b;
+    font-size : .78rem;
+}
+/* Dark footer context — circle style's text sits on the footer background
+   now (not on the photo), so it needs the same per-context color override
+   the Posts Widget's plain-text title already requires for the same reason. */
+.alqamara-footer .alqamara-cs-style-circle .alqamara-cs-name  { color: #fff; }
+.alqamara-footer .alqamara-cs-style-circle .alqamara-cs-count { color: rgba(255,255,255,.65); }
+/* Narrow sidebars force a wide 21/9 thumb for Box style, but Circle style
+   should stay a small circle everywhere regardless of column count. */
+.blog-sidebar .alqamara-cs-style-circle .alqamara-cs-thumb,
+.alqamara-shop-sidebar .alqamara-cs-style-circle .alqamara-cs-thumb,
+.alqamara-footer-col .alqamara-cs-style-circle .alqamara-cs-thumb {
+    width  : 90px;
+    height : 90px;
+}
+
+/* =====================================================================
+   12 · FOOTER
+   ===================================================================== */
+
+.alqamara-footer   { background: var(--alqamara-footer-bg, var(--alqamara-primary-dark)); color: var(--alqamara-on-dark-muted); }
+.alqamara-footer a { color: var(--alqamara-on-dark-muted); text-decoration: none; transition: color .2s ease; }
+.alqamara-footer a:hover { color: var(--alqamara-accent); }
+
+.alqamara-footer-top { padding: 60px 0 34px; }
+
+.alqamara-footer-col h5 {
+    color: #fff;
+    font-size: 1.02rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.alqamara-footer-col h5::after,
+.alqamara-footer-col .widget-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60%;
+    height: 2px;
+    background: var(--alqamara-accent);
+}
+
+.alqamara-footer-col p    { color: var(--alqamara-on-dark-muted); font-size: .92rem; line-height: 1.7; }
+
+/* Contact Info widget (inc/contact-widget.php) — icon + label shown once
+   per group, lines listed underneath (indented to align under the label,
+   not the icon). This is a REGISTERED WIDGET, usable in any widget area.
+   Base colors are the theme's normal (dark-on-light) text colors, since
+   most widget areas default to a light background; only .alqamara-footer-col
+   (reliably dark) gets the light-on-dark override below. */
+.alqamara-contact-info-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.alqamara-contact-info-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+.alqamara-contact-info-icon {
+    color: var(--alqamara-accent);
+    font-size: 1rem;
+    width: 18px;
+    flex: 0 0 18px;
+    text-align: center;
+}
+.alqamara-contact-info-label {
+    color: var(--alqamara-primary, #0f172a);
+    font-weight: 700;
+    font-size: .95rem;
+}
+.alqamara-contact-info-label--regular {
+    font-weight: 400;
+}
+.alqamara-contact-info-lines {
+    padding-left: 28px;
+}
+.alqamara-contact-info-lines--flush {
+    padding-left: 0;
+}
+.alqamara-contact-info-line {
+    color: var(--alqamara-text, #333);
+    font-size: .9rem;
+    line-height: 1.7;
+}
+.alqamara-footer-col .alqamara-contact-info-label {
+    color: #fff;
+}
+.alqamara-footer-col .alqamara-contact-info-line {
+    color: var(--alqamara-on-dark-muted);
+}
+
+/* Widget title inside footer columns — same style as h5 */
+.alqamara-footer-col .widget-title {
+    color: #fff;
+    font-size: 1.02rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+/* Nav menu widget inside footer — remove list bullets & default padding */
+.alqamara-footer-col .widget_nav_menu ul,
+.alqamara-footer-col .widget_nav_menu li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.alqamara-footer-col .widget_nav_menu li { margin-bottom: 10px; }
+.alqamara-footer-col .widget_nav_menu a {
+    color: var(--alqamara-on-dark-muted);
+    text-decoration: none;
+    font-size: .92rem;
+    transition: color .2s ease;
+}
+.alqamara-footer-col .widget_nav_menu a:hover { color: var(--alqamara-accent); }
+
+/* Footer legal row widget — center-aligned nav menu */
+.alqamara-footer-mid .widget_nav_menu ul,
+.alqamara-footer-mid .widget_text,
+.alqamara-footer-mid .widget_custom_html {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 26px;
+    justify-content: center;
+}
+.alqamara-footer-mid .widget_nav_menu li { margin: 0; }
+.alqamara-footer-mid .widget_nav_menu a,
+.alqamara-footer-mid .widget_text,
+.alqamara-footer-mid .widget_custom_html {
+    color: var(--alqamara-on-dark-muted);
+    font-size: .92rem;
+    text-decoration: none;
+    transition: color .2s ease;
+}
+.alqamara-footer-mid .widget_nav_menu a:hover { color: var(--alqamara-accent); }
+.alqamara-footer-mid .widget-title { display: none; }
+
+.alqamara-footer-brand .alqamara-footer-logo {
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 14px;
+    text-decoration: none;
+}
+
+/* Site name fallback */
+.alqamara-footer-brand .alqamara-footer-logo span { color: var(--alqamara-accent); }
+
+/* Custom logo image */
+.alqamara-footer-brand .alqamara-footer-logo img {
+    max-height: 55px;
+    width: auto;
+    display: block;
+}
+
+.alqamara-footer-social { margin-top: 6px; }
+
+.alqamara-footer-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.15);
+    transition: background .2s, border-color .2s, color .2s;
+    text-decoration: none;
+}
+
+.alqamara-footer-social a:hover {
+    background: var(--alqamara-accent);
+    color: var(--alqamara-primary);
+    border-color: var(--alqamara-accent);
+}
+
+.alqamara-footer-mid {
+    padding: 18px 0;
+    border-top: 1px solid rgba(255,255,255,.08);
+    /* border-bottom removed — alqamara-footer-bottom already has border-top above it */
+}
+
+.alqamara-footer-bottom                       { padding: 20px 0; font-size: .88rem; border-top: 1px solid rgba(255,255,255,.08); }
+.alqamara-footer-bottom .alqamara-designed a       { color: var(--alqamara-accent); }
+.alqamara-footer-bottom .alqamara-designed a:hover { color: #fff; }
+
+/* Footer uses Bootstrap .row/.col — no custom grid needed.
+   Brand column : col-lg-3 (fixed).
+   Widget zone  : col-lg-9 → inner .row with dynamic col classes (1–4 active areas). */
+.alqamara-footer-col { min-width: 0; }
+
+/* Brand column — subtle right border on desktop */
+@media (min-width: 992px) {
+    .alqamara-footer-brand {
+        border-right  : 1px solid rgba(255,255,255,.08);
+        padding-right : 2.5rem;
+    }
+}
+
+@media (max-width: 575px) {
+    
+    .alqamara-footer-bottom { text-align: center; }
+}
+
+/* =====================================================================
+   12 · PAGE TEMPLATES
+   ===================================================================== */
+
+/* ---- Guide template (page-templates/template-guide.php) ----
+   Sticky sidebar Table of Contents. See inc/doc-toc.php for why this is a
+   separate mechanism from the blog-post inline TOC box (css rules for that
+   one — .alqamara-toc-box etc. — live further down, unaffected by this block).
+   Class names below still say "doc" (internal only, not user-facing) —
+   left as-is when the template was renamed from "Documentation" to
+   "Guide" for general-purpose use, to avoid an unnecessary CSS/JS/PHP
+   rename across every file that touches this feature. */
+
+/* =====================================================================
+   13 · BOOTSTRAP & BRAND OVERRIDES
+   ===================================================================== */
+
+/* Bootstrap primary button — brand navy */
+.btn-primary {
+    --bs-btn-bg:                 var(--alqamara-primary);
+    --bs-btn-border-color:       var(--alqamara-primary);
+    --bs-btn-hover-bg:           var(--alqamara-primary-dark);
+    --bs-btn-hover-border-color: var(--alqamara-primary-dark);
+    --bs-btn-active-bg:          var(--alqamara-primary-dark);
+    --bs-btn-active-border-color:var(--alqamara-primary-dark);
+}
+
+/* Bootstrap outline-primary button — brand navy */
+.btn-outline-primary {
+    --bs-btn-color:              var(--alqamara-primary);
+    --bs-btn-border-color:       var(--alqamara-primary);
+    --bs-btn-hover-bg:           var(--alqamara-primary);
+    --bs-btn-hover-border-color: var(--alqamara-primary);
+}
+
+/* Breadcrumb separator colour */
+.breadcrumb-item + .breadcrumb-item::before { color: var(--alqamara-muted); }
+
+/* Widget search — styles now in unified 09 · SEARCH FORMS block above */
+/* =========================================================
+   MOBILE SEARCH — inside slide menu
+   ========================================================= */
+.mobile-menu-search {
+    border-bottom : 1px solid var(--alqamara-surface);
+    padding       : 12px 16px;
+}
+/* Stretch the form to full width of the panel */
+.mobile-menu-search .search-form,
+.mobile-menu-search .search-form-inner { width: 100%; }
+
+/* =========================================================
+   TEAM MEMBERS
+   ========================================================= */
+
+/* =============================================================================
+   PHASE 4 — HOMEPAGE SECTIONS
+   (Section base · Hero · Stats · About · Services extra · Projects · Team extra
+    Testimonials · Blog · Partners · Newsletter · Generic Rows · CTA Banner)
+============================================================================= */
+
+/* ── Section Base ─────────────────────────────────────────────────────────── */
+.alqamara-section {
+    position       : relative;
+    padding-top    : 80px;
+    padding-bottom : 80px;
+    overflow       : hidden;
+}
+
+/* Shared semi-transparent dark overlay for image backgrounds */
+.alqamara-bg-overlay {
+    position   : absolute;
+    inset      : 0;
+    background : rgba(10, 15, 44, .6);
+    z-index    : 0;
+    pointer-events : none;
+}
+
+/* ── Section Header (title + subtitle) ────────────────────────────────────── */
+.alqamara-section-header {
+    margin-bottom : 3rem;
+}
+.alqamara-section-title {
+    font-size      : 2rem;
+    font-weight    : 700;
+    color          : var(--alqamara-primary, #0f172a);
+    margin-bottom  : .5rem;
+    position       : relative;
+    display        : inline-block;
+}
+.alqamara-section-title::after {
+    content       : '';
+    display       : block;
+    width         : 48px;
+    height        : 4px;
+    background    : var(--alqamara-accent, #b8912a);
+    margin        : 10px auto 0;
+    border-radius : 2px;
+}
+.alqamara-section-header.text-white .alqamara-section-title {
+    color : #fff;
+}
+.alqamara-section-header.text-white .alqamara-section-title::after {
+    background : rgba(255,255,255,.7);
+}
+.alqamara-section-subtitle {
+    font-size    : 1rem;
+    color        : var(--alqamara-muted, #6c757d);
+    max-width    : 600px;
+    margin-left  : auto;
+    margin-right : auto;
+    margin-top   : .5rem;
+}
+.alqamara-section-header.text-white .alqamara-section-subtitle {
+    color : rgba(255, 255, 255, .8);
+}
+
+/* btn-hero-primary / btn-hero-secondary → defined in the real hero block above
+   (~line 1965). This used to have a duplicate .btn-hero-secondary:hover rule
+   here (a leftover from the unused .alqamara-hero-* block below) that silently
+   overrode the real one, since a later same-specificity rule always wins —
+   removed so the accent-color hover set above is the only rule left. */
+
+/* ── Stats Counter ────────────────────────────────────────────────────────── */
+.alqamara-stats-section {
+    background : #0a0f2c;
+}
+.alqamara-stat-item {
+    padding : 1.5rem 1rem;
+}
+.alqamara-stat-icon {
+    font-size  : 2.5rem;
+    color      : var(--alqamara-accent, #c9a84c);
+}
+.alqamara-stat-number {
+    font-size   : clamp(2rem, 4vw, 3rem);
+    font-weight : 700;
+    color       : #fff;
+    line-height : 1;
+}
+.alqamara-stat-label {
+    font-size   : .9rem;
+    color       : rgba(255,255,255,.7);
+    margin-top  : .4rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+/* ── About Section ────────────────────────────────────────────────────────── */
+.alqamara-about-section {
+    background : var(--alqamara-section-warm);
+}
+
+/* Mobile: cap image height so it doesn't dominate the screen */
+.alqamara-about-img {
+    width      : 100%;
+    max-height : 320px;
+    object-fit : cover;
+    object-position : center;
+}
+
+/* Desktop: remove the cap — let the image breathe naturally */
+@media (min-width: 992px) {
+    .alqamara-about-img {
+        max-height : none;
+        object-fit : unset;
+    }
+}
+
+/* ── Features (Why Work With Us) ──────────────────────────────────────────── */
+.alqamara-feature-card {
+    border        : 1px solid #e9ecef;
+    border-radius : 12px;
+    background    : #fff;
+    transition    : box-shadow .25s, transform .25s;
+}
+.alqamara-feature-card:hover {
+    box-shadow : 0 6px 24px rgba(0,0,0,.09);
+    transform  : translateY(-3px);
+}
+
+/* Circular icon wrapper — gold tint background, accent icon */
+.alqamara-feature-icon-wrap {
+    width           : 64px;
+    height          : 64px;
+    border-radius   : 50%;
+    background      : #f8f2e3;
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    margin          : 0 auto 1rem;
+    font-size       : 1.4rem;
+    color           : var(--alqamara-accent);
+    transition      : background .25s;
+}
+.alqamara-feature-card:hover .alqamara-feature-icon-wrap {
+    background : var(--alqamara-accent);
+    color      : #fff;
+}
+
+.alqamara-feature-title {
+    font-size   : 1rem;
+    font-weight : 700;
+    color       : var(--alqamara-dark);
+    margin-bottom : .5rem;
+}
+.alqamara-feature-desc {
+    font-size   : .875rem;
+    color       : var(--alqamara-primary);
+    line-height : 1.6;
+}
+
+/* ── Blog ─────────────────────────────────────────────────────────────────── */
+.alqamara-blog-section {
+    background : var(--alqamara-section-warm);
+}
+.alqamara-blog-card {
+    background    : #fff;
+    box-shadow    : 0 2px 12px rgba(0,0,0,.07);
+    transition    : transform .25s, box-shadow .25s;
+    border-radius : 8px;
+}
+.alqamara-blog-card:hover {
+    transform  : translateY(-4px);
+    box-shadow : 0 8px 24px rgba(0,0,0,.12);
+}
+.alqamara-blog-img-wrap {
+    overflow     : hidden;
+    aspect-ratio : 16 / 9;
+}
+.alqamara-blog-img {
+    display    : block;
+    width      : 100%;
+    height     : 100%;
+    object-fit : cover;
+    transition : transform .4s ease;
+}
+.alqamara-blog-card:hover .alqamara-blog-img {
+    transform : scale(1.04);
+}
+.alqamara-blog-body {
+    padding : 1.5rem;
+}
+.alqamara-blog-meta {
+    font-size : .78rem;
+    color     : #6c757d;
+}
+.alqamara-blog-date,
+.alqamara-blog-cat {
+    color : #6c757d;
+}
+.alqamara-blog-title {
+    font-size   : 1.15rem;
+    font-weight : 700;
+}
+.alqamara-blog-title a {
+    color           : var(--alqamara-primary, #0f172a);
+    text-decoration : none;
+    transition      : color .2s;
+}
+.alqamara-blog-title a:hover {
+    color : var(--alqamara-accent, #c9a84c);
+}
+.alqamara-blog-excerpt {
+    color       : #6c757d;
+    line-height : 1.6;
+}
+.alqamara-blog-link {
+    font-size       : .85rem;
+    font-weight     : 600;
+    color           : var(--alqamara-accent, #c9a84c);
+    text-decoration : none;
+    transition      : color .2s;
+}
+.alqamara-blog-link:hover {
+    color : var(--alqamara-primary);
+}
+
+/* ── Newsletter ───────────────────────────────────────────────────────────── */
+.alqamara-newsletter-section {
+    background : #1e2c5f;
+}
+.alqamara-newsletter-section .alqamara-section-title {
+    color : #fff;
+}
+
+/* ── Generic Rows ─────────────────────────────────────────────────────────── */
+.alqamara-row-section {
+    background : #fff;
+}
+
+/* ── CTA Banner ───────────────────────────────────────────────────────────── */
+.alqamara-cta-banner {
+    /* background controlled by Customizer inline style */
+    padding-top    : 80px;
+    padding-bottom : 80px;
+}
+.alqamara-cta-title {
+    font-size : clamp(1.6rem, 3.5vw, 2.4rem);
+}
+.alqamara-cta-subtitle {
+    font-size  : 1.05rem;
+    color      : rgba(255,255,255,.75);
+    max-width  : 560px;
+    margin-left: auto;
+    margin-right:auto;
+}
+/* CTA buttons on dark background — override btn-custom to gold solid */
+.alqamara-cta-banner .btn-custom {
+    background   : var(--alqamara-accent);
+    border-color : var(--alqamara-accent);
+    color        : #fff;
+    border-radius: 4px;
+}
+.alqamara-cta-banner .btn-custom:hover {
+    background   : var(--alqamara-accent-dark);
+    border-color : var(--alqamara-accent-dark);
+    transform    : translateX(0) translateY(-2px);
+}
+
+/* Outline button stays gold border + gold text on dark bg */
+.alqamara-cta-banner .btn-outline-custom {
+    border-radius: 4px;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+    .alqamara-section {
+        padding-top    : 56px;
+        padding-bottom : 56px;
+    }
+    .alqamara-section-title {
+        font-size : 1.5rem;
+    }
+    
+    
+    
+    .alqamara-stat-number {
+        font-size : 2rem;
+    }
+    
+    /* .alqamara-blog-img height contr
+lled by aspect-ratio on wrapper — no override needed */
+}
+
+/* =====================================================================
+   AL QAMARA — SIDEBAR WIDGET LAYOUT
+   Targets .alqamara-pw-card inside .blog-sidebar and .alqamara-shop-sidebar.
+   Switches the card from a vertical grid card to a compact horizontal
+   list item: small thumbnail on left, title + meta on right.
+   The homepage / full-width layout is unchanged.
+===================================================================== */
+
+/* Force single-column list — override CSS Grid set by --alqamara-cols */
+.blog-sidebar .alqamara-posts-grid,
+.alqamara-shop-sidebar .alqamara-posts-grid {
+    display        : flex !important;
+    flex-direction : column !important;
+    gap            : 0 !important;
+}
+
+.blog-sidebar .alqamara-pw-card,
+.alqamara-shop-sidebar .alqamara-pw-card {
+    display        : flex !important;
+    flex-direction : row !important;
+    align-items    : flex-start !important;
+    gap            : .65rem !important;
+    border         : none !important;
+    border-radius  : 0 !important;
+    box-shadow     : none !important;
+    background     : transparent !important;
+    padding        : .55rem 0 !important;
+    border-bottom  : 1px solid rgba(0,0,0,.07) !important;
+    overflow       : visible !important;
+    transform      : none !important;
+}
+.blog-sidebar .alqamara-pw-card:last-child,
+.alqamara-shop-sidebar .alqamara-pw-card:last-child {
+    border-bottom : none;
+}
+
+/* Thumbnail — fixed square, no hover zoom effect in sidebar */
+.blog-sidebar .alqamara-pw-thumb-wrap,
+.alqamara-shop-sidebar .alqamara-pw-thumb-wrap {
+    flex-shrink    : 0 !important;
+    width          : 68px !important;
+    height         : 68px !important;
+    min-width      : 68px !important;
+    border-radius  : 6px !important;
+    overflow       : hidden !important;
+    aspect-ratio   : unset !important;
+}
+.blog-sidebar .alqamara-pw-thumb,
+.alqamara-shop-sidebar .alqamara-pw-thumb {
+    width      : 100%;
+    height     : 100%;
+    object-fit : cover;
+    transition : none;
+}
+.blog-sidebar .alqamara-pw-card:hover .alqamara-pw-thumb,
+.alqamara-shop-sidebar .alqamara-pw-card:hover .alqamara-pw-thumb {
+    transform : none;
+}
+
+/* Placeholder (no image) — same fixed square */
+.blog-sidebar .alqamara-pw-no-thumb,
+.alqamara-shop-sidebar .alqamara-pw-no-thumb {
+    flex-shrink    : 0;
+    width          : 68px;
+    height         : 68px;
+    border-radius  : 6px;
+}
+
+/* Section-head wrapper — remove its own margin-bottom in sidebar
+   (the title already has margin-bottom: 14px; double gap not needed) */
+.blog-sidebar .alqamara-pw-section-head,
+.alqamara-shop-sidebar .alqamara-pw-section-head {
+    margin-bottom : 0 !important;
+}
+
+/* Body — takes remaining space, no padding */
+.blog-sidebar .alqamara-pw-body,
+.alqamara-shop-sidebar .alqamara-pw-body {
+    flex           : 1 !important;
+    padding        : 0 !important;
+    display        : flex !important;
+    flex-direction : column !important;
+    gap            : .15rem !important;
+    min-width      : 0 !important;
+}
+
+/* Title — shown above meta via order. Font-size/weight matched to
+ * .alqamara-wpr-name (Top Rated Products, the native WC widget's title) —
+ * was 1rem/700 (visibly bigger+bolder than Top Rated's .84rem/500 sitting
+ * right above/below it in the same sidebar), now unified so both widget
+ * engines look like one consistent design language. */
+.blog-sidebar .alqamara-pw-title,
+.alqamara-shop-sidebar .alqamara-pw-title {
+    font-size   : .9rem !important;
+    font-weight : 500 !important;
+    line-height : 1.4 !important;
+    margin      : 0 !important;
+    order       : -1 !important;   /* pull title above the meta row */
+}
+
+/* Sidebar — hide everything except thumbnail, title, category, price, rating.
+   Purpose: discovery only. Buying happens on the product/post page.        */
+.blog-sidebar .alqamara-pw-excerpt,
+.blog-sidebar .alqamara-pw-readmore,
+.blog-sidebar .alqamara-pw-cart,
+.blog-sidebar .alqamara-pw-cart-overlay,
+.blog-sidebar .alqamara-pw-slider-nav-btns,
+.alqamara-shop-sidebar .alqamara-pw-excerpt,
+.alqamara-shop-sidebar .alqamara-pw-readmore,
+.alqamara-shop-sidebar .alqamara-pw-cart,
+.alqamara-shop-sidebar .alqamara-pw-cart-overlay,
+.alqamara-shop-sidebar .alqamara-pw-slider-nav-btns {
+    display : none !important;
+}
+
+/* Price — compact */
+.blog-sidebar .alqamara-pw-price,
+.alqamara-shop-sidebar .alqamara-pw-price {
+    margin  : 0;
+    padding : 0;
+}
+
+/* Meta (date, category badge) — visible below title */
+.blog-sidebar .alqamara-pw-meta,
+.alqamara-shop-sidebar .alqamara-pw-meta {
+    font-size   : .75rem !important;
+    gap         : .25rem !important;
+    flex-wrap   : wrap !important;
+    color       : #6c757d !important;
+}
+
+/* Badge stack — hide in sidebar (too small to look good) */
+.blog-sidebar .alqamara-badge-stack,
+.alqamara-shop-sidebar .alqamara-badge-stack {
+    display : none !important;
+}
+
+/* ── WooCommerce built-in product widgets (Top Rated, Best Selling, etc.) ── */
+/* Same compact horizontal look as our custom widget.                         */
+
+/* Suppress clearfix ::before — it becomes a flex item and creates a gap offset */
+.blog-sidebar .product_list_widget li::before,
+.alqamara-shop-sidebar .product_list_widget li::before,
+.alqamara-footer-col .product_list_widget li::before {
+    content : none !important;
+    display : none !important;
+}
+
+.blog-sidebar .product_list_widget,
+.alqamara-shop-sidebar .product_list_widget {
+    list-style : none !important;
+    padding    : 0 !important;
+    margin     : 0 !important;
+}
+
+.blog-sidebar .product_list_widget li,
+.alqamara-shop-sidebar .product_list_widget li {
+    display        : flex !important;
+    flex-direction : row !important;
+    align-items    : flex-start !important;
+    gap            : .65rem !important;
+    padding        : .55rem 0 !important;
+    border-bottom  : 1px solid rgba(0,0,0,.07) !important;
+    border-top     : none !important;
+    background     : transparent !important;
+}
+.blog-sidebar .product_list_widget li:last-child,
+.alqamara-shop-sidebar .product_list_widget li:last-child {
+    border-bottom : none !important;
+}
+
+/* Thumbnail — 68×68 square */
+.blog-sidebar .product_list_widget li img,
+.alqamara-shop-sidebar .product_list_widget li img {
+    width         : 68px !important;
+    height        : 68px !important;
+    min-width     : 68px !important;
+    object-fit    : cover !important;
+    border-radius : 6px !important;
+    flex-shrink   : 0 !important;
+    margin        : 0 !important;
+    float         : none !important;
+}
+
+/* Product title link (the <a> that doesn't wrap the image) */
+.blog-sidebar .product_list_widget li > a:not(:has(img)),
+.alqamara-shop-sidebar .product_list_widget li > a:not(:has(img)) {
+    font-size   : .92rem !important;
+    line-height : 1.35 !important;
+    font-weight : 600 !important;
+    color       : var(--alqamara-primary, #0f172a) !important;
+    display     : block !important;
+    margin-bottom: .1rem !important;
+}
+.blog-sidebar .product_list_widget li > a:not(:has(img)):hover,
+.alqamara-shop-sidebar .product_list_widget li > a:not(:has(img)):hover {
+    color : var(--alqamara-accent, #b8912a) !important;
+}
+/* Product title — same dead-selector issue as the footer's version of this
+ * rule (see the .alqamara-footer-col block below): the rule above targets
+ * WooCommerce's default markup, but our content-widget-product.php
+ * template override makes the title <a class="alqamara-wpr-name"> a grandchild
+ * of <li>, not a direct child, so it never matched here either. Top Rated
+ * Products' sidebar title was stuck on woocommerce.css's base
+ * `.alqamara-wpr-name { color: #4b5563 }` (a lighter gray) instead of the
+ * intended dark navy `var(--alqamara-primary)` that the "Products" widget
+ * (alqamara-posts-widget in product mode) correctly gets right next to it. */
+.blog-sidebar .alqamara-wpr-name,
+.alqamara-shop-sidebar .alqamara-wpr-name {
+    color : var(--alqamara-primary, #0f172a) !important;
+}
+.blog-sidebar .alqamara-wpr-name:hover,
+.alqamara-shop-sidebar .alqamara-wpr-name:hover {
+    color : var(--alqamara-accent, #b8912a) !important;
+}
+
+/* Star rating */
+.blog-sidebar .product_list_widget .star-rating,
+.alqamara-shop-sidebar .product_list_widget .star-rating {
+    font-size : .72rem !important;
+    margin    : .1rem 0 !important;
+}
+
+/* Price */
+.blog-sidebar .product_list_widget .woocommerce-Price-amount,
+.alqamara-shop-sidebar .product_list_widget .woocommerce-Price-amount {
+    font-size   : .82rem !important;
+    color       : var(--alqamara-accent, #b8912a) !important;
+    font-weight : 600 !important;
+}
+.blog-sidebar .product_list_widget del .woocommerce-Price-amount,
+.alqamara-shop-sidebar .product_list_widget del .woocommerce-Price-amount {
+    color     : #9ca3af !important;
+    font-size : .76rem !important;
+}
+
+/* =====================================================================
+   AL QAMARA — FOOTER COLUMN WIDGET COMPACT LAYOUT
+   Same compact horizontal layout as .blog-sidebar / .alqamara-shop-sidebar,
+   but colour-adjusted for the dark navy footer background.
+   Selector: .alqamara-footer-col  (each footer widget column div)
+===================================================================== */
+
+/* Single-column list — override CSS Grid */
+.alqamara-footer-col .alqamara-posts-grid {
+    display        : flex !important;
+    flex-direction : column !important;
+    gap            : 0 !important;
+}
+
+/* Horizontal card: image left, body right */
+.alqamara-footer-col .alqamara-pw-card {
+    display        : flex !important;
+    flex-direction : row !important;
+    align-items    : flex-start !important;
+    gap            : .65rem !important;
+    border         : none !important;
+    border-radius  : 0 !important;
+    box-shadow     : none !important;
+    background     : transparent !important;
+    padding        : .55rem 0 !important;
+    border-bottom  : 1px solid rgba(255,255,255,.1) !important;
+    overflow       : visible !important;
+    transform      : none !important;
+}
+.alqamara-footer-col .alqamara-pw-card:last-child {
+    border-bottom : none !important;
+}
+
+/* 68×68 thumbnail */
+.alqamara-footer-col .alqamara-pw-thumb-wrap {
+    flex-shrink  : 0 !important;
+    width        : 68px !important;
+    height       : 68px !important;
+    min-width    : 68px !important;
+    border-radius: 6px !important;
+    overflow     : hidden !important;
+    aspect-ratio : unset !important;
+}
+.alqamara-footer-col .alqamara-pw-thumb {
+    width      : 100%;
+    height     : 100%;
+    object-fit : cover;
+    transition : none;
+}
+.alqamara-footer-col .alqamara-pw-card:hover .alqamara-pw-thumb {
+    transform : none;
+}
+
+/* Placeholder (no image) */
+.alqamara-footer-col .alqamara-pw-no-thumb {
+    flex-shrink   : 0;
+    width         : 68px;
+    height        : 68px;
+    border-radius : 6px;
+}
+
+/* Section-head wrapper — remove double gap above cards */
+.alqamara-footer-col .alqamara-pw-section-head {
+    margin-bottom : 0 !important;
+}
+
+/* Widget title — full width inside flex container (overrides flex child shrink) */
+.alqamara-footer-col .alqamara-pw-widget-title {
+    width         : 100% !important;
+    display       : block !important;
+}
+
+/* Body — takes remaining width */
+.alqamara-footer-col .alqamara-pw-body {
+    flex           : 1 !important;
+    padding        : 0 !important;
+    display        : flex !important;
+    flex-direction : column !important;
+    gap            : .15rem !important;
+    min-width      : 0 !important;
+}
+
+/* Title — pull above meta via CSS order. Font-size/weight matched to
+ * .alqamara-wpr-name (Top Rated Products' title) for the same reason as the
+ * sidebar block above. */
+.alqamara-footer-col .alqamara-pw-title {
+    font-size   : .9rem !important;
+    font-weight : 500 !important;
+    line-height : 1.4 !important;
+    margin      : 0 !important;
+    order       : -1 !important;
+}
+
+/* Meta (date, category) — muted light colour for dark bg */
+.alqamara-footer-col .alqamara-pw-meta {
+    font-size : .75rem !important;
+    gap       : .25rem !important;
+    flex-wrap : wrap !important;
+    color     : rgba(255,255,255,.5) !important;
+}
+
+/* Price */
+.alqamara-footer-col .alqamara-pw-price {
+    margin  : 0;
+    padding : 0;
+}
+
+/* Hide clutter — discovery only, same policy as sidebar */
+.alqamara-footer-col .alqamara-pw-excerpt,
+.alqamara-footer-col .alqamara-pw-readmore,
+.alqamara-footer-col .alqamara-pw-cart,
+.alqamara-footer-col .alqamara-pw-cart-overlay,
+.alqamara-footer-col .alqamara-pw-slider-nav-btns,
+.alqamara-footer-col .alqamara-badge-stack {
+    display : none !important;
+}
+
+/* ── WooCommerce product_list_widget in footer — compact horizontal ── */
+.alqamara-footer-col .product_list_widget {
+    list-style : none !important;
+    padding    : 0 !important;
+    margin     : 0 !important;
+}
+.alqamara-footer-col .product_list_widget li {
+    display        : flex !important;
+    flex-direction : row !important;
+    align-items    : flex-start !important;
+    gap            : .65rem !important;
+    padding        : .55rem 0 !important;
+    border-bottom  : 1px solid rgba(255,255,255,.1) !important;
+    border-top     : none !important;
+    background     : transparent !important;
+}
+.alqamara-footer-col .product_list_widget li:last-child {
+    border-bottom : none !important;
+}
+.alqamara-footer-col .product_list_widget li img {
+    width         : 68px !important;
+    height        : 68px !important;
+    min-width     : 68px !important;
+    object-fit    : cover !important;
+    border-radius : 6px !important;
+    flex-shrink   : 0 !important;
+    margin        : 0 !important;
+    float         : none !important;
+}
+.alqamara-footer-col .product_list_widget li > a:not(:has(img)) {
+    font-size    : .92rem !important;
+    line-height  : 1.35 !important;
+    font-weight  : 600 !important;
+    color        : var(--alqamara-on-dark-muted) !important;
+    display      : block !important;
+    margin-bottom: .1rem !important;
+}
+.alqamara-footer-col .product_list_widget li > a:not(:has(img)):hover {
+    color : var(--alqamara-accent, #b8912a) !important;
+}
+/* Product title — dark-footer color override.
+ * The rule above (li > a:not(:has(img))) targets WooCommerce's DEFAULT
+ * widget markup, where the title <a> is a direct child of <li>. Our
+ * woocommerce/content-widget-product.php template override changes that
+ * structure to <li><a class="alqamara-wpr-thumb">...</a><div class="alqamara-wpr-info">
+ * <a class="alqamara-wpr-name">...</a>...</div></li> — the title is now a
+ * GRANDCHILD of <li>, so the rule above never matches it, and it fell
+ * back to woocommerce.css's base `.alqamara-wpr-name { color: #4b5563 }`,
+ * a dark slate meant for the light .blog-sidebar/.alqamara-shop-sidebar
+ * background — nearly unreadable on the dark footer. Found live
+ *
+ * looked wrong). */
+.alqamara-footer-col .alqamara-wpr-name {
+    color : var(--alqamara-on-dark-muted) !important;
+}
+.alqamara-footer-col .alqamara-wpr-name:hover {
+    color : var(--alqamara-accent, #b8912a) !important;
+}
+.alqamara-footer-col .product_list_widget .star-rating {
+    font-size : .72rem !important;
+    margin    : .1rem 0 !important;
+}
+.alqamara-footer-col .product_list_widget .woocommerce-Price-amount {
+    font-size   : .82rem !important;
+    color       : var(--alqamara-accent, #b8912a) !important;
+    font-weight : 600 !important;
+}
+.alqamara-footer-col .product_list_widget del .woocommerce-Price-amount {
+    color     : rgba(255,255,255,.3) !important;
+    font-size : .76rem !important;
+}
+/* Suppress arrow icon on product links */
+.alqamara-footer-col .product_list_widget li a::after {
+    display : none !important;
+}
+
+/* =============================================================================
+   SINGLE SERVICE PAGE — two-column layout
+   ============================================================================= */
+
+/* =============================================================================
+   SINGLE PROJECT PAGE
+   ============================================================================= */
+
+/* =====================================================================
+   30 · STACKED HEADER LAYOUT (Customizer: Header Layout = "Two Rows")
+   Row 1 = logo + an always-visible inline search box + whatever Header
+   Style puts on the right (nothing / Agency CTA button / Shop icons).
+   Row 2 = menu only, full width, below Row 1 (see header.php,
+   .alqamara-navbar-row2 — a SIBLING of <nav>, not nested inside it, so it
+   isn't pulled into Bootstrap's .navbar flex row).
+
+   Always solid — deliberately bypasses the homepage transparent-over-hero
+   system entirely rather than trying to make a menu-row-plus-search
+   header transparent over a photo (a full row of nav text floating over
+   a busy image is hard to read). Two independently customizable colors,
+   one per row (Customizer → Header → Header Row 1/2 Background Color).
+
+   Desktop (≥992px) only, by design — mobile keeps the exact single-row +
+   hamburger + dedicated search icon behavior it always had, completely
+   untouched. Every rule below is inside the same @media boundary as the
+   d-none/d-lg-flex/d-lg-block wrappers in header.php that gate this
+   layout's markup, so there is no code path where this fires below
+   992px regardless of which Header Layout is selected.
+   ===================================================================== */
+@media (min-width: 992px) {
+
+    /* ---- Force solid backgrounds, independent of scroll/page state ----
+       Row 1 reuses the existing nav.navbar-transparent element (no new
+       markup there), so this has to out-specificity two existing
+       !important rules that would otherwise make it transparent:
+       .navbar-transparent.scrolled and
+       body:not(.home):not(.front-page) .navbar-transparent
+       (both (0,0,3,1) specificity). Adding html+body ancestors here makes
+       this (0,0,3,2) — a guaranteed win regardless of scroll position,
+       page type, or source order. */
+    html body .alqamara-navbar-wrap.alqamara-header-stacked .navbar-transparent {
+        background: var(--alqamara-header-row1-bg, var(--alqamara-primary)) !important;
+    }
+    .alqamara-header-stacked .alqamara-navbar-row2 {
+        background: var(--alqamara-header-row2-bg, var(--alqamara-primary)) !important;
+    }
+
+    /* ---- Text / icon / button colors ----
+       Written fresh rather than reusing the .alqamara-header-solid-scoped
+       rules earlier in this file, because .alqamara-header-solid can be
+       ABSENT on the homepage (Hero enabled, "Solid Background Header on
+       Homepage" off) even while Two Rows still forces a solid background
+       here — the two flags are intentionally independent in this layout,
+       see the Header Layout control's description in Customizer.
+
+       Specificity: these have to out-rank the transparent/scrolled ink
+       rules near the top of this file, which target the SAME elements
+       (both live inside nav.navbar-transparent, i.e. Row 1) and resolve
+       to --alqamara-header-ink — the ink for the SINGLE-row header background,
+       not Row 1's. Two rules there beat a plain .alqamara-header-stacked X
+       selector (0,0,2,0):
+
+           .navbar-transparent.scrolled .alqamara-nav-icon            (0,0,3,0)
+           body:not(.home):not(.front-page) ... .alqamara-nav-icon    (0,0,4,1)
+
+       Both are !important, so raising specificity here is the only way to
+       win. `html body .alqamara-navbar-wrap.alqamara-header-stacked
+       .navbar-transparent X` is (0,0,4,2) — above both — and mirrors the
+       same ancestor-padding trick already used for the Row 1 background
+       rule above.
+
+       Real bug this fixes (user report
+       Two Rows site with a white Row 1): the header icons rendered white
+       on a white Row 1. On the homepage it appeared only after scrolling
+       (when .scrolled lands); on every inner page the body:not(.home)
+       rule made it permanent, with no scrolling needed — the logo text
+       colour was hit the same way. The Row 2 menu links were never
+       affected, because Row 2 is a SIBLING of nav.navbar-transparent, so
+       neither of those two rules can ever match inside it — which is
+       exactly why the menu text looked right while the icons did not. */
+    html body .alqamara-navbar-wrap.alqamara-header-stacked .navbar-transparent .navbar-brand {
+        color: var(--alqamara-header-row1-ink, #fff);
+    }
+    html body .alqamara-navbar-wrap.alqamara-header-stacked .navbar-transparent .alqamara-nav-icon {
+        color: var(--alqamara-header-row1-ink, #fff) !important;
+    }
+    .alqamara-header-stacked .navbar .btn-custom {
+        background: transparent;
+        color: var(--alqamara-accent);
+        border: 1.5px solid var(--alqamara-accent);
+    }
+    .alqamara-header-stacked .navbar .btn-custom:hover {
+        background: var(--alqamara-accent);
+        color: var(--alqamara-primary-dark);
+    }
+
+    /* ---- Row 2 menu ----
+       .navbar-nav is display:flex/flex-direction:column by BASE Bootstrap
+       default — it only becomes a horizontal row via the
+       .navbar-expand-lg .navbar-nav{flex-direction:row} override, which
+       requires a .navbar-expand-lg ancestor. Row 2's wrapper deliberately
+       isn't given the .navbar/.navbar-expand-lg classes (avoids pulling in
+       the rest of Bootstrap's navbar flex/collapse behavior for a plain
+       full-width strip), so that override never fires — without this rule
+       the menu rendered as a vertical list (found via live testing).
+       justify-content:center replicates the .mx-auto centering the
+       old single-row menu got for free from its flex parent. */
+    .alqamara-navbar-row2 .navbar-nav {
+        display        : flex;
+        flex-direction : row;
+        flex-wrap      : wrap;
+    }
+    /* ---- Row 2 submenu positioning (bug fix, ----
+       Same root cause as the flex-direction override just above: Bootstrap
+       ships .navbar-nav .dropdown-menu{position:static} as the base/mobile
+       default, and only flips it to position:absolute via the compound
+       selector .navbar-expand-lg .navbar-nav .dropdown-menu at the ≥992px
+       breakpoint (see bootstrap.min.css). That compound selector requires
+       an actual .navbar-expand-lg ANCESTOR — which Row 1's menu has (it
+       lives inside <nav class="navbar navbar-expand-lg">), but Row 2's
+       .navbar-nav does not, by the same deliberate design noted above
+       (Row 2 is a plain sibling strip, not given the .navbar classes).
+       Without this rule, Row 2's dropdown-menu panels
+       stayed position:static even on desktop — rendering in normal flow
+       instead of overlaying, so opening one visibly stretched
+       .alqamara-navbar-row2's own background downward to contain it (reported
+       as "the header background drops down when a submenu opens", Two
+       Rows layout only — Single Row was never affected since its menu
+       does sit inside .navbar-expand-lg). This mirrors Bootstrap's own
+       desktop rule directly onto Row 2 so its dropdowns overlay properly
+       instead of pushing the row's height. */
+    .alqamara-navbar-row2 .dropdown-menu {
+        position: absolute;
+    }
+    /* Alignment (Customizer: Row 2 Menu Alignment). flex-start/center are
+       logical values — under RTL (dir="rtl") flex-start already resolves
+       to the visual right edge on its own, so this needs no separate
+       right-aligned variant and no rtlcss involvement. */
+    .alqamara-navbar-row2-align-center .navbar-nav { justify-content: center; }
+    .alqamara-navbar-row2-align-left   .navbar-nav { justify-content: flex-start; }
+
+    /* ---- Row 1 / Row 2 separator ----
+       A subtle hairline so the two rows still read as distinct strips even
+       when their background colors are set close together (or left at the
+       same default). Only ever present when Two Rows is selected, since
+       .alqamara-navbar-row2 only exists in the markup in that case. */
+    .alqamara-header-stacked .alqamara-navbar-row2 {
+        border-top: 1px solid rgba(255,255,255,.12);
+    }
+
+    /* Same padding/type/hover language as the normal single-row menu
+       (.navbar .navbar-nav .nav-link, "Nav links" section above), written
+       fresh here for the same .navbar-class reason above. Vertical padding
+       is smaller than the single-row menu's 28px — that value sets a
+       single row's whole header height; Row 2 is its own slim dedicated
+       strip. */
+    .alqamara-navbar-row2 .navbar-nav .nav-link {
+        padding       : 16px 14px;
+        font-weight   : 400;
+        font-size     : 14px;
+        letter-spacing: 0.05em;
+        outline       : none;
+        transition    : color 0.2s;
+        color         : var(--alqamara-header-row2-ink, var(--alqamara-on-dark));
+    }
+    .alqamara-navbar-row2 .navbar-nav .nav-link:hover,
+    .alqamara-navbar-row2 .navbar-nav .nav-link.active {
+        color: var(--alqamara-accent);
+    }
+
+    /* ---- Row 1 inline search box ----
+       Sits where the menu normally would (.mx-auto in the markup),
+       between the logo and whatever Header Style puts on the right.
+       max-width keeps it from stretching edge-to-edge when Header Style
+       = Default (nothing on the right to stop it). */
+    .alqamara-header-search-inline {
+        position : relative; /* anchors the results dropdown below */
+        flex     : 1 1 auto;
+        max-width: 480px;
+    }
+    /* Same wrap-and-float pattern as the header dropdown search
+       (.alqamara-search-dd .search-form / .alqamara-search-results, "Search forms"
+       section above) — the results panel needs to float over the page
+       instead of pushing Row 1 taller (and shoving Row 2 down) when
+       results appear. */
+    .alqamara-header-search-inline .search-form { flex-wrap: wrap; }
+    
+}
+
+/* =============================================================================
+   WCAG — BASIC ACCESSIBILITY PASS
+   1. Skip Link — hidden off-screen until it receives keyboard focus, then
+      jumps straight past the header/navigation to #main-content (see
+      header.php). Standard WordPress skip-link pattern (same technique
+      the default themes use), styled to match this theme's brand colors.
+   2. Global :focus-visible outline — a safety net so any interactive
+      element without its own explicit focus style (this theme already
+      has several component-specific ones — mega menu, cart drawer,
+      search) still gets a clearly visible keyboard-focus indicator
+      (WCAG 2.4.7 Focus Visible). :focus-visible (not :focus) keeps the
+      existing mouse-click experience unchanged — no ring on click,
+      same as before — while guaranteeing keyboard/Tab users always see
+      exactly where focus is.
+============================================================================= */
+
+.alqamara-skip-link {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    z-index: 100000;
+    padding: 12px 20px;
+    background: var(--alqamara-primary, #0f172a);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0 0 6px 0;
+    transition: top 0.15s ease;
+}
+
+.alqamara-skip-link:focus,
+.alqamara-skip-link:focus-visible {
+    top: 0;
+    color: #fff;
+    outline: 2px solid var(--alqamara-accent, #b8912a);
+    outline-offset: 2px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--alqamara-accent, #b8912a);
+    outline-offset: 2px;
+}
+
+/* =============================================================================
+   CORE CMS CLASSES — standard classes WordPress core itself outputs
+   (image captions, galleries, post alignment, screen-reader-only text).
+   These aren't specific to any one template — WordPress can insert them
+   into post content, comments, or admin-generated markup at any time, so
+   the theme must style them globally rather than only where used today.
+============================================================================= */
+
+.wp-caption {
+    margin-bottom: 1.5em;
+    max-width: 100%;
+}
+.wp-caption img[class*="wp-image-"] {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.wp-caption .wp-caption-text {
+    margin: 0.8075em 0;
+}
+.wp-caption-text {
+    text-align: center;
+}
+.gallery-caption {
+    display: block;
+}
+.bypostauthor {
+    display: block;
+}
+.alignleft {
+    display: inline;
+    float: left;
+    margin-right: 1.5em;
+}
+.alignright {
+    display: inline;
+    float: right;
+    margin-left: 1.5em;
+}
+.aligncenter {
+    clear: both;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    width: 1px;
+    word-wrap: normal !important;
+}
+.screen-reader-text:focus {
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+    clip: auto !important;
+    clip-path: none;
+    color: #21759b;
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 700;
+    height: auto;
+    left: 5px;
+    line-height: normal;
+    padding: 15px 23px 14px;
+    text-decoration: none;
+    top: 5px;
+    width: auto;
+    z-index: 100000;
+}
+
+/* Wide tables on phones — content tables (documentation
+   pages, and any table an owner puts in a page or post) used to run past the
+   screen edge and get clipped by the article's overflow:hidden, so the right-
+   hand columns could not be read at all. Below 768px the table becomes its own
+   horizontally scrollable strip, with a sensible minimum column width so cells
+   do not squash into one-word columns. Wide screens are unchanged. */
+@media (max-width: 767.98px) {
+    .page-entry-content table {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .page-entry-content table th,
+.page-entry-content table td {
+        min-width: 110px;
+    }
+}
+
+/* =============================================================================
+   LONG WORDS, CLEARED FLOATS, STICKY POSTS, CUSTOM BACKGROUND  (1.0.4)
+   - Titles and headings wrap instead of overflowing the viewport.
+   - Content areas contain floated .alignleft / .alignright images.
+   - .sticky is the class WordPress adds to sticky posts.
+============================================================================= */
+
+.site-title,
+.entry-title,
+.page-title,
+.blog-banner-title,
+.blog-post-title,
+.alqamara-content-title,
+.single-title,
+.widget-title,
+h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+}
+
+.page-entry-content::after,
+.comment-content::after,
+.comment-text::after,
+.entry-content::after,
+.clearfix::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.sticky {
+    position: relative;
+}
+.blog-post-card.sticky {
+    border-top: 3px solid var(--alqamara-accent, #b8912a);
+}
+
+/* Appearance > Background: let a custom background colour/image show through the page wrapper. */
+.custom-background .blog-page-wrapper {
+    background: transparent;
+}
+
+/* Long words and URLs wrap inside content areas. */
+.page-entry-content,
+.blog-post-excerpt,
+.comment-content,
+.widget,
+.wp-caption-text {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+/* Visible keyboard focus on menu links of the second header row and on the RTL primary menu. */
+.alqamara-navbar-row2 .navbar-nav .nav-link:focus-visible,
+.navbar .navbar-nav .nav-link:focus-visible {
+    outline: 2px solid var(--alqamara-accent, #b8912a);
+    outline-offset: 2px;
+}
+
+/* Closed off-canvas panels are removed from the tab order once their slide-out has finished. */
+.mobile-menu:not(.open),
+.alqamara-cart-drawer:not(.is-open) {
+    animation: alqamara-panel-hide 0s linear .35s forwards;
+}
+
+@keyframes alqamara-panel-hide {
+    to {
+        visibility: hidden;
+    }
+}

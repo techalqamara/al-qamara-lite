@@ -1,0 +1,96 @@
+/* ==============================
+   FONT FACES
+============================== */
+
+/* Open Sans - Regular */
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: 400;
+    font-display: swap;
+    src: url('../webfonts/OpenSans-Regular.woff2') format('woff2');
+}
+
+/* Open Sans - Semibold */
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: 600;
+    font-display: swap;
+    src: url('../webfonts/OpenSans-Semibold.woff2') format('woff2');
+}
+
+/* Lora - SemiBold */
+@font-face {
+    font-family: 'Lora';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../webfonts/lora-v37-latin-600.woff2') format('woff2');
+}
+
+/* Lora - Bold */
+@font-face {
+    font-family: 'Lora';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../webfonts/lora-v37-latin-700.woff2') format('woff2');
+}
+
+/* Poppins - Regular */
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 400;
+    font-display: swap;
+    src: url('../webfonts/poppins-regular.woff2') format('woff2');
+}
+
+/* Poppins - SemiBold */
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 600;
+    font-display: swap;
+    src: url('../webfonts/poppins-semibold.woff2') format('woff2');
+}
+
+/* Playfair Display - variable font (weights 400-900), Latin subset */
+@font-face {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url('../webfonts/playfair-display.woff2') format('woff2');
+}
+
+/* Roboto - variable font (weights 400-700), Latin subset */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('../webfonts/roboto.woff2') format('woff2');
+}
+
+
+/* ==============================
+   CONNECT FONTS TO BOOTSTRAP 5
+   These are the static fallback defaults.
+   The Customizer overrides them with inline CSS (see inc/enqueue.php).
+   All fonts are served locally — no Google Fonts CDN.
+============================== */
+:root {
+    --bs-font-sans-serif:   'Poppins', sans-serif;
+    --bs-font-heading:      'Playfair Display', serif;
+    --bs-body-font-size:    1rem;
+    --bs-body-font-weight:  400;
+    --bs-body-line-height:  1.6;
+}
+
+/* Apply body font globally */
+body {
+    font-family: var(--bs-font-sans-serif);
+}
+
+/* Apply heading font to all headings */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--bs-font-heading);
+}

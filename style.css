@@ -1,0 +1,42 @@
+/*
+Theme Name:         Al Qamara Lite
+Description:        A clean, fast theme for blogs, business sites and WooCommerce stores. Built on Bootstrap 5, with a mobile slide-in menu, a widget-driven homepage, a Customizer-based header, footer and colour options, and full WooCommerce styling.
+Version:            1.0.5
+Author:             Tech Al Qamara
+Author URI:         https://profiles.wordpress.org/alqamara/
+License:            GNU General Public License v2 or later
+License URI:        https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:        al-qamara-lite
+Domain Path:        /languages
+Requires at least:  6.4
+Tested up to:       7.1
+Requires PHP:       7.4
+Tags:               custom-logo, custom-menu, custom-background, custom-colors, featured-images, footer-widgets, threaded-comments, translation-ready, full-width-template, left-sidebar, right-sidebar, e-commerce
+
+Copyright (C) 2026 Tech Al Qamara
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2 of the License, or (at your
+option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
+
+Al Qamara Lite bundles third-party resources. See readme.txt (Resources)
+for each asset's name, version and license.
+*/
+
+/*
+ * The theme styles live in css/custom.css (enqueued in inc/enqueue.php).
+ * This file holds the WordPress theme header and is loaded as the primary
+ * stylesheet handle "alqamara-style". Add global overrides in css/custom.css.
+ */

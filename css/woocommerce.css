@@ -1,0 +1,4345 @@
+
+/* ── 00. Local Tokens ──────────────────────────────────────────────────── */
+:root {
+    --alqamara-wc-border   : #e5e7eb;
+    --alqamara-wc-muted    : #6b7280;
+    --alqamara-wc-light    : #f9fafb;
+    --alqamara-wc-success  : #16a34a;
+    --alqamara-wc-error    : #dc2626;
+    --alqamara-wc-info     : #2563eb;
+    --alqamara-wc-radius   : 8px;
+    --alqamara-wc-shadow   : 0 4px 20px rgba(0,0,0,.08);
+    --alqamara-wc-shadow-h : 0 8px 32px rgba(0,0,0,.14);
+}
+
+/* ── 01. Layout Wrapper ────────────────────────────────────────────────── */
+.alqamara-wc-main { width: 100%; }
+
+/* Push content above mobile bottom bar on WC pages (mobile only) */
+body.woocommerce-active.alqamara-shop-header { padding-bottom: 64px; }
+@media (min-width: 992px) {
+    body.woocommerce-active.alqamara-shop-header { padding-bottom: 0; }
+}
+
+/* ── 02. Breadcrumb ────────────────────────────────────────────────────── */
+.alqamara-wc-breadcrumb .breadcrumb {
+    font-size: .82rem;
+    flex-wrap: wrap;
+}
+.alqamara-wc-breadcrumb .breadcrumb-item { color: var(--alqamara-wc-muted); }
+.alqamara-wc-breadcrumb .breadcrumb-item a {
+    color: var(--alqamara-accent, #b8912a);
+    text-decoration: none;
+    transition: color .2s;
+}
+.alqamara-wc-breadcrumb .breadcrumb-item a:hover { color: var(--alqamara-primary, #0f172a); }
+.alqamara-wc-breadcrumb .breadcrumb-item.active { color: var(--alqamara-primary, #0f172a); font-weight: 600; }
+.alqamara-wc-breadcrumb .breadcrumb-item + .breadcrumb-item::before { display: none; }
+.alqamara-wc-bc-sep {
+    color          : var(--alqamara-wc-muted);
+    font-size      : .7rem;
+    display        : inline-flex;
+    align-items    : center;
+    vertical-align : middle;
+}
+
+/* WC default breadcrumb (fallback) */
+.woocommerce-breadcrumb {
+    font-size: .82rem;
+    color: var(--alqamara-wc-muted);
+    margin-bottom: 1rem;
+}
+.woocommerce-breadcrumb a {
+    color: var(--alqamara-accent, #b8912a);
+    text-decoration: none;
+}
+.woocommerce-breadcrumb a:hover { text-decoration: underline; }
+
+/* ── 03. Shop Header ───────────────────────────────────────────────────── */
+
+/* Outer wrapper — block container, no flex (single product uses this too) */
+.alqamara-shop-header-bar {
+    margin-bottom: 1.75rem;
+}
+
+/* Breadcrumb row — py-2 (0.5rem top/bottom) matches single-product.php bar spacing */
+.alqamara-shop-bc-row {
+    padding-top   : .5rem;
+    padding-bottom: .5rem;
+}
+
+/* Title row — border separator below title */
+.alqamara-shop-title-row {
+    padding-bottom : 1rem;
+    border-bottom  : 1px solid var(--alqamara-wc-border);
+    margin-bottom  : 1rem;
+}
+
+.alqamara-shop-title {
+    font-size  : 1.5rem;
+    font-weight: 700;
+    color      : var(--alqamara-primary, #0f172a);
+    margin     : 0;
+}
+
+/* Controls row (result count + ordering + toggle)
+   Lives INSIDE data-wp-router-region so it updates on AJAX filter */
+.alqamara-shop-controls {
+    flex-wrap  : wrap;
+}
+
+/* WC result count — WC adds float:left + margin-bottom which breaks flex centering */
+.woocommerce-result-count {
+    font-size : .82rem;
+    color     : var(--alqamara-wc-muted);
+    margin    : 0 !important;
+    float     : none !important;
+}
+
+/* WC ordering form — WC adds margin:0 0 1em by default which breaks flex centering */
+.woocommerce-ordering { margin: 0 !important; }
+
+/* WC ordering select */
+.woocommerce-ordering select.orderby {
+    border: 1.5px solid var(--alqamara-wc-border);
+    border-radius: var(--alqamara-wc-radius);
+    padding: .4rem .85rem;
+    font-size: .82rem;
+    color: var(--alqamara-primary, #0f172a);
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color .2s;
+}
+.woocommerce-ordering select.orderby:focus {
+    border-color: var(--alqamara-accent, #b8912a);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(184,145,42,.15);
+}
+
+/* ── 04. WC Notices ────────────────────────────────────────────────────── */
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+    position: relative;
+    padding: .9rem 8.5rem .9rem 1.1rem;  /* right padding reserves space for button */
+    border-radius: var(--alqamara-wc-radius);
+    border-left: 4px solid;
+    margin-bottom: 1.5rem;
+    list-style: none;
+    display: block;
+    line-height: 1.5;
+}
+.woocommerce-message {
+    background: #f0fdf4;
+    border-color: var(--alqamara-wc-success);
+    color: #14532d;
+}
+.woocommerce-error {
+    background: #fef2f2;
+    border-color: var(--alqamara-wc-error);
+    color: #7f1d1d;
+}
+.woocommerce-info {
+    background: #eff6ff;
+    border-color: var(--alqamara-accent, #b8912a);
+    color: var(--alqamara-primary, #0f172a);
+}
+.woocommerce-message::before,
+.woocommerce-info::before,
+.woocommerce-error::before,
+.woocommerce-error li::before { display: none !important; }
+
+.woocommerce-error li {
+    display: block;
+    width: 100%;
+    font-size: .88rem;
+}
+
+/* Button — absolutely pinned to right center; works on any screen width */
+.woocommerce-message a.button,
+.woocommerce-info a.button {
+    position: absolute;
+    right: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--alqamara-accent, #b8912a) !important;
+    color: #fff !important;
+    border-radius: 5px;
+    padding: .35rem .9rem;
+    font-size: .8rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+/* ── 05. Product Grid ──────────────────────────────────────────────────── */
+
+/*
+ * WooCommerce adds float-era clearfix via ::before / ::after on ul.products.
+ * These become unwanted grid/flex items in our CSS Grid layout.
+ * Override them to nothing so the first column stays clean.
+ */
+.woocommerce ul.products::before,
+.woocommerce ul.products::after,
+.woocommerce-page ul.products::before,
+.woocommerce-page ul.products::after {
+    content : none !important;
+    display : none  !important;
+}
+
+/* WC outputs <ul class="products columns-N"> */
+.woocommerce ul.products,
+.woocommerce-page ul.products {
+    display: grid !important;
+    grid-template-columns: repeat( 3, 1fr );
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    clear: both;
+}
+/* WC columns-N variants — wrapped in a 992px min-width guard.
+ * Reason: each of these adds an extra class to the selector
+ * (.products.columns-N vs. the base .products), which raises its specificity
+ * ABOVE the tablet/mobile resets further down (`.woocommerce ul.products`
+ * with no columns-N modifier) — those resets therefore lost to columns-4
+ * regardless of screen width or source order, rendering 4 cramped columns on
+ * a real phone (375px) on any shop using 4 columns. The base 3-column rule
+ * right above was never affected (it has the SAME specificity as the mobile
+ * resets, so normal source-order cascade — "later wins" — already let mobile
+ * override it correctly); only the columns-N modifiers needed guarding. */
+@media ( min-width: 992px ) {
+    .woocommerce ul.products.columns-2,
+    .woocommerce-page ul.products.columns-2 { grid-template-columns: repeat(2, 1fr); }
+    .woocommerce ul.products.columns-1,
+    .woocommerce-page ul.products.columns-1 { grid-template-columns: 1fr; }
+    .woocommerce ul.products.columns-4,
+    .woocommerce-page ul.products.columns-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+.woocommerce ul.products li.product,
+.woocommerce-page ul.products li.product {
+    float         : none !important;
+    width         : auto !important;
+    margin        : 0 !important;
+    padding       : 0;
+    text-align    : left;
+    min-width     : 0;  /* prevent CSS grid track from expanding beyond 1fr due to nowrap content */
+    /* Make li a flex column so h-100 on .alqamara-pw-card fills grid-row height */
+    display       : flex !important;
+    flex-direction: column;
+}
+.woocommerce ul.products li.product .alqamara-pw-card,
+.woocommerce-page ul.products li.product .alqamara-pw-card {
+    flex: 1;  /* card stretches to fill the li (which fills the grid row) */
+}
+
+/* ── Shop Sidebar — Open style ────────────────────────────────────────── */
+/*
+ * Option B: no card boxes — clean open layout.
+ * Widgets are separated by spacing only.
+ * Title has a gold left-border accent for visual anchoring.
+ */
+.alqamara-shop-sidebar {
+    align-self: flex-start; /* needed for sticky to work on desktop */
+}
+
+/*
+ * Sticky sidebar — desktop only. On mobile it stacks as col-12 block.
+ *
+ * REVISED: this used to cap the sidebar to max-height:100vh with its own
+ * internal overflow-y:auto scrollbar (an Amazon/Daraz-style "sidebar
+ * scrolls independently in its own box" pattern). That works fine as long
+ * as the sidebar ONLY holds filters, but breaks down the moment anything
+ * else gets added below them (e.g. a "Recently Viewed Products" widget) —
+ * the extra widget gets squeezed into that same fixed-height box and is
+ * only reachable via a second, separate scroll gesture confined to a
+ * narrow column, which reads as "cut off" / easy to miss entirely.
+ *
+ * Most WooCommerce themes don't cap sidebar height at all: position:sticky is left to do what it
+ * already does natively — stay pinned near the top while the PAGE scrolls,
+ * and automatically stop being "stuck" once the sidebar's own bottom edge
+ * reaches the bottom of its column. No JS, no second scrollbar, no capped
+ * height. Whatever is in the sidebar (filters, recently-viewed, anything
+ * added later) just adds to its natural height and everything scrolls
+ * together as one continuous page — which is what most visitors expect,
+ * and is what this now matches.
+ *
+ * Gated by `body:not(.alqamara-shop-sidebar-not-sticky)` — controlled by its own
+ * independent Customizer toggle (WooCommerce → Shop / Archive → "Sticky
+ * Sidebar", `alqamara_shop_sidebar_sticky`), deliberately kept SEPARATE from
+ * the blog sidebar's own toggle (Global Settings → Sidebar →
+ * `alqamara_blog_sidebar_sticky`) since this theme serves both content/blog
+ * sites and WooCommerce stores — a customer using it for one purpose shouldn't
+ * have this choice forced onto the other area.
+ */
+@media (min-width: 992px) {
+    body:not(.alqamara-shop-sidebar-not-sticky) .alqamara-shop-sidebar {
+        position: sticky;
+        top     : calc( var(--alqamara-header-total-h, 80px) + 1.5rem );
+    }
+}
+
+.alqamara-shop-sidebar .widget {
+    background    : none;
+    border        : none;
+    border-radius : 0;
+    padding       : 0;
+    margin-bottom : 2rem;
+}
+.alqamara-shop-sidebar .widget:last-child { margin-bottom: 0; }
+
+/* ── Products column: AJAX loading state ────────────────────────────────────
+   WP Interactivity API sets aria-busy="true" on the router-region element
+   while navigate is in progress. We fade the products and show a spinner.
+
+   The spinner used to be centred at 50% of THIS element's own total height
+   (::before with top:50%/left:50% inside the position:relative column).
+   That's correct in theory, but .alqamara-products-col holds every product row —
+   for a full 12-15 product grid its total height is far taller than one
+   screen, so "50% of the column" can land well below the fold and the user
+   never sees it. `position: sticky` fixes this: the spinner sticks to a
+   fixed spot relative to the VIEWPORT (roughly mid-screen) as the user
+   scrolls, while still being clamped to the column's own top/bottom edges
+   so it never floats off into unrelated content above or below it.        */
+.alqamara-products-col[aria-busy="true"] {
+    position       : relative;
+    pointer-events : none;
+}
+.alqamara-products-col[aria-busy="true"]::after {
+    content     : '';
+    position    : absolute;
+    inset       : 0;
+    background  : rgba(255,255,255,.55);
+    z-index     : 10;
+    border-radius: 4px;
+}
+.alqamara-products-col[aria-busy="true"]::before {
+    content    : '';
+    display    : block;
+    position   : sticky;
+    top        : 35vh;
+    left       : 50%;
+    transform  : translateX(-50%);
+    width      : 36px;
+    height     : 36px;
+    border     : 3px solid rgba(184,145,42,.25);
+    border-top : 3px solid var(--alqamara-accent, #b8912a);
+    border-radius: 50%;
+    animation  : alqamara-spin .7s linear infinite;
+    z-index    : 11;
+}
+@keyframes alqamara-spin { to { transform: translateX(-50%) rotate(360deg); } }
+
+/* Widget titles */
+.alqamara-shop-sidebar .widget-title,
+.alqamara-shop-sidebar .widgettitle {
+    font-size     : .82rem;
+    font-weight   : 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color         : var(--alqamara-primary, #0f172a);
+    margin-bottom : .75rem;
+    padding       : 0;
+    border        : none;
+    line-height   : 1.4;
+}
+
+/* Widget links */
+.alqamara-shop-sidebar a {
+    color          : var(--alqamara-primary, #0f172a);
+    text-decoration: none;
+    font-size      : .88rem;
+    transition     : color .18s;
+}
+.alqamara-shop-sidebar a:hover { color: var(--alqamara-accent, #b8912a); }
+
+/* Widget list items (categories, tags, etc.) */
+.alqamara-shop-sidebar ul {
+    list-style: none;
+    padding   : 0;
+    margin    : 0;
+}
+.alqamara-shop-sidebar ul li {
+    display        : flex;
+    align-items    : center;
+    justify-content: space-between;
+    padding        : .3rem 0;
+    border-bottom  : 1px solid var(--alqamara-wc-border);
+    font-size      : .88rem;
+}
+.alqamara-shop-sidebar ul li:last-child { border-bottom: none; }
+.alqamara-shop-sidebar ul li .count {
+    color      : var(--alqamara-wc-muted);
+    font-size  : .78rem;
+    margin-left: .35rem;
+}
+
+/* Active category highlight */
+.alqamara-shop-sidebar .current-cat > a,
+.alqamara-shop-sidebar .chosen > a {
+    color      : var(--alqamara-accent, #b8912a);
+    font-weight: 600;
+}
+
+/* ── View Toggle Buttons ──────────────────────────────────────────────── */
+.alqamara-view-toggle { flex-shrink: 0; }
+
+.alqamara-view-btn {
+    display        : inline-flex;
+    align-items    : center;
+    justify-content: center;
+    width          : 2rem;
+    height         : 2rem;
+    border         : 1.5px solid var(--alqamara-wc-border);
+    border-radius  : 5px;
+    background     : #fff;
+    color          : var(--alqamara-wc-muted);
+    font-size      : .9rem;
+    cursor         : pointer;
+    transition     : border-color .18s, color .18s, background .18s;
+    padding        : 0;
+    line-height    : 1;
+}
+.alqamara-view-btn:hover {
+    border-color: var(--alqamara-accent, #b8912a);
+    color       : var(--alqamara-accent, #b8912a);
+}
+.alqamara-view-btn.active {
+    background  : var(--alqamara-accent, #b8912a);
+    border-color: var(--alqamara-accent, #b8912a);
+    color       : #fff;
+}
+
+/* ── List View layout ─────────────────────────────────────────────────── */
+.woocommerce ul.products.alqamara-list-view,
+.woocommerce-page ul.products.alqamara-list-view {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+}
+.woocommerce ul.products.alqamara-list-view li.product .alqamara-pw-card,
+.woocommerce-page ul.products.alqamara-list-view li.product .alqamara-pw-card {
+    flex-direction: row !important;
+    height        : auto !important;
+}
+.woocommerce ul.products.alqamara-list-view li.product .alqamara-pw-thumb-wrap,
+.woocommerce-page ul.products.alqamara-list-view li.product .alqamara-pw-thumb-wrap {
+    width     : 200px;
+    min-width : 200px;
+    flex-shrink: 0;
+    aspect-ratio: unset !important;
+    height    : 100%;
+}
+.woocommerce ul.products.alqamara-list-view li.product .alqamara-pw-thumb,
+.woocommerce-page ul.products.alqamara-list-view li.product .alqamara-pw-thumb {
+    height    : 100%;
+    object-fit: cover;
+}
+.woocommerce ul.products.alqamara-list-view li.product .alqamara-pw-no-thumb,
+.woocommerce-page ul.products.alqamara-list-view li.product .alqamara-pw-no-thumb {
+    height    : 100%;
+    min-height: 160px;
+}
+.woocommerce ul.products.alqamara-list-view li.product .alqamara-pw-body,
+.woocommerce-page ul.products.alqamara-list-view li.product .alqamara-pw-body {
+    padding: 1.1rem 1.25rem;
+}
+/* Hide hover overlay in list view */
+.woocommerce ul.products.alqamara-list-view li.product .alqamara-pw-cart-overlay,
+.woocommerce-page ul.products.alqamara-list-view li.product .alqamara-pw-cart-overlay {
+    display: none;
+}
+/* Mobile list view: keep horizontal row but with a narrower thumbnail.
+   Column layout would push price/cart below a large blank thumb area,
+   making them hard to see without scrolling each card. */
+@media (max-width: 575.98px) {
+    .woocommerce ul.products.alqamara-list-view li.product .alqamara-pw-thumb-wrap {
+        width     : 110px;
+        min-width : 110px;
+        height    : auto;
+    }
+    .woocommerce ul.products.alqamara-list-view li.product .alqamara-pw-no-thumb {
+        min-height: 110px;
+    }
+    .woocommerce ul.products.alqamara-list-view li.product .alqamara-pw-body {
+        padding: .75rem 1rem;
+    }
+}
+
+/* ── 06. Product Card ───────────────────────────────────────────────────── */
+/*
+ * Card styles are in css/custom.css (.alqamara-pw-* rules) — the shop page
+ * template (content-product.php) now uses the SAME .alqamara-pw-* classes as
+ * the homepage Posts Widget so both stay in sync with one set of CSS.
+ *
+ * Only fallback styles for WC's default markup (when no theme override):
+ */
+.woocommerce ul.products li.product a img { width: 100%; height: auto; display: block; }
+/*
+ * Button: custom.css already defines .alqamara-pw-cart .button with !important.
+ * This rule is a fallback for any WC button that falls outside .alqamara-pw-cart.
+ */
+.woocommerce ul.products li.product a.button,
+.woocommerce ul.products li.product .button {
+    background  : var(--alqamara-accent, #b8912a) !important;
+    color       : #fff !important;
+    border-radius: 5px;
+    font-size   : .82rem !important; font-weight: 600;
+    line-height : 1.4 !important;
+    width: 100%; display: block; text-align: center;
+    padding     : .5rem .9rem !important;
+    margin-top  : 0 !important;   /* override WC plugin's margin-top: 1em */
+    transition  : background .2s;
+}
+.woocommerce ul.products li.product a.button:hover {
+    background: var(--alqamara-accent-dark, #9a7821) !important;
+}
+
+/* ── 07. Sale Badge ─────────────────────────────────────────────────────── */
+/*
+ * The single product page's Sale badge reuses the SAME .alqamara-pw-sale-badge
+ * pill styling as the shop-loop card (defined once in custom.css, shared
+ * with the widget) — see the woocommerce_sale_flash filter in
+ * inc/woocommerce.php, which outputs class="onsale alqamara-pw-sale-badge" with
+ * plain "Sale -10%" text (one line, no separate label/pct spans anymore).
+ *
+ * BUT: WooCommerce core's own plugin stylesheet ALSO targets `.onsale`
+ * directly (border-radius:100%, fixed min-width/min-height ~44px, tiny
+ * padding — its own circular badge default) and loads after this file, so
+ * it was still winning on this page only (the shop-loop badge doesn't
+ * carry the `onsale` class, so it never hit this conflict). Result: an
+ * oval/egg shape instead of the intended pill. Force the pill back with
+ * higher specificity + !important, scoped to only our own badge.
+ */
+.woocommerce span.onsale.alqamara-pw-sale-badge {
+    border-radius : 999px !important;
+    width          : auto  !important;
+    height         : auto  !important;
+    min-width      : 0     !important;
+    min-height     : 0     !important;
+    line-height    : 1     !important; /* WC core sets a tall fixed line-height that was inflating the box to an oval */
+    padding        : .3rem .6rem !important; /* WC core also shrinks padding to ~2.7px — match custom.css's pill padding */
+}
+
+/* ── 08. Hover Overlay ─────────────────────────────────────────────────── */
+/*
+ * .alqamara-pw-cart-overlay, .alqamara-pw-view-details, .alqamara-pw-icon-btn styles
+ * are in custom.css (shared with widget). Nothing needed here.
+ */
+
+/* ── 09. Star Ratings ──────────────────────────────────────────────────── */
+.star-rating { color: var(--alqamara-accent, #b8912a); font-size: .85rem; }
+.star-rating::before { color: #d1d5db; }
+.star-rating span::before { color: var(--alqamara-accent, #b8912a); }
+
+.woocommerce .star-rating {
+    overflow: hidden;
+    position: relative;
+    height: 1em;
+    line-height: 1;
+    font-size: .9em;
+    width: 5.4em;
+    font-family: star;
+}
+.woocommerce .star-rating::before {
+    content: '\53\53\53\53\53';
+    color: #d1d5db;
+    float: left;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+.woocommerce .star-rating span {
+    overflow: hidden;
+    float: left;
+    top: 0;
+    left: 0;
+    position: absolute;
+    padding-top: 1.5em;
+}
+.woocommerce .star-rating span::before {
+    content: '\53\53\53\53\53';
+    top: 0;
+    position: absolute;
+    left: 0;
+    color: var(--alqamara-accent, #b8912a);
+}
+
+.woocommerce-product-rating { display: flex; align-items: center; gap: .4rem; margin: .3rem 0 .5rem !important; }
+.woocommerce-review-link { font-size: .78rem; color: var(--alqamara-wc-muted); text-decoration: none; }
+.woocommerce-review-link:hover { color: var(--alqamara-accent, #b8912a); }
+
+/* ── 10. Single Product Page ────────────────────────────────────────────── */
+.woocommerce div.product.type-product {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    /* column-gap = horizontal space between the gallery and summary
+     * columns only. Was 1.2rem (~19px), noticeably tighter than typical
+     * professional WooCommerce themes (~40-64px) — increased to 2rem
+     * (~32px). row-gap is DELIBERATELY kept at its original 1.2rem: this
+     * grid also stacks other full-width rows below the gallery/summary
+     * (the notices wrapper above it, then .woocommerce-tabs / .related /
+     * .upsells below) — using the single "gap" shorthand here previously
+     * widened the vertical space between ALL of those rows too (e.g. the
+     * gap between the breadcrumb area and the gallery/summary row), which
+     * was never the intent — only the horizontal gallery↔summary gap
+     * needed to change. */
+    column-gap: 2rem;
+    row-gap: 1.2rem;
+    align-items: flex-start;
+}
+.woocommerce div.product.type-product .woocommerce-product-gallery { grid-column: 1; }
+.woocommerce div.product.type-product .summary { grid-column: 2; }
+.woocommerce div.product.type-product .woocommerce-tabs { grid-column: 1 / -1; margin-top: 3rem; }
+.woocommerce div.product.type-product .related { grid-column: 1 / -1; }
+.woocommerce div.product.type-product .upsells { grid-column: 1 / -1; }
+
+/* WC sets float + width:48% on div.images / div.summary — inside our grid those
+   percentages resolve against the column width (not the container), resulting in
+   ~258px instead of the full column.  Force both to fill their grid cell. */
+.woocommerce div.product.type-product .woocommerce-product-gallery,
+.woocommerce div.product.type-product .summary.entry-summary {
+    float     : none !important;
+    width     : 100% !important;
+    clear     : none !important;
+    min-width : 0;          /* prevent grid track from expanding to content size */
+}
+/* WooCommerce core also puts a 32px margin-bottom on .summary — harmless in
+   its own default template, but in this CSS Grid layout it stacks on top of
+   the row-gap + the next row's own top margin, making the gallery/summary
+   gap bigger than every other section-to-section gap below it. Zeroed here
+   to keep spacing consistent with the rest of section 10/11/12
+   (top-margin-only, zero bottom-margin, on every row). */
+.woocommerce div.product.type-product .summary.entry-summary { margin-bottom: 0; }
+
+/* Product gallery */
+.woocommerce-product-gallery { position: relative; }
+.woocommerce-product-gallery__wrapper {
+    cursor: zoom-in;
+}
+.woocommerce-product-gallery__wrapper img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--alqamara-wc-radius);
+    display: block;
+}
+/* Square (1:1) main image — Customizer toggle "Square (1:1) Product Image"
+   (default on), body class added in inc/woocommerce.php. Doesn't touch the
+   .alqamara-thumb-left layout below, which already stretches the image to a
+   fixed column height via a more specific selector. */
+.alqamara-sp-square-img .woocommerce-product-gallery__wrapper img {
+    aspect-ratio: 1 / 1;
+    height: auto;
+    object-fit: cover;
+}
+/* Bottom thumbnail layout (default) —————————————————————————————————————
+   WC's own CSS sets  .woocommerce-product-gallery--columns-4 li { width:25% }
+   and img { width:100% } which override our values unless we use !important.
+   We also switch from flex-wrap:wrap → nowrap + overflow-x:auto so extra
+   thumbnails scroll horizontally instead of jumping to a second row.        */
+.woocommerce-product-gallery .flex-control-thumbs {
+    display       : flex !important;
+    flex-wrap     : nowrap !important;
+    overflow-x    : auto !important;
+    overflow-y    : hidden !important;
+    scrollbar-width: none !important;
+    gap           : .5rem;
+    margin-top    : .5rem !important;
+    padding       : 0 !important;
+    list-style    : none;
+}
+.woocommerce-product-gallery .flex-control-thumbs::-webkit-scrollbar { display: none; }
+
+/* Override WC's percentage-based li width */
+.woocommerce-product-gallery .flex-control-thumbs li {
+    flex  : 0 0 72px !important;
+    width : 72px !important;
+}
+.woocommerce-product-gallery .flex-control-thumbs img {
+    width        : 72px !important;
+    height       : 72px !important;
+    object-fit   : cover;
+    border-radius: 5px;
+    border       : 2px solid transparent;
+    cursor       : pointer;
+    transition   : border-color .2s;
+    display      : block;
+}
+.woocommerce-product-gallery .flex-control-thumbs img.flex-active,
+.woocommerce-product-gallery .flex-control-thumbs img:hover {
+    border-color: var(--alqamara-accent, #b8912a);
+}
+
+/* Left thumbnail layout (Customizer: Thumbnail Position → Left) ————————
+   Thumbs go to the left as a vertical column. align-self:stretch makes
+   the column exactly as tall as the main image; overflow-y:auto scrolls
+   any extras within that height.                                           */
+.woocommerce-product-gallery.alqamara-thumb-left {
+    display       : flex;
+    flex-direction: row;
+    gap           : 0.75rem;
+    align-items   : stretch;        /* both columns same height */
+}
+.woocommerce-product-gallery.alqamara-thumb-left .woocommerce-product-gallery__wrapper {
+    flex     : 1;
+    min-width: 0;
+}
+.woocommerce-product-gallery.alqamara-thumb-left .woocommerce-product-gallery__wrapper img {
+    width : 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.woocommerce-product-gallery.alqamara-thumb-left .flex-control-thumbs {
+    order         : 0 !important;  /* DOM order: prev arrow, thumbs, next arrow */
+    flex          : 1 !important;  /* fill space between the two arrows */
+    flex-direction: column !important;
+    flex-wrap     : nowrap !important;
+    width         : 72px !important;
+    overflow-x    : hidden !important;
+    overflow-y    : auto !important;
+    margin-top    : 0 !important;
+    max-height    : none !important;
+}
+.woocommerce-product-gallery.alqamara-thumb-left .flex-control-thumbs li {
+    flex  : 0 0 72px !important;
+    width : 72px !important;
+}
+.woocommerce-product-gallery.alqamara-thumb-left .flex-control-thumbs img {
+    width : 72px !important;
+    height: 72px !important;
+}
+
+/* Summary / info column */
+.woocommerce div.product.type-product .summary .product_title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--alqamara-primary, #0f172a);
+    margin-bottom: .3rem;
+    line-height: 1.3;
+}
+.woocommerce div.product.type-product p.price,
+.woocommerce div.product.type-product span.price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--alqamara-primary, #0f172a);
+    margin: .6rem 0;
+    display: flex;
+    align-items: baseline;
+    gap: .4rem;
+    flex-wrap: wrap;
+}
+.woocommerce div.product.type-product p.price del,
+.woocommerce div.product.type-product span.price del {
+    font-size: .95rem;
+    font-weight: 400;
+    color: var(--alqamara-wc-muted);
+    opacity: .7;
+}
+.woocommerce div.product.type-product p.price ins,
+.woocommerce div.product.type-product span.price ins {
+    text-decoration: none;
+    color: var(--alqamara-accent, #b8912a);
+}
+
+/* Stock status */
+.woocommerce div.product.type-product .in-stock  { color: var(--alqamara-wc-success); font-weight: 600; font-size: .85rem; }
+.woocommerce div.product.type-product .out-of-stock { color: var(--alqamara-wc-error); font-weight: 600; font-size: .85rem; }
+
+/* Short description */
+.woocommerce div.product.type-product .woocommerce-product-details__short-description {
+    font-size: .9rem;
+    color: var(--alqamara-wc-muted);
+    line-height: 1.65;
+    margin-bottom: 1.25rem;
+}
+
+/* Quantity + Add to Cart */
+.woocommerce div.product.type-product form.cart {
+    display     : flex;
+    align-items : center;
+    gap         : .75rem;
+    flex-wrap   : wrap;
+    margin-bottom: 1rem;
+}
+
+/* Variable product: variations table + single_variation_wrap each take full width */
+.woocommerce div.product.type-product form.cart table.variations,
+.woocommerce div.product.type-product form.cart .single_variation_wrap {
+    flex : 0 0 100%;
+    width: 100%;
+}
+
+/* Simple product: qty stays compact on same row as buttons */
+.woocommerce div.product.type-product form.cart .quantity {
+    flex   : 0 0 auto;
+    display: flex;
+    align-items: center;
+    border: 1.5px solid var(--alqamara-wc-border);
+    border-radius: var(--alqamara-wc-radius);
+    overflow: hidden;
+}
+.woocommerce div.product.type-product form.cart .qty {
+    width: 56px;
+    height: 42px;
+    text-align: center;
+    border: none;
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--alqamara-primary, #0f172a);
+    background: #fff;
+}
+.woocommerce div.product.type-product form.cart .qty:focus { outline: none; box-shadow: none; }
+
+.woocommerce div.product.type-product form.cart .button {
+    height: 42px;
+    padding: 0 1.6rem;
+    font-size: .9rem;
+    font-weight: 700;
+    background: var(--alqamara-accent, #b8912a) !important;
+    color: #fff !important;
+    border: none;
+    border-radius: var(--alqamara-wc-radius);
+    cursor: pointer;
+    transition: background .2s;
+    white-space: nowrap;
+}
+.woocommerce div.product.type-product form.cart .button:hover {
+    background: var(--alqamara-accent-dark, #9a7821) !important;
+}
+
+/* Add to Cart — flex:1 fills all remaining space next to the quantity box.
+   The broad .woocommerce div.product.type-product selector covers both simple and variable
+   products regardless of what wrapper a swatches plugin may add around the button. */
+.woocommerce div.product.type-product form.cart .single_add_to_cart_button,
+.woocommerce div.product.type-product .woocommerce-variation-add-to-cart .single_add_to_cart_button,
+.woocommerce div.product.type-product .single_add_to_cart_button {
+    flex           : 1 1 0 !important;
+    min-width      : 0;
+    text-align     : center;
+    justify-content: center;
+}
+
+@media (max-width: 340px) {
+    .woocommerce div.product.type-product form.cart .single_add_to_cart_button,
+    .woocommerce div.product.type-product .woocommerce-variation-add-to-cart .single_add_to_cart_button,
+    .woocommerce div.product.type-product .single_add_to_cart_button {
+        min-width: 110px;
+    }
+    
+}
+
+/* Order buttons always stay side-by-side — no stacking even on narrow screens */
+
+/* Product meta (SKU, category) */
+.woocommerce div.product.type-product .product_meta {
+    font-size: .8rem;
+    color: var(--alqamara-wc-muted);
+    margin-top: 1rem;
+    border-top: 1px solid var(--alqamara-wc-border);
+    padding-top: .75rem;
+}
+/* Only direct children → prevents inner .sku span from becoming block (two-line SKU bug) */
+.woocommerce div.product.type-product .product_meta > span { display: block; margin-bottom: .2rem; }
+.woocommerce div.product.type-product .product_meta a {
+    color: var(--alqamara-accent, #b8912a);
+    text-decoration: none;
+}
+.woocommerce div.product.type-product .product_meta a:hover { text-decoration: underline; }
+
+/* Variable product — variation swatches */
+.woocommerce div.product.type-product table.variations {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: .5rem;
+}
+.woocommerce div.product.type-product table.variations th { font-size: .85rem; font-weight: 600; padding: .4rem .5rem .4rem 0; }
+/* Native select — shown only when JS hasn't run yet or swatches plugin is active */
+.woocommerce div.product.type-product table.variations td select {
+    width: 100%;
+    border: 1.5px solid var(--alqamara-wc-border);
+    border-radius: 5px;
+    padding: .38rem .7rem;
+    font-size: .88rem;
+    color: var(--alqamara-primary, #0f172a);
+    background: #fff;
+}
+.woocommerce div.product.type-product table.variations td select:focus {
+    border-color: var(--alqamara-accent, #b8912a);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(184,145,42,.15);
+}
+
+/* ── Button group ── */
+
+.woocommerce div.product.type-product .reset_variations {
+    font-size: .78rem;
+    color: var(--alqamara-wc-muted);
+    text-decoration: none;
+    display: block;
+}
+.woocommerce div.product.type-product .reset_variations:hover { color: var(--alqamara-accent, #b8912a); }
+
+/* WC hides this link via visibility:hidden (not display:none), keeping it in the
+   flex flow and pushing the Add to Cart button to the right. Remove from flow
+   entirely when hidden — display:none[style*="hidden"] works because WC switches
+   the inline style to "visibility: visible" (no "hidden") when it shows the link. */
+.woocommerce div.product.type-product .reset_variations[style*="hidden"] {
+    display: none !important;
+}
+
+/* Badge stack on the single product gallery — position comes from
+   .alqamara-badge-stack in custom.css (top-LEFT, shared everywhere); this only
+   bumps the inset and badge text size to suit the bigger gallery image
+   (vs. the smaller shop-loop card). Deliberately left-side: WooCommerce's
+   own .woocommerce-product-gallery__trigger (the full-screen zoom button)
+   lives top-RIGHT, so keeping every badge on the left avoids that
+   collision entirely rather than working around it. */
+.woocommerce-product-gallery__wrapper .alqamara-badge-stack {
+    top  : .75rem;
+    left : .75rem;
+}
+.woocommerce-product-gallery__wrapper .alqamara-pw-sale-badge {
+    font-size: .74rem;
+    padding  : .4rem .85rem;
+}
+
+/* Some plugins (e.g. variation-swatches) wrap the entire form.cart content
+   inside an anonymous <div> with no class/id. When that div is the ONLY
+   direct child of form.cart, our flex layout collapses to content-width.
+   :only-child targets it precisely; after the plugin is removed the form
+   has multiple children (table + div.single_variation_wrap) so this rule
+   no longer matches — completely harmless. */
+.woocommerce div.product.type-product form.cart.variations_form > div:only-child {
+    flex  : 0 0 100% !important;
+    width : 100%     !important;
+}
+
+/* Reduce gap between variation selects and Add to Cart button.
+   WC JS sets min-height on .single_variation_wrap to prevent layout jumps —
+   override with !important so the wrap collapses when empty. */
+.woocommerce div.product.type-product .single_variation_wrap              { min-height: 0 !important; }
+.woocommerce div.product.type-product .woocommerce-variation              { min-height: 0 !important; }
+/* Variable product button row — same flex row as simple product form.cart.
+   width:100% is explicit so the row fills the available space regardless of
+   what parent structure a swatches plugin may have added or changed. */
+.woocommerce div.product.type-product .woocommerce-variation-add-to-cart {
+    display    : flex !important;
+    flex-wrap  : nowrap !important;
+    width      : 100% !important;
+    gap        : .75rem;
+    align-items: center;
+    margin-top : .75rem !important;
+}
+
+/* When no variation is selected, the qty input is display:none but the qty
+   wrapper (display:flex) still occupies ~2px as a flex item, pushing the
+   Add to Cart button 6px to the right. Remove it from flex flow when disabled. */
+.woocommerce div.product.type-product .woocommerce-variation-add-to-cart-disabled .quantity {
+    display: none !important;
+}
+.woocommerce div.product.type-product .woocommerce-variation-description  { font-size: .85rem; margin-bottom: .25rem; }
+.woocommerce div.product.type-product table.variations                    { margin-bottom: 0 !important; }
+
+/* ── 11. Product Tabs ───────────────────────────────────────────────────── */
+/* Kept in sync with .related / .upsells top margin (3rem) below — all
+   full-width rows under the gallery/summary grid use the SAME top-margin
+   value so every section-to-section gap reads identically. This only
+   works if each row's BOTTOM margin is 0 — CSS Grid does not collapse
+   margins between rows the way normal block flow does, so a non-zero
+   bottom margin on one row plus a non-zero top margin on the next would
+   silently double up and produce a visibly bigger gap at that one
+   junction. */
+.woocommerce div.product.type-product .woocommerce-tabs { margin-top: 3rem; }
+
+.woocommerce div.product.type-product .woocommerce-tabs ul.tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--alqamara-wc-border);
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    flex-wrap: wrap;
+}
+.woocommerce div.product.type-product .woocommerce-tabs ul.tabs li {
+    border: none;
+    background: none;
+    margin: 0;
+    padding: 0;
+}
+.woocommerce div.product.type-product .woocommerce-tabs ul.tabs li a {
+    display: block;
+    padding: .65rem 1.25rem .65rem .1rem;
+    font-size: .88rem;
+    font-weight: 600;
+    color: var(--alqamara-wc-muted);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color .2s, border-color .2s;
+}
+.woocommerce div.product.type-product .woocommerce-tabs ul.tabs li a:hover { color: var(--alqamara-accent, #b8912a); }
+.woocommerce div.product.type-product .woocommerce-tabs ul.tabs li.active a {
+    color: var(--alqamara-accent, #b8912a);
+    border-bottom-color: var(--alqamara-accent, #b8912a);
+}
+.woocommerce div.product.type-product .woocommerce-tabs ul.tabs::before,
+.woocommerce div.product.type-product .woocommerce-tabs ul.tabs li::before,
+.woocommerce div.product.type-product .woocommerce-tabs ul.tabs li::after { display: none; }
+
+.woocommerce div.product.type-product .woocommerce-tabs .panel {
+    font-size: .9rem;
+    line-height: 1.75;
+    color: var(--alqamara-primary, #0f172a);
+}
+.woocommerce div.product.type-product .woocommerce-tabs .panel h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: .75rem; }
+
+/* Reviews */
+#reviews #comments ol.commentlist li.comment {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--alqamara-wc-border);
+}
+#reviews #comments ol.commentlist li.comment:last-child { border-bottom: none; }
+#reviews #reply-title { font-size: 1rem; font-weight: 700; margin-top: 1.5rem; }
+
+/* Review submit form — bordered card */
+#reviews #respond,
+#reviews .comment-respond {
+    background   : #fff !important;
+    border       : 1px solid var(--alqamara-wc-border) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    padding      : 2rem !important;
+    margin-top   : 1.5rem !important;
+    box-shadow   : var(--alqamara-wc-shadow) !important;
+}
+
+/* ── 12. Related / Up-sells ─────────────────────────────────────────────── */
+.woocommerce .related,
+.woocommerce .upsells { margin-top: 3rem; }
+.woocommerce .related h2,
+.woocommerce .upsells h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--alqamara-primary, #0f172a);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--alqamara-wc-border);
+}
+
+/* ── 13. Cart Page ──────────────────────────────────────────────────────── */
+.woocommerce-cart table.cart,
+.woocommerce table.shop_table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--alqamara-wc-border);
+    border-radius: var(--alqamara-wc-radius);
+    overflow: hidden;
+}
+.woocommerce-cart table.cart th,
+.woocommerce table.shop_table th {
+    background: var(--alqamara-wc-light);
+    font-size: .82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--alqamara-wc-muted);
+    padding: .85rem 1rem;
+    border-bottom: 1px solid var(--alqamara-wc-border);
+}
+.woocommerce-cart table.cart td,
+.woocommerce table.shop_table td {
+    padding: .85rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--alqamara-wc-border);
+    font-size: .9rem;
+    color: var(--alqamara-primary, #0f172a);
+}
+.woocommerce-cart table.cart tr:last-child td { border-bottom: none; }
+
+/* Cart product image */
+.woocommerce-cart table.cart td.product-thumbnail img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid var(--alqamara-wc-border);
+}
+
+/* Product name + price cells — extra padding for breathing room */
+.woocommerce-cart table.cart td.product-name,
+.woocommerce-cart table.cart td.product-price,
+.woocommerce-cart table.cart td.product-subtotal {
+    padding: 1rem 1.25rem;
+}
+
+/* Cart product name */
+.woocommerce-cart table.cart td.product-name a {
+    color: var(--alqamara-primary, #0f172a);
+    font-weight: 600;
+    text-decoration: none;
+}
+.woocommerce-cart table.cart td.product-name a:hover { color: var(--alqamara-accent, #b8912a); }
+.woocommerce-cart table.cart td.product-subtotal { font-weight: 700; color: var(--alqamara-accent, #b8912a); }
+
+/* Cart quantity input */
+.woocommerce-cart table.cart .quantity .qty {
+    width: 60px;
+    text-align: center;
+    border: 1.5px solid var(--alqamara-wc-border);
+    border-radius: 5px;
+    padding: .3rem .5rem;
+    font-size: .9rem;
+}
+
+/* Remove item X */
+.woocommerce-cart table.cart td .remove {
+    color: var(--alqamara-wc-muted) !important;
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    transition: background .2s, color .2s;
+}
+.woocommerce-cart table.cart td .remove:hover {
+    background: var(--alqamara-wc-error);
+    color: #fff !important;
+}
+
+/* Coupon form */
+.woocommerce-cart .coupon {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.woocommerce-cart .coupon #coupon_code {
+    border: 1.5px solid var(--alqamara-wc-border);
+    border-radius: var(--alqamara-wc-radius);
+    padding: .5rem .85rem;
+    font-size: .88rem;
+    height: 40px;
+    flex: 1 1 180px;
+}
+.woocommerce-cart .coupon #coupon_code:focus {
+    border-color: var(--alqamara-accent, #b8912a);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(184,145,42,.15);
+}
+/* Apply Coupon — filled accent, matches global WC button style */
+.woocommerce-cart .coupon button[name="apply_coupon"] {
+    background: var(--alqamara-accent, #b8912a) !important;
+    border: none;
+    color: #fff !important;
+    border-radius: var(--alqamara-wc-radius);
+    height: 40px;
+    padding: 0 1.1rem;
+    font-size: .88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s;
+    white-space: nowrap;
+}
+.woocommerce-cart .coupon button[name="apply_coupon"]:hover {
+    background: var(--alqamara-accent-dark, #9a7821) !important;
+}
+
+/* Update cart — ghost/secondary (disabled by default until qty changes) */
+button[name="update_cart"] {
+    background: transparent;
+    border: 1.5px solid var(--alqamara-wc-border);
+    color: var(--alqamara-wc-muted);
+    border-radius: var(--alqamara-wc-radius);
+    height: 40px;
+    padding: 0 1.1rem;
+    font-size: .88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color .2s, color .2s;
+}
+button[name="update_cart"]:not([disabled]):hover {
+    border-color: var(--alqamara-accent, #b8912a);
+    color: var(--alqamara-accent, #b8912a);
+}
+
+/* Cart actions row (coupon + update cart) */
+.woocommerce-cart table.cart td.actions {
+    padding: 1rem 1.25rem;
+    background: var(--alqamara-wc-light);
+}
+
+/* Cart-page cross-sells show/hide is handled entirely in PHP (see
+   alqamara_cart_cross_sells in inc/woocommerce.php) — a `wp_head` style
+   tag targets the native block's real wrapper class
+   (`.wp-block-woocommerce-product-collection`) only when the Customizer
+   toggle is off.
+   ─────────────────────────────────────────────────────────────────────
+   Card design below: this native "Product Collection" block renders its
+   own WooCommerce block markup (Product Image / Title / Price / Button
+   blocks) — a completely different DOM shape from the theme's own
+   content-product.php shop-loop card (`.alqamara-pw-card`), so none of that
+   card's CSS (or the badge system, which hooks the classic
+   woocommerce_product_thumbnails action that this block never fires)
+   reaches it automatically. Restyled here to visually match the shop
+   card's language (white bg, bordered, rounded corners, hover lift,
+   accent-colored price) without touching WooCommerce's own block markup.
+   Scoped to the Cart page so it can't affect a Product Collection block
+   used anywhere else on the site. */
+body.woocommerce-cart .wp-block-woocommerce-product-collection > h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--alqamara-primary, #0f172a);
+    margin: 3rem 0 1.5rem;
+    padding-bottom: .75rem;
+    border-bottom: 2px solid var(--alqamara-wc-border);
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection ul.wc-block-product-template {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection li.wc-block-product {
+    display        : flex;
+    flex-direction : column;
+    margin         : 0;
+    padding        : 1rem;
+    list-style     : none;
+    background     : #fff;
+    border         : 1px solid var(--alqamara-wc-border);
+    border-radius  : var(--alqamara-wc-radius);
+    transition     : box-shadow .25s ease, transform .25s ease, border-color .25s ease;
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection li.wc-block-product:hover {
+    box-shadow   : 0 8px 28px rgba(0,0,0,.1);
+    transform    : translateY(-3px);
+    border-color : var(--alqamara-accent, #b8912a);
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection .wc-block-components-product-image {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: .75rem;
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection .wp-block-woocommerce-product-sale-badge {
+    position: absolute;
+    top     : .5rem;
+    left    : .5rem;
+    z-index : 2;
+}
+/* The actual visible pill is nested one level deeper
+   (.wc-block-components-product-sale-badge, with its own "alignright"
+   positioning/box model that fights a plain background/color override on
+   the wrapper above) — style and reposition IT directly. */
+body.woocommerce-cart .wp-block-woocommerce-product-collection .wc-block-components-product-sale-badge {
+    position       : static !important;
+    width          : auto !important;
+    height         : auto !important;
+    min-width      : 0 !important;
+    min-height     : 0 !important;
+    background     : var(--alqamara-accent, #b8912a) !important;
+    color          : #fff !important;
+    border         : none !important;
+    border-radius  : 999px !important;
+    padding        : .25rem .6rem !important;
+    line-height    : 1 !important;
+    font-size      : .64rem !important;
+    font-weight    : 700 !important;
+    letter-spacing : .02em;
+    text-transform : uppercase;
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection .wc-block-components-product-sale-badge__text {
+    color: #fff !important;
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection .wc-block-components-product-image img {
+    transition: transform .4s ease;
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection li.wc-block-product:hover .wc-block-components-product-image img {
+    transform: scale(1.04);
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection h2.wp-block-post-title {
+    font-size   : .92rem;
+    font-weight : 700;
+    color       : var(--alqamara-primary, #0f172a);
+    line-height : 1.4;
+    margin      : 0 0 .35rem;
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection h2.wp-block-post-title a {
+    color: inherit;
+    text-decoration: none;
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection h2.wp-block-post-title a:hover {
+    color: var(--alqamara-accent, #b8912a);
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection .wp-block-woocommerce-product-price {
+    font-size: .84rem;
+    margin: 0 0 .75rem;
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection .wp-block-woocommerce-product-price .woocommerce-Price-amount {
+    font-weight: 600;
+    color: #64748b;
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection .wp-block-woocommerce-product-price del { color: #9ca3af; }
+body.woocommerce-cart .wp-block-woocommerce-product-collection .wp-block-woocommerce-product-price ins {
+    text-decoration: none;
+    color: var(--alqamara-accent, #b8912a);
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection .wc-block-components-product-button {
+    margin-top: auto;
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection .wc-block-components-product-button__button {
+    width         : 100% !important;
+    background    : var(--alqamara-accent, #b8912a) !important;
+    color         : #fff !important;
+    border        : none !important;
+    border-radius : 5px !important;
+    font-size     : .82rem !important;
+    font-weight   : 600 !important;
+    padding       : .5rem .9rem !important;
+}
+body.woocommerce-cart .wp-block-woocommerce-product-collection .wc-block-components-product-button__button:hover {
+    background: var(--alqamara-accent-dark, #9a7821) !important;
+}
+@media (max-width: 767.98px) {
+    body.woocommerce-cart .wp-block-woocommerce-product-collection ul.wc-block-product-template {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+/* Cart totals box */
+.cart_totals {
+    background: var(--alqamara-wc-light);
+    border: 1px solid var(--alqamara-wc-border);
+    border-radius: var(--alqamara-wc-radius);
+    padding: 1.5rem;
+}
+.cart_totals h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--alqamara-wc-border);
+    color: var(--alqamara-primary, #0f172a);
+}
+.cart_totals table { width: 100%; }
+.cart_totals table th,
+.cart_totals table td { padding: .6rem 0; font-size: .9rem; }
+.cart_totals table th { font-weight: 600; color: var(--alqamara-wc-muted); width: 45%; }
+.cart_totals table .order-total td { font-size: 1.1rem; font-weight: 700; color: var(--alqamara-primary, #0f172a); }
+.cart_totals table .order-total th { font-size: .95rem; font-weight: 700; }
+.cart_totals .wc-proceed-to-checkout a.checkout-button {
+    display: block;
+    width: 100%;
+    padding: .75rem 1.5rem;
+    background: var(--alqamara-accent, #b8912a) !important;
+    color: #fff !important;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: var(--alqamara-wc-radius);
+    text-align: center;
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: background .2s;
+    border: none;
+}
+.cart_totals .wc-proceed-to-checkout a.checkout-button:hover {
+    background: var(--alqamara-primary, #0f172a) !important;
+}
+
+/* Continue Shopping / Return to Shop button */
+.return-to-shop .button,
+.woocommerce a.button.wc-backward {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    height: 42px;
+    padding: 0 2rem;
+    font-size: .95rem;
+    font-weight: 700;
+}
+.return-to-shop .button::before {
+    content: '\2190'; /* ← arrow */
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+/* ── 14. Checkout Page ──────────────────────────────────────────────────── */
+.woocommerce-checkout #customer_details { margin-bottom: 1.5rem; }
+.woocommerce-checkout .woocommerce-billing-fields h3,
+.woocommerce-checkout .woocommerce-shipping-fields h3,
+.woocommerce-checkout #order_review_heading {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--alqamara-primary, #0f172a);
+    padding-bottom: .6rem;
+    border-bottom: 2px solid var(--alqamara-wc-border);
+    margin-bottom: 1.25rem;
+}
+
+/* Checkout form fields */
+.woocommerce form .form-row { margin-bottom: 1rem; }
+.woocommerce form .form-row label {
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--alqamara-primary, #0f172a);
+    margin-bottom: .3rem;
+    display: block;
+}
+.woocommerce form .form-row label .required { color: var(--alqamara-wc-error); margin-left: .15rem; }
+.woocommerce form .form-row input.input-text,
+.woocommerce form .form-row textarea,
+.woocommerce form .form-row select {
+    width: 100%;
+    border: 1.5px solid var(--alqamara-wc-border);
+    border-radius: var(--alqamara-wc-radius);
+    padding: .5rem .85rem;
+    font-size: .9rem;
+    color: var(--alqamara-primary, #0f172a);
+    background: #fff;
+    transition: border-color .2s, box-shadow .2s;
+}
+.woocommerce form .form-row input.input-text:focus,
+.woocommerce form .form-row textarea:focus,
+.woocommerce form .form-row select:focus {
+    border-color: var(--alqamara-accent, #b8912a);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(184,145,42,.15);
+}
+
+/* Checkout: additional notes */
+.woocommerce-additional-fields h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--alqamara-primary, #0f172a);
+    margin-bottom: 1rem;
+}
+
+/* Order review table */
+#order_review table.shop_table { margin-bottom: 1.25rem; }
+#order_review table.shop_table tfoot tr td { font-weight: 700; }
+#order_review table.shop_table .order-total td,
+#order_review table.shop_table .order-total th { font-size: 1rem; color: var(--alqamara-accent, #b8912a); }
+
+/* Payment methods */
+.woocommerce-checkout #payment {
+    background: var(--alqamara-wc-light);
+    border: 1px solid var(--alqamara-wc-border);
+    border-radius: var(--alqamara-wc-radius);
+    padding: 1.25rem;
+}
+.woocommerce-checkout #payment ul.payment_methods {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+.woocommerce-checkout #payment ul.payment_methods li {
+    border-bottom: 1px solid var(--alqamara-wc-border);
+    padding: .6rem 0;
+}
+.woocommerce-checkout #payment ul.payment_methods li:last-child { border-bottom: none; }
+.woocommerce-checkout #payment ul.payment_methods label {
+    font-weight: 600;
+    font-size: .9rem;
+    cursor: pointer;
+    margin-left: .4rem;
+}
+.woocommerce-checkout #payment .payment_box {
+    background: #fff;
+    border: 1px solid var(--alqamara-wc-border);
+    border-radius: 5px;
+    padding: .75rem;
+    font-size: .85rem;
+    color: var(--alqamara-wc-muted);
+    margin-top: .4rem;
+}
+
+/* Place order button */
+.woocommerce-checkout #payment #place_order,
+#payment #place_order {
+    display: block;
+    width: 100%;
+    padding: .85rem 1.5rem;
+    background: var(--alqamara-accent, #b8912a) !important;
+    color: #fff !important;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border: none;
+    border-radius: var(--alqamara-wc-radius);
+    cursor: pointer;
+    transition: background .2s;
+    text-align: center;
+}
+.woocommerce-checkout #payment #place_order:hover {
+    background: var(--alqamara-primary, #0f172a) !important;
+}
+
+/* Checkbox (ship to different address, terms) */
+.woocommerce-checkout .woocommerce-form__input-checkbox { margin-right: .4rem; }
+
+/* ── 15. WC Buttons (global) ────────────────────────────────────────────── */
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button,
+.woocommerce #respond input#submit,
+.woocommerce a.button.alt,
+.woocommerce button.button.alt,
+.woocommerce input.button.alt {
+    background: var(--alqamara-accent, #b8912a) !important;
+    color: #fff !important;
+    border: none;
+    border-radius: var(--alqamara-wc-radius);
+    padding: .5rem 1.2rem;
+    font-size: .88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+    text-decoration: none;
+    display: inline-block;
+}
+.woocommerce a.button:hover,
+.woocommerce button.button:hover,
+.woocommerce input.button:hover,
+.woocommerce #respond input#submit:hover,
+.woocommerce a.button.alt:hover,
+.woocommerce button.button.alt:hover,
+.woocommerce input.button.alt:hover {
+    background: var(--alqamara-accent-dark, #9a7821) !important;
+    color: #fff !important;
+}
+.woocommerce a.button.disabled,
+.woocommerce button.button.disabled { opacity: .55; cursor: not-allowed; }
+
+/* Review submit — same size as Add to Cart (form.cart .button rule doesn't apply here) */
+.woocommerce #respond input#submit.button {
+    height     : 42px !important;
+    padding    : 0 1.6rem !important;
+    font-size  : .9rem !important;
+    font-weight: 700 !important;
+}
+
+/* ── 16. Form Fields (global) ───────────────────────────────────────────── */
+.woocommerce .quantity .qty {
+    border: 1.5px solid var(--alqamara-wc-border);
+    border-radius: 5px;
+    padding: .4rem .6rem;
+    font-size: .9rem;
+    color: var(--alqamara-primary, #0f172a);
+    background: #fff;
+    width: 60px;
+    text-align: center;
+}
+.woocommerce .quantity .qty:focus {
+    border-color: var(--alqamara-accent, #b8912a);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(184,145,42,.15);
+}
+
+/* ── 17. Mini Cart (inside .alqamara-cart-drawer) ────────────────────────────── */
+.alqamara-cart-drawer-body .widget_shopping_cart_content { padding: 0; }
+.alqamara-cart-drawer-body .woocommerce-mini-cart {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.alqamara-cart-drawer-body .woocommerce-mini-cart__item {
+    display: flex;
+    gap: .75rem;
+    align-items: flex-start;
+    padding: .85rem 0;
+    border-bottom: 1px solid var(--alqamara-wc-border);
+}
+.alqamara-cart-drawer-body .woocommerce-mini-cart__item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid var(--alqamara-wc-border);
+    flex-shrink: 0;
+}
+.alqamara-cart-drawer-body .woocommerce-mini-cart__item a {
+    font-size: .88rem;
+    font-weight: 600;
+    color: var(--alqamara-primary, #0f172a);
+    text-decoration: none;
+    line-height: 1.35;
+}
+.alqamara-cart-drawer-body .woocommerce-mini-cart__item a:hover { color: var(--alqamara-accent, #b8912a); }
+.alqamara-cart-drawer-body .woocommerce-mini-cart__item .quantity {
+    font-size: .8rem;
+    color: var(--alqamara-wc-muted);
+    margin-top: .2rem;
+    display: block;
+}
+.alqamara-cart-drawer-body .woocommerce-mini-cart__item .remove {
+    color: var(--alqamara-wc-muted) !important;
+    font-size: 1rem;
+    text-decoration: none;
+    margin-left: auto;
+    flex-shrink: 0;
+    align-self: center;
+    transition: color .2s;
+}
+.alqamara-cart-drawer-body .woocommerce-mini-cart__item .remove:hover { color: var(--alqamara-wc-error) !important; }
+
+/* Drawer totals */
+.alqamara-cart-drawer-body .woocommerce-mini-cart__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--alqamara-primary, #0f172a);
+    padding: .85rem 0 1rem;
+}
+.alqamara-cart-drawer-body .woocommerce-mini-cart__total .amount { color: var(--alqamara-accent, #b8912a); }
+
+/* Drawer buttons — layout only; colors handled in custom.css (.alqamara-cart-drawer) */
+.alqamara-cart-drawer-body .woocommerce-mini-cart__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+/* Empty cart notice in drawer */
+.alqamara-cart-drawer-body .woocommerce-mini-cart--empty {
+    text-align: center;
+    color: var(--alqamara-wc-muted);
+    font-size: .9rem;
+    padding: 2rem 0;
+}
+
+/* ── 18. WC Widgets ─────────────────────────────────────────────────────── */
+
+/* Product Search */
+.widget_product_search .woocommerce-product-search {
+    display: flex;
+    gap: 0;
+    border: 1.5px solid var(--alqamara-wc-border);
+    border-radius: var(--alqamara-wc-radius);
+    overflow: hidden;
+}
+.widget_product_search .woocommerce-product-search .search-field {
+    flex: 1;
+    border: none;
+    padding: .5rem .85rem;
+    font-size: .88rem;
+    color: var(--alqamara-primary, #0f172a);
+    outline: none;
+}
+.widget_product_search .woocommerce-product-search button[type="submit"] {
+    background: var(--alqamara-accent, #b8912a) !important;
+    color: #fff !important;
+    border: none;
+    padding: .5rem .85rem;
+    cursor: pointer;
+    font-size: .9rem;
+    transition: background .2s;
+}
+.widget_product_search .woocommerce-product-search button[type="submit"]:hover {
+    background: var(--alqamara-primary, #0f172a) !important;
+}
+
+/* Product Categories */
+.widget_product_categories ul,
+.woocommerce-widget-layered-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.widget_product_categories ul li,
+.woocommerce-widget-layered-nav ul li {
+    padding: .3rem 0;
+    border-bottom: 1px solid var(--alqamara-wc-border);
+    font-size: .88rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.widget_product_categories ul li:last-child,
+.woocommerce-widget-layered-nav ul li:last-child { border-bottom: none; }
+.widget_product_categories ul li a,
+.woocommerce-widget-layered-nav ul li a {
+    color: var(--alqamara-primary, #0f172a);
+    text-decoration: none;
+    transition: color .2s;
+}
+.widget_product_categories ul li a:hover,
+.woocommerce-widget-layered-nav ul li a:hover { color: var(--alqamara-accent, #b8912a); }
+.widget_product_categories ul li .count,
+.woocommerce-widget-layered-nav ul li .count {
+    font-size: .75rem;
+    color: var(--alqamara-wc-muted);
+    background: var(--alqamara-wc-light);
+    border-radius: 99px;
+    padding: .1rem .5rem;
+}
+
+/* Price Filter */
+.widget_price_filter .price_slider_wrapper { padding: .5rem 0 1rem; }
+.widget_price_filter .ui-slider {
+    background: var(--alqamara-wc-border);
+    border-radius: 99px;
+    height: 4px;
+    margin: 1rem 0;
+    position: relative;
+}
+.widget_price_filter .ui-slider-range {
+    background   : var(--alqamara-accent, #b8912a) !important;
+    height       : 100%;
+    border-radius: 99px;
+    position     : absolute;
+}
+.widget_price_filter .ui-slider-handle {
+    width        : 14px !important;
+    height       : 14px !important;
+    background   : var(--alqamara-accent, #b8912a) !important;
+    border-radius: 50% !important;
+    border       : 2px solid #fff !important;
+    box-shadow   : 0 1px 4px rgba(0,0,0,.2) !important;
+    top          : -5px;
+    cursor       : grab;
+    position     : absolute;
+}
+.widget_price_filter .ui-slider-handle:active { cursor: grabbing; }
+
+/* ── Rating filter — star color (classic widget) ───────────────────────────── */
+.widget_rating_filter .star-rating,
+.widget_rating_filter .star-rating::before,
+.widget_rating_filter .star-rating span::before {
+    color : var(--alqamara-accent, #b8912a) !important;
+}
+
+/* ── WC Blocks: Price Slider range color ────────────────────────────────────
+   .range-bar uses background: linear-gradient(... currentColor ...).
+   Setting `color` on .range-bar changes what currentColor resolves to.        */
+.wc-block-product-filter-price-slider .range-bar {
+    color : var(--alqamara-accent, #b8912a) !important;
+}
+
+/* ── WC Blocks: Price Slider — fix truncation & right-align max input ───────
+   WC Blocks hardcodes a 60px max-width on text inputs, clipping values like
+   "1,00,000 BDT". Fix: override to 110px side columns (handles up to ~1 lakh)
+   and remove the 60px max-width cap. Middle 1fr keeps slider spacing.       */
+.wc-block-product-filter-price-slider__content {
+    grid-template-columns : 88px 1fr 88px !important;
+}
+.wc-block-product-filter-price-slider__left.text,
+.wc-block-product-filter-price-slider__right.text {
+    width : 100% !important;
+}
+.wc-block-product-filter-price-slider__left.text input,
+.wc-block-product-filter-price-slider__right.text input {
+    max-width : none !important;
+    width     : 100% !important;
+}
+.wc-block-product-filter-price-slider__right.text input {
+    text-align : right !important;
+}
+
+/* ── WC Blocks: Rating Filter star SVG ──────────────────────────────────────
+   Stars are SVG icons inside the checkbox list text; fill = currentColor.     */
+.wc-block-product-filter-checkbox-list__text svg,
+.wc-block-product-filter-checkbox-list__text-wrapper svg {
+    fill  : var(--alqamara-accent, #b8912a) !important;
+    color : var(--alqamara-accent, #b8912a) !important;
+}
+
+/* ── Sidebar block-widget headings (Gutenberg widget editor) ──────────────── */
+.alqamara-shop-sidebar .widget_block h1,
+.alqamara-shop-sidebar .widget_block h2,
+.alqamara-shop-sidebar .widget_block h3,
+.alqamara-shop-sidebar .widget_block h4 {
+    font-size     : .82rem;
+    font-weight   : 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color         : var(--alqamara-primary, #0f172a);
+    margin-bottom : .75rem;
+    padding       : 0;
+    border        : none;
+    line-height   : 1.4;
+}
+.widget_price_filter .price_slider_amount { display: flex; justify-content: space-between; align-items: center; }
+.widget_price_filter .price_slider_amount .price_label { font-size: .82rem; color: var(--alqamara-wc-muted); }
+.widget_price_filter .price_slider_amount button {
+    background: var(--alqamara-accent, #b8912a) !important;
+    color: #fff !important;
+    border: none;
+    border-radius: 5px;
+    padding: .3rem .75rem;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* =============================================================================
+   WC FILTER BLOCK — Theme-color variables
+   Override WC's own CSS custom properties so all filter block elements
+   automatically use the theme accent colour without per-element overrides.
+   NOTE: WC's actual chip variables are --wc-product-filter-removable-chips-*
+   (set on the chips wrapper, not the outer filters block).
+============================================================================= */
+.wc-block-product-filter-removable-chips {
+    --wc-product-filter-removable-chips-background : var(--alqamara-accent, #b8912a);
+    --wc-product-filter-removable-chips-text       : #fff;
+    --wc-product-filter-removable-chips-border     : var(--alqamara-accent, #b8912a);
+}
+
+/* =============================================================================
+   WC FILTER BLOCK — General checkbox items
+   (Rating, Taxonomy/Category, Status/Stock — all use the same class structure)
+============================================================================= */
+.wc-block-product-filter-checkbox-list__items {
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+}
+.wc-block-product-filter-checkbox-list__label {
+    display     : flex;
+    align-items : center;
+    gap         : .55rem;
+    cursor      : pointer;
+    font-size   : .875rem;
+    color       : var(--alqamara-primary, #0f172a);
+    padding     : .25rem 0;
+    user-select : none;
+}
+/* Checkbox box — unchecked state kept a bit more defined than a barely-
+   visible pale-grey outline (--alqamara-wc-border resolves close to white-on-
+   white), and gets a gentle hover state so it reads as an interactive
+   control before it's ever clicked, not just a flat static square. */
+.wc-block-product-filter-checkbox-list__input-wrapper {
+    position    : relative;   /* containing block for the hidden native input below */
+    width       : 17px;
+    height      : 17px;
+    flex-shrink : 0;
+    border      : 1.5px solid #b9bfc9;
+    border-radius: 4px;
+    background  : #fff;
+    display     : flex;
+    align-items : center;
+    justify-content: center;
+    transition  : background .15s, border-color .15s, box-shadow .15s;
+}
+.wc-block-product-filter-checkbox-list__item:hover
+.wc-block-product-filter-checkbox-list__input-wrapper {
+    border-color: var(--alqamara-accent, #b8912a);
+}
+/* WooCommerce's own CSS always paints a faint ::before tint inside the box
+   (background:currentColor at 10% opacity) — that's the "ash/grey, not
+   really white" centre being reported. WC only turns it off when a
+   ".has-option-element-color" class is present (set via the block editor's
+   own colour picker for this block), which our markup never has since we
+   style this box entirely ourselves. Turning it off unconditionally here
+   instead, so the inside of an unchecked box is genuinely plain white. */
+.wc-block-product-filter-checkbox-list__input-wrapper::before {
+    display: none !important;
+}
+/* The real <input> WooCommerce renders inside the wrapper only looks
+   invisible by accident — its own default background/border are
+   "transparent" (WC's own CSS), which happens to blend in on a plain white
+   page but isn't actually hidden, isn't guaranteed to render identically
+   across browsers/OS dark-mode or forced-colour settings, and its 1em box
+   doesn't perfectly fill our 18px wrapper (leaving faint mismatched edges
+   — this was the "box isn't fully white" / "looks a bit off" look).
+   Explicitly hiding it (fully transparent, stretched to cover the whole
+   wrapper) and letting only our own styled box + the checkmark svg be
+   visible is the standard, reliable way to build a custom checkbox — the
+   input stays there and stays clickable, it just never paints anything
+   itself. */
+.wc-block-product-filter-checkbox-list__input {
+    position: absolute;
+    inset   : 0;
+    width   : 100%;
+    height  : 100%;
+    margin  : 0;
+    opacity : 0;
+    cursor  : pointer;
+}
+/* Checked state — box fills with accent */
+.wc-block-product-filter-checkbox-list__item:has(input:checked)
+.wc-block-product-filter-checkbox-list__input-wrapper {
+    background   : var(--alqamara-accent, #b8912a);
+    border-color : var(--alqamara-accent, #b8912a);
+}
+/* SVG checkmark colour (WC renders it inside the wrapper) */
+.wc-block-product-filter-checkbox-list__input-wrapper svg {
+    position: relative;   /* sit above the absolutely-positioned input */
+    width  : 12px;
+    height : 12px;
+    color  : #fff;
+    fill   : #fff;
+}
+
+/* =============================================================================
+   WC FILTER BLOCK — Attribute filter → SIZE pill/chip style
+   Converts the standard checkbox list into horizontal pill buttons so that
+   values like "L", "M", "XL" look like interactive size selectors.
+============================================================================= */
+.wp-block-woocommerce-product-filter-attribute
+.wc-block-product-filter-checkbox-list__items {
+    flex-direction : row;
+    flex-wrap      : wrap;
+    gap            : .45rem;
+}
+.wp-block-woocommerce-product-filter-attribute
+.wc-block-product-filter-checkbox-list__item { flex: none; }
+
+.wp-block-woocommerce-product-filter-attribute
+.wc-block-product-filter-checkbox-list__label {
+    padding         : .3rem .9rem;
+    border          : 1.5px solid var(--alqamara-wc-border, #e2e8f0);
+    border-radius   : 10px;
+    font-size       : .82rem;
+    font-weight     : 600;
+    min-width       : 2.5rem;
+    justify-content : center;
+    background      : transparent;
+    transition      : border-color .15s, background .15s, color .15s;
+}
+/* Hide the checkbox box inside the pill */
+.wp-block-woocommerce-product-filter-attribute
+.wc-block-product-filter-checkbox-list__input-wrapper { display: none; }
+
+/* Hover */
+.wp-block-woocommerce-product-filter-attribute
+.wc-block-product-filter-checkbox-list__label:hover {
+    border-color : var(--alqamara-accent, #b8912a);
+    color        : var(--alqamara-accent, #b8912a);
+}
+/* Selected pill */
+.wp-block-woocommerce-product-filter-attribute
+.wc-block-product-filter-checkbox-list__item:has(input:checked)
+.wc-block-product-filter-checkbox-list__label {
+    background   : var(--alqamara-accent, #b8912a);
+    border-color : var(--alqamara-accent, #b8912a);
+    color        : #fff;
+}
+
+/* =============================================================================
+   WC FILTER BLOCK — Colour swatches in attribute filter
+   Injected by alqamara-filter-apply.js when the term is a colour.
+   Works with any swatch plugin OR with standard CSS colour names.
+============================================================================= */
+
+/* =============================================================================
+   WC FILTER BLOCK — Active filter chips (removable)
+   WP Interactivity renders <li> items inside the template when filters are
+   active. Each chip shows the filter label + a remove (×) button.
+============================================================================= */
+.wc-block-product-filter-removable-chips__items {
+    display   : flex;
+    flex-wrap : wrap;
+    gap       : .4rem;
+    list-style: none;
+    padding   : 0;
+    margin    : 0 0 .75rem;
+}
+/* background & color come from --wc-product-filter-removable-chips-* variables above;
+   only override layout / border-radius (WC hardcodes 2px) here */
+.wc-block-product-filter-removable-chips__items .wc-block-product-filter-removable-chips__item {
+    border-radius : 100px !important;
+    padding       : .22rem .5rem .22rem .75rem;
+    font-size     : .78rem;
+    font-weight   : 600;
+    line-height   : 1.4;
+}
+.wc-block-product-filter-removable-chips__remove {
+    background  : none;
+    border      : none;
+    padding     : 0;
+    cursor      : pointer;
+    display     : inline-flex;
+    align-items : center;
+    justify-content: center;
+    color       : rgba(255,255,255,.75);
+    border-radius: 50%;
+    width       : 18px;
+    height      : 18px;
+    transition  : background .15s, color .15s;
+}
+.wc-block-product-filter-removable-chips__remove:hover {
+    background : rgba(0,0,0,.15);
+    color      : #fff;
+}
+.wc-block-product-filter-removable-chips__remove-icon {
+    width  : 14px !important;
+    height : 14px !important;
+}
+
+/* ── "Clear filters" button ───────────────────────────────────────────────
+   Bootstrap's reboot ships a bare `button{border-radius:0}` reset. WordPress
+   prints its own default button-block look wrapped in :where(...) — zero
+   specificity, by design, so themes can override it — which means Bootstrap's
+   plain-element rule was winning instead, flattening this into an unstyled
+   black rectangle. Restyled here to match the chip pills above (rounded,
+   theme-coloured outline) instead of fighting Bootstrap on specificity.
+
+   The block editor ALSO prints a per-instance INLINE style on this exact
+   button (border-width/padding), since the "Clear filters" block has its
+   own saved style attributes — inline styles normally beat any stylesheet
+   rule regardless of specificity, so a plain declaration here would only
+   win sometimes depending on which value happens to match. `!important` is
+   used deliberately on every property below so this button's look is fully
+   deterministic — no more depending on selector order, inline styles, or
+   whatever else loads after this file. */
+.wc-block-product-filter-clear-button {
+    display   : block !important;
+    width     : 100% !important;
+    margin-top: .6rem !important;
+}
+.wc-block-product-filter-clear-button .wp-block-button__link {
+    display        : inline-flex !important;
+    align-items    : center !important;
+    justify-content: center !important;
+    width          : 100% !important;
+    background     : transparent !important;
+    color          : var(--alqamara-accent, #b8912a) !important;
+    border         : 1px solid var(--alqamara-accent, #b8912a) !important;
+    border-radius  : 10px !important;
+    padding        : .4rem 1rem !important;
+    font-size      : .82rem !important;
+    font-weight    : 600 !important;
+    line-height    : 1.4 !important;
+    text-decoration: none !important;
+    cursor         : pointer !important;
+    transition     : background .15s, color .15s !important;
+}
+.wc-block-product-filter-clear-button .wp-block-button__link:hover {
+    background : var(--alqamara-accent, #b8912a) !important;
+    color      : #fff !important;
+}
+
+/* =============================================================================
+   MOBILE FILTER OVERLAY — left-slide drawer panel
+   Mobile menu (right-side, 300px, 0.35s ease) → filter panel mirrors from LEFT.
+   The full-screen overlay div acts as dark backdrop; the 300px dialog slides in.
+
+   Stacking context fix:
+     .alqamara-shop-sidebar { position: sticky } creates a stacking context that
+     traps WC overlay's z-index:9999 below navbar (z-index:1030 in root).
+     Giving the sidebar z-index:10000 when open puts it above navbar + products.
+============================================================================= */
+@media (max-width: 600px) {
+    /* Lift sidebar stacking context above navbar + products when overlay opens.
+       Also kept elevated during ".is-overlay-closing" (added by
+       alqamara-filter-apply.js for the ~0.35s it takes the dialog below to finish
+       its slide-out transition) — without this, removing "is-overlay-opened"
+       immediately on close drops the z-index instantly while the panel is
+       still visibly animating away, so it appears to duck BEHIND the sticky
+       navbar/product grid mid-slide instead of staying on top the whole time. */
+    .alqamara-shop-sidebar:has(.wc-block-product-filters.is-overlay-opened),
+    .alqamara-shop-sidebar:has(.wc-block-product-filters.is-overlay-closing) {
+        z-index: 10000;
+    }
+    .wc-block-product-filters.is-overlay-closing .wc-block-product-filters__overlay {
+        z-index: 9999;
+    }
+
+    /* Full-screen overlay — top:0 covers the navbar */
+    .wc-block-product-filters__overlay {
+        top: 0 !important;
+    }
+
+    /* Dark backdrop — only visible while overlay is open */
+    .wc-block-product-filters.is-overlay-opened .wc-block-product-filters__overlay {
+        background-color: rgba(0, 0, 0, 0.45);
+    }
+
+    /* Dialog: convert WC's default bottom-sheet into a left-slide drawer (300px) */
+    .wc-block-product-filters .wc-block-product-filters__overlay-dialog {
+        position  : fixed !important;
+        top       : 0 !important;
+        left      : 0 !important;
+        bottom    : 0 !important;
+        width     : 300px !important;
+        max-width : 85vw !important;   /* safety on very narrow screens */
+        height    : 100% !important;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;  /* stop scroll chaining to the page behind once this panel hits its own top/bottom */
+        transform : translateX(-110%) !important;  /* hidden off left edge */
+        transition: transform 0.2s ease !important;  /* was 0.35s — felt sluggish given results already updated instantly via AJAX */
+        box-shadow: 5px 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Slide into view when overlay opens */
+    .wc-block-product-filters.is-overlay-opened .wc-block-product-filters__overlay-dialog {
+        transform: translateX(0) !important;
+    }
+
+    /* Hide the "Apply" button — its only action is closeOverlay (same as ✕).
+       alqamara-filter-apply.js auto-closes after every AJAX navigation anyway. */
+    .wc-block-product-filters__apply {
+        display: none !important;
+    }
+}
+
+/* Mobile: collapse ordering to a sort icon — invisible select overlaid for native picker */
+@media (max-width: 575.98px) {
+    .woocommerce-ordering {
+        position    : relative;
+        width       : 2rem;
+        height      : 2rem;
+        flex-shrink : 0;
+        margin-top  : 0 !important;
+        margin-bottom: 0 !important;
+        margin-right: 0 !important;
+        margin-left : auto !important; /* push icons group to the right */
+    }
+    .woocommerce-ordering::before {
+        content        : '';
+        position       : absolute;
+        inset          : 0;
+        z-index        : 1;
+        border         : 1.5px solid var(--alqamara-wc-border);
+        border-radius  : 5px;
+        background     : #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23888888' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z'/%3E%3C/svg%3E") center/1rem no-repeat;
+        pointer-events : none;
+    }
+    .woocommerce-ordering select.orderby {
+        opacity           : 0;
+        position          : absolute;
+        inset             : 0;
+        width             : 2rem;
+        height            : 2rem;
+        cursor            : pointer;
+        z-index           : 2;
+        max-width         : none !important;
+        font-size         : 16px; /* prevent iOS auto-zoom */
+        -webkit-appearance: none;
+        appearance        : none;
+    }
+}
+
+/* ── Widget Product List (Recently Viewed / Products / Top Rated) ── */
+/*
+ * Uses our content-widget-product.php template override which outputs:
+ * <li>
+ *   <a class="alqamara-wpr-thumb"><img class="alqamara-wpr-img"></a>
+ *   <div class="alqamara-wpr-info">
+ *     <a class="alqamara-wpr-name">Product Name</a>
+ *     <div class="alqamara-wpr-price">price html</div>
+ *   </div>
+ * </li>
+ */
+.widget_products ul,
+.widget_recently_viewed_products ul,
+.widget_top_rated_products ul {
+    list-style : none;
+    padding    : 0;
+    margin     : 0;
+}
+.widget_products li,
+.widget_recently_viewed_products li,
+.widget_top_rated_products li {
+    display       : flex !important;
+    align-items   : stretch !important;
+    gap           : 0;
+    padding       : .6rem 0 !important;
+    border-bottom : 1px solid var(--alqamara-wc-border);
+    margin        : 0 !important;
+}
+.widget_products li:last-child,
+.widget_recently_viewed_products li:last-child,
+.widget_top_rated_products li:last-child { border-bottom: none; }
+
+/* Thumbnail — flush left, no inherited sidebar link padding */
+.alqamara-wpr-thumb {
+    display      : block;
+    flex-shrink  : 0;
+    line-height  : 0;
+    padding      : 0 !important;
+    margin       : 0 !important;
+}
+.alqamara-wpr-img,
+.widget_products li img,
+.widget_recently_viewed_products li img,
+.widget_top_rated_products li img {
+    width         : 65px !important;
+    height        : 65px !important;
+    object-fit    : cover;
+    border-radius : 0;
+    border        : none;
+    display       : block;
+    float         : none !important;
+    margin-left   : 0 !important;
+}
+
+/* Info column — gap from image via margin-left, not li gap */
+.alqamara-wpr-info {
+    flex           : 1;
+    display        : flex;
+    flex-direction : column;
+    gap            : .2rem;
+    min-width      : 0;
+    margin-left    : .85rem;
+}
+.alqamara-wpr-name {
+    font-size       : .9rem;
+    font-weight     : 500 !important;
+    color           : #4b5563 !important;
+    text-decoration : none !important;
+    line-height     : 1.4;
+    display         : block;
+}
+.alqamara-wpr-name:hover { color: var(--alqamara-accent, #b8912a) !important; }
+
+/* Price */
+.alqamara-wpr-price { font-size: .82rem; }
+.alqamara-wpr-price ins,
+.alqamara-wpr-price .amount,
+.alqamara-wpr-price ins .amount {
+    color           : var(--alqamara-accent, #b8912a);
+    font-weight     : 700;
+    text-decoration : none;
+}
+.alqamara-wpr-price del { opacity: .55; margin-right: .25rem; text-decoration: line-through; }
+.alqamara-wpr-price del .amount { color: var(--alqamara-wc-muted); font-weight: 400; text-decoration: none; }
+
+/* ── 19. WooCommerce Blocks (Cart Block + Checkout Block) ───────────────── */
+
+/* ---- Proceed to Checkout (cart block) ------------------------------------ */
+.wc-block-cart__submit-button.wp-element-button,
+.wc-block-components-button.wc-block-cart__submit-button {
+    background-color: var(--alqamara-accent, #b8912a) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    transition: background .2s !important;
+}
+.wc-block-cart__submit-button.wp-element-button:hover,
+.wc-block-components-button.wc-block-cart__submit-button:hover {
+    background-color: var(--alqamara-accent-dark, #9a7821) !important;
+}
+
+/* ---- Place Order (checkout block) ---------------------------------------- */
+.wc-block-components-checkout-place-order-button.wp-element-button,
+.wc-block-components-button.wc-block-components-checkout-place-order-button {
+    background-color: var(--alqamara-accent, #b8912a) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    transition: background .2s !important;
+}
+.wc-block-components-checkout-place-order-button.wp-element-button:hover,
+.wc-block-components-button.wc-block-components-checkout-place-order-button:hover {
+    background-color: var(--alqamara-accent-dark, #9a7821) !important;
+}
+
+/* ---- Block form fields ---------------------------------------------------- */
+/*
+ * WC Blocks uses floating labels (position:absolute) that move to top:6px
+ * when the field is active. We must NOT override padding-top too low or the
+ * input value will overlap the shrunken label. Keep padding-top ≥ 1.4rem.
+ */
+.wc-block-components-text-input input,
+.wc-block-components-country-input input,
+.wc-block-components-address-form input,
+.wc-block-components-address-form select,
+.wp-block-woocommerce-checkout .wc-block-components-text-input input,
+.wp-block-woocommerce-checkout .wc-block-components-select select {
+    border        : 1.5px solid var(--alqamara-wc-border) !important;
+    border-radius : var(--alqamara-wc-radius) !important;
+    padding-top   : 1.4rem !important;   /* room for floating label */
+    padding-bottom: .4rem !important;
+    padding-left  : .85rem !important;
+    padding-right : .85rem !important;
+    font-size     : .9rem !important;
+    color         : var(--alqamara-primary, #0f172a) !important;
+    transition    : border-color .2s, box-shadow .2s !important;
+}
+
+/* Required field asterisk (*) via :has — modern browsers only */
+.wc-block-components-text-input:has(input[required]) label::after,
+.wc-block-components-combobox:has(input[required]) label::after,
+.wc-block-components-country-input:has(input[required]) label::after,
+.wc-block-components-select:has(select[required]) label::after {
+    content : ' *';
+    color   : #e53e3e;
+}
+.wc-block-components-text-input input:focus,
+.wc-block-components-address-form input:focus,
+.wc-block-components-address-form select:focus {
+    border-color: var(--alqamara-accent, #b8912a) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(184,145,42,.15) !important;
+}
+
+/* ---- Block cart heading rows --------------------------------------------- */
+/* "Product" / "Total" headers → match "Cart Totals" sidebar heading style */
+.wc-block-cart-items__header {
+    font-size     : 1rem !important;
+    font-weight   : 700 !important;
+    color         : var(--alqamara-primary, #0f172a) !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    border-bottom : 2px solid var(--alqamara-wc-border) !important;
+    padding-bottom: .6rem !important;
+}
+/* Add top padding so "Product/Total" headers align vertically with "Cart Totals" */
+.wc-block-cart-items__header th { padding-top: 1.25rem !important; }
+.wc-block-cart-items .wc-block-cart-item {
+    border-bottom: 1px solid var(--alqamara-wc-border) !important;
+    padding: .85rem 0 !important;
+}
+/* Cart item product image — 84px */
+.wc-block-cart-item__image { width: 84px !important; min-width: 84px !important; }
+.wc-block-cart-item__image img {
+    width      : 84px !important;
+    height     : 84px !important;
+    max-width  : 84px !important;
+    object-fit : cover !important;
+    border-radius: var(--alqamara-wc-radius, 8px) !important;
+    display    : block !important;
+}
+
+/* ---- Block product name link --------------------------------------------- */
+.wc-block-components-product-name {
+    font-weight: 600 !important;
+    color: var(--alqamara-primary, #0f172a) !important;
+}
+.wc-block-components-product-name:hover { color: var(--alqamara-accent, #b8912a) !important; }
+
+/* ---- Block quantity stepper ---------------------------------------------- */
+.wc-block-components-quantity-selector {
+    border: 1.5px solid var(--alqamara-wc-border) !important;
+    border-radius: 5px !important;
+    overflow: hidden;
+}
+.wc-block-components-quantity-selector__button {
+    background: var(--alqamara-wc-light) !important;
+    color: var(--alqamara-primary, #0f172a) !important;
+    border: none !important;
+    width: 32px !important;
+    transition: background .2s !important;
+}
+.wc-block-components-quantity-selector__button:hover {
+    background: var(--alqamara-accent, #b8912a) !important;
+    color: #fff !important;
+}
+.wc-block-components-quantity-selector__value {
+    border: none !important;
+    font-weight: 600 !important;
+}
+
+/* ---- Block cart totals sidebar ------------------------------------------- */
+/* WC Blocks cart.css hides this heading via @container (max-width:699px) — force visible */
+.wc-block-cart .wc-block-components-sidebar .wc-block-cart__totals-title {
+    display: block !important;
+}
+.wc-block-cart__totals-title {
+    font-size     : 1rem !important;
+    font-weight   : 500 !important;
+    color         : var(--alqamara-primary, #0f172a) !important;
+    text-transform: none !important;   /* WC Blocks adds uppercase — remove it */
+    border-bottom : 2px solid var(--alqamara-wc-border) !important;
+    padding: 1px 16px 10px 0 !important;
+    padding-bottom: .6rem !important;
+    margin-bottom : 1rem !important;
+}
+.wc-block-components-totals-item { border-bottom: 1px solid var(--alqamara-wc-border) !important; }
+.wc-block-components-totals-footer-item .wc-block-components-totals-item__value {
+    color: var(--alqamara-accent, #b8912a) !important;
+    font-weight: 700 !important;
+}
+
+/* ---- Block "Add coupons" link -------------------------------------------- */
+.wc-block-components-totals-coupon__link {
+    color: var(--alqamara-accent, #b8912a) !important;
+    font-weight: 600 !important;
+}
+.wc-block-components-totals-coupon__button {
+    background: var(--alqamara-accent, #b8912a) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    font-weight: 700 !important;
+}
+.wc-block-components-totals-coupon__button:hover {
+    background: var(--alqamara-accent-dark, #9a7821) !important;
+}
+
+/* ---- Order summary (checkout sidebar) ------------------------------------ */
+.wp-block-woocommerce-checkout-order-summary-block {
+    background: #fff !important;
+    border: 1px solid var(--alqamara-wc-border) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    padding: 1.25rem !important;
+}
+/*
+ * The real WC Blocks class for the accordion-style order summary title is
+ * .wc-block-components-checkout-order-summary__title (note "checkout-" prefix).
+ * WC default: font-size 14px, font-weight 400, margin-top 16px — override all.
+ */
+.wc-block-components-checkout-order-summary__title {
+    font-size    : 1rem !important;
+    font-weight  : 700 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    border-bottom: 2px solid var(--alqamara-wc-border) !important;
+    padding-bottom: .6rem !important;
+    margin-top   : 0 !important;
+    margin-bottom: .75rem !important;
+}
+.wc-block-components-checkout-order-summary__title-text {
+    font-size  : 1rem !important;
+    font-weight: 700 !important;
+    color      : var(--alqamara-primary, #0f172a) !important;
+    margin: 0 0 4px 2px !important;
+}
+
+/* ── 20a. Checkout — Phase 6 redesign ───────────────────────────────────── */
+
+/* ── __actions internal column order ────────────────────────────────────────
+ * __terms is a SIBLING of __actions inside __form (NOT inside __actions).
+ * Terms-above-button ordering is handled by flex `order` in the mobile section.
+ * Here we just ensure __actions itself is a flex column so its children
+ * (fill-wrapper slot, notices, actions_row) stack vertically in correct order.
+ */
+.wc-block-checkout__actions {
+    display       : flex !important;
+    flex-direction: column !important;
+}
+.wc-block-checkout__actions_row {
+    order: 10 !important;    /* button always last inside __actions */
+}
+
+/* Hide product EXCERPT on cart & checkout — keep variation attributes */
+.wc-block-cart  .wc-block-components-product-metadata__description,
+.wc-block-checkout .wc-block-components-product-metadata__description {
+    display: none !important;
+}
+
+/* ---- Hide breadcrumb bar on cart & checkout (funnel steps replace it) ---- */
+.woocommerce-checkout .alqamara-wc-breadcrumb,
+.woocommerce-checkout .alqamara-shop-header-bar,
+.woocommerce-cart    .alqamara-wc-breadcrumb,
+.woocommerce-cart    .alqamara-shop-header-bar { display: none !important; }
+
+/* ---- Funnel steps indicator (Your Cart → Checkout → Order Complete) ------ */
+/* Remove extra top padding from checkout form wrapper so steps bar aligns with cart */
+.woocommerce-checkout form.wc-block-checkout,
+.woocommerce-checkout .wp-block-woocommerce-checkout { padding-top: 0 !important; }
+
+/* ---- Form section cards -------------------------------------------------- */
+.wc-block-checkout__contact-fields,
+.wc-block-checkout__shipping-fields,
+.wc-block-checkout__shipping-option,
+.wc-block-checkout__payment-method,
+.wc-block-checkout__order-notes {
+    background    : #fff !important;
+    border-radius : var(--alqamara-wc-radius) !important;
+    box-shadow    : var(--alqamara-wc-shadow, 0 1px 4px rgba(0,0,0,.08)) !important;
+    padding       : 1.5rem !important;
+    margin-bottom : 1rem !important;
+    border        : 1px solid var(--alqamara-wc-border) !important;
+}
+
+/* ---- Section headings ---------------------------------------------------- */
+.wc-block-components-checkout-step__title {
+    font-size     : 1rem !important;
+    font-weight   : 700 !important;
+    color         : var(--alqamara-primary, #0f172a) !important;
+    padding-bottom: .6rem !important;
+    border-bottom : 2px solid var(--alqamara-wc-border) !important;
+    margin-bottom : 1rem !important;
+}
+.wc-block-components-checkout-step__heading-container {
+    margin-bottom : .25rem !important;
+}
+
+/* ---- Checkout furniture visibility (Customizer toggles) ------------------ */
+/* ---- Checkout 2-col layout: desktop only (≥992px) ----------------------- */
+/*
+ * WC Blocks default: main ~65%, sidebar ~35%. We widen main to 58% for more
+ * form breathing room, and let the sidebar take the rest.
+ * At ≤991px, the mobile/tablet single-column section below takes over.
+ */
+@media (min-width: 992px) {
+    .woocommerce-checkout .wc-block-components-sidebar-layout {
+        flex-wrap : nowrap !important;       /* prevent early wrap */
+        flex-direction: row !important;
+    }
+    .woocommerce-checkout .wc-block-checkout__main {
+        flex      : 1 1 58% !important;
+        width     : 58% !important;
+        max-width : 58% !important;
+        padding-right: 1.25rem !important;
+    }
+    .woocommerce-checkout .wc-block-checkout__sidebar {
+        flex        : 1 1 auto !important;
+        width       : auto !important;
+        max-width   : none !important;
+        padding-left: 0.5rem !important;
+        /* Sticky sidebar — floats beside form as user scrolls */
+        align-self  : flex-start !important;
+        position    : sticky !important;
+        top         : calc( var(--alqamara-header-total-h, 80px) + 1.5rem ) !important;
+    }
+}
+
+/* ---- Order summary improvements ------------------------------------------ */
+/*
+ * Wrapper: position:relative keeps the quantity badge (absolute) anchored.
+ * Do NOT set overflow:hidden here — it clips the badge bubble.
+ */
+.wc-block-components-order-summary-item__image {
+    position  : relative !important;
+    width     : 60px !important;
+    min-width : 60px !important;
+    height    : 60px !important;
+    border-radius: 6px !important;
+    flex-shrink: 0 !important;
+}
+.wc-block-components-order-summary-item__image img {
+    width       : 60px !important;
+    height      : 60px !important;
+    max-width   : 60px !important;
+    object-fit  : cover !important;
+    border-radius: 6px !important;
+    display     : block !important;
+}
+/* Quantity badge: half inside image, half outside (top-right corner) */
+.wc-block-components-order-summary-item__quantity {
+    position  : absolute !important;
+    top       : 0 !important;
+    right     : 0 !important;
+    transform : translate(50%, -50%) !important;
+    z-index   : 1 !important;
+}
+/* Border between each product in order summary */
+.wc-block-components-order-summary-item {
+    border-bottom: 1px solid var(--alqamara-wc-border, #e5e0d8) !important;
+    padding-bottom: .75rem !important;
+    margin-bottom : .25rem !important;
+}
+.wc-block-components-order-summary-item:last-child { border-bottom: none !important; }
+/* Hide per-item price below name (total is shown on the right already) */
+.wc-block-components-order-summary-item__individual-prices { display: none !important; }
+
+/* Coupon field toggle (Customizer) — fallback CSS hide for WC Blocks cart */
+
+.wc-block-components-order-summary-item__full-price {
+    font-weight : 600 !important;
+    color       : var(--alqamara-primary, #0f172a) !important;
+}
+.wc-block-components-totals-item__value {
+    font-weight : 700 !important;
+    color       : var(--alqamara-primary, #0f172a) !important;
+}
+.wc-block-components-totals-footer-item .wc-block-components-totals-item__value {
+    color     : var(--alqamara-accent, #b8912a) !important;
+    font-size : 1.1rem !important;
+}
+
+/* ── 20. Responsive ─────────────────────────────────────────────────────── */
+
+/* Tablet/mobile: single column product layout */
+@media ( max-width: 991.98px ) {
+    .woocommerce ul.products,
+    .woocommerce-page ul.products {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .woocommerce div.product.type-product {
+        grid-template-columns: minmax(0, 1fr);
+        /* No override needed here: column-gap only matters for the desktop
+         * side-by-side layout, and row-gap (the only one that shows once
+         * columns stack to one on mobile) was never changed from its
+         * original 1.2rem above. */
+    }
+    .woocommerce div.product.type-product .woocommerce-product-gallery { grid-column: 1; }
+    .woocommerce div.product.type-product .summary { grid-column: 1; }
+    .woocommerce div.product.type-product .woocommerce-tabs { grid-column: 1; }
+    .woocommerce div.product.type-product .related,
+    .woocommerce div.product.type-product .upsells { grid-column: 1; }
+
+    /* Tabs: keep on one line, scroll horizontally instead of wrapping */
+    .woocommerce div.product.type-product .woocommerce-tabs ul.tabs {
+        flex-wrap           : nowrap;
+        overflow-x          : auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width     : none;
+    }
+    .woocommerce div.product.type-product .woocommerce-tabs ul.tabs::-webkit-scrollbar { display: none; }
+    /* Smaller tab font + tighter padding so labels fit on one line */
+    .woocommerce div.product.type-product .woocommerce-tabs ul.tabs li a {
+        font-size: .75rem;
+        padding: .55rem .85rem .55rem .1rem;
+    }
+
+    /* Related/upsells: always 2 columns on mobile */
+    .woocommerce div.product.type-product .related ul.products,
+    .woocommerce div.product.type-product .upsells ul.products {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    }
+
+/* Mobile: 2 columns */
+@media ( max-width: 575.98px ) {
+    .woocommerce ul.products,
+    .woocommerce-page ul.products {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    .woocommerce-cart table.cart thead { display: none; }
+    .woocommerce-cart table.cart tbody tr { display: flex; flex-wrap: wrap; padding: .75rem 0; border-bottom: 1px solid var(--alqamara-wc-border); }
+    .woocommerce-cart table.cart tbody td { border-bottom: none; padding: .25rem .5rem; }
+    .woocommerce-cart table.cart td.product-remove { order: 1; }
+    .woocommerce-cart table.cart td.product-thumbnail { order: 2; }
+    .woocommerce-cart table.cart td.product-name { order: 3; flex: 1; }
+    .woocommerce-cart table.cart td.product-price { order: 4; }
+    .woocommerce-cart table.cart td.product-quantity { order: 5; }
+    .woocommerce-cart table.cart td.product-subtotal { order: 6; }
+
+    .alqamara-shop-controls { width: 100%; max-width: 100%; }
+    /* Mobile: tighten the gap */
+    .woocommerce div.product.type-product form.cart {
+        gap: .5rem;
+    }
+    .woocommerce div.product.type-product .woocommerce-variation-add-to-cart {
+        gap: .5rem !important;
+    }
+    .woocommerce div.product.type-product form.cart .button {
+        padding : 0 .9rem;
+        width   : auto !important;
+        justify-content: center;
+    }
+    }
+
+
+/* ── 22. Single Product — Sticky Gallery Layout ─────────────────────────── */
+
+/*
+ * Layout:
+ *   Left  (col-lg-6): product gallery — sticky while right column scrolls
+ *   Right (col-lg-6): title, price, add to cart, description/reviews tabs
+ *   Below (full width): related products + up-sells
+ */
+
+/* Force all direct children to span full grid width —
+   the 2-col split is handled by Bootstrap .row inside .alqamara-sp-sticky-row */
+.woocommerce div.product.type-product > .woocommerce-notices-wrapper,
+.woocommerce div.product.type-product > .alqamara-sp-sticky-row,
+.woocommerce div.product.type-product > .alqamara-sp-below-fold {
+    grid-column: 1 / -1;
+}
+
+.alqamara-sp-sticky-row {
+    align-items: flex-start;
+}
+
+/* Make the gallery column sticky — desktop only (lg breakpoint matches col-lg-6) */
+@media (min-width: 992px) {
+    .alqamara-sp-gallery-col {
+        position : sticky;
+        top      : calc( var(--alqamara-header-total-h, 80px) + 1.5rem );
+        align-self: flex-start;
+    }
+
+    /* Padding & spacing for right column — desktop only. Left padding is
+     * this layout's equivalent of the gap between gallery and content
+     * (the row itself uses Bootstrap's g-0 / zero gutter) — kept in sync
+     * with the "default" layout's column-gap above. */
+    .alqamara-sp-content-inner {
+        padding: 0 2rem 2rem 2rem;
+    }
+}
+
+/* Tabs inside the right column — remove WC's heavy top margin/border */
+.alqamara-sp-tabs-wrap {
+    margin-top: 2rem;
+}
+.alqamara-sp-tabs-wrap .woocommerce-tabs {
+    margin-top: 0 !important;
+    border-top: none !important;
+}
+
+/* =============================================================================
+   23. Cart Block — White backgrounds, Shipping Calculator, Notices, Mobile
+   24. Empty Cart Block — Icon, "New in store" heading, Product grid
+============================================================================= */
+
+/* ── 23a-i. Cart layout: match checkout column ratio + gap (desktop only)
+   Main 62% (wider product list), sidebar auto (narrower totals), same gap as checkout. */
+@media (min-width: 700px) {
+    .wc-block-cart__main {
+        flex         : 1 1 66% !important;
+        width        : 66% !important;
+        max-width    : 66% !important;
+        padding-right: 1.25rem !important;
+    }
+    .wc-block-cart__sidebar {
+        flex         : 1 1 auto !important;
+        width        : auto !important;
+        max-width    : none !important;
+        padding-left : 0.5rem !important;
+        align-self   : flex-start !important;
+        position     : sticky !important;
+        top          : calc( var(--alqamara-header-total-h, 80px) + 1.5rem ) !important;
+    }
+}
+
+/* ── 23a. White card backgrounds ─────────────────────────────────────────── */
+/* WC cart.css uses `table.wc-block-cart-items { background: none !important }`
+   Must match element+class specificity to override */
+table.wc-block-cart-items {
+    background     : #fff !important;
+    border-radius  : var(--alqamara-wc-radius) !important;
+    box-shadow     : var(--alqamara-wc-shadow) !important;
+    margin-bottom  : 1rem !important;
+    border-collapse: separate !important;
+    border-spacing : 0 !important;
+}
+.wp-block-woocommerce-cart-order-summary-block {
+    background   : #fff !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    padding      : 1.25rem 1.5rem !important;
+    box-shadow   : var(--alqamara-wc-shadow) !important;
+}
+
+/* ── 23b-i. Header cell alignment — match body cell padding-left (16px) ──── */
+.wc-block-cart-items__header-image,
+.wc-block-cart-items__header-product {
+    padding-left: 16px !important;
+}
+
+/* ── 23b-ii. Desktop cart table — inset content from the white card's edges ─
+   WC Blocks gives the cart table's first and last cells no horizontal
+   padding, so on desktop the product thumbnail sat flush against the card's
+   left edge, the line total against its right edge, and the "Total" column
+   heading had nothing between it and the edge either. The header row also
+   sat 16px further in than the product name below it (rule 23b-i above),
+   so the "Product" heading and the product title were visibly misaligned.
+
+   Fixed on the <table> itself rather than cell-by-cell: one symmetric 1rem
+   inset applies to the header row and every item row at once, which keeps
+   heading and content in the same vertical line automatically. Cell-level
+   padding that duplicated (or fought) that inset is zeroed here.
+
+   Desktop only (≥992px) — the ≤991.98px block near the end of this file
+   already gives the mobile grid layout its own row padding, and mobile was
+   never affected by this. ------------------------------------------------ */
+@media (min-width: 992px) {
+    table.wc-block-cart-items {
+        padding-left : 1rem !important;
+        padding-right: 1rem !important;
+    }
+    /* The table's own inset now provides this — drop 23b-i's extra 16px so
+       the "Product" heading lines up with the product name beneath it. */
+    .wc-block-cart-items__header-image,
+    .wc-block-cart-items__header-product {
+        padding-left: 0 !important;
+    }
+    .wc-block-cart-items__header-total { padding-right: 0 !important; }
+    /* Gap between the thumbnail and the product name, nothing on the outer
+       edge (the table inset handles that). */
+    .wc-block-cart-item__image {
+        padding-left : 0 !important;
+        padding-right: 1rem !important;
+    }
+    .wc-block-cart-item__total { padding-right: 0 !important; }
+}
+
+/* ── 23b. Shipping Calculator ────────────────────────────────────────────── */
+.wc-block-components-shipping-calculator {
+    background   : var(--alqamara-wc-light);
+    border       : 1px solid var(--alqamara-wc-border);
+    border-radius: var(--alqamara-wc-radius);
+    padding      : .85rem 1rem;
+    margin-top   : .5rem;
+}
+.wc-block-components-shipping-calculator__toggle,
+.wc-block-components-totals-shipping__via {
+    color          : var(--alqamara-accent, #b8912a) !important;
+    font-weight    : 600 !important;
+    font-size      : .88rem !important;
+    text-decoration: none !important;
+    background     : none !important;
+    border         : none !important;
+    padding        : 0 !important;
+    cursor         : pointer !important;
+}
+.wc-block-components-shipping-calculator__toggle:hover { text-decoration: underline !important; }
+.wc-block-components-shipping-calculator-form { margin-top: .75rem; }
+.wc-block-components-shipping-calculator-form .wc-block-components-country-input,
+.wc-block-components-shipping-calculator-form .wc-block-components-text-input {
+    margin-bottom: .5rem;
+}
+.wc-block-components-shipping-calculator__button,
+.wc-block-components-shipping-calculator-form button[type="submit"] {
+    background   : var(--alqamara-accent, #b8912a) !important;
+    color        : #fff !important;
+    border       : none !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    padding      : .5rem 1.25rem !important;
+    font-weight  : 600 !important;
+    font-size    : .88rem !important;
+    cursor       : pointer !important;
+    transition   : background .2s !important;
+    margin-top   : .5rem !important;
+}
+.wc-block-components-shipping-calculator__button:hover { background: var(--alqamara-accent-dark, #9a7821) !important; }
+
+/* Shipping totals row */
+.wc-block-components-totals-shipping .wc-block-components-totals-item__label { font-weight: 600; }
+
+/* ── 23c. WC Block Notices ────────────────────────────────────────────────── */
+.wc-block-components-notice-banner {
+    border-radius   : var(--alqamara-wc-radius) !important;
+    padding         : .85rem 1rem .85rem 1.1rem !important;
+    font-size       : .9rem !important;
+    font-weight     : 500 !important;
+    border-left     : 4px solid transparent !important;
+    margin-bottom   : 1rem !important;
+    display         : flex !important;
+    align-items     : flex-start !important;
+    gap             : .75rem !important;
+    /* Fix clicking "Place order" with a validation error
+       calls the browser's native scrollIntoView on this notice (and on
+       the invisible ".with-scroll-to-top__scroll-point" marker WooCommerce
+       Blocks places above each checkout step — see rule below). Because
+       the site header is position:sticky and sits on top (z-index 1030),
+       a plain scrollIntoView stops with the notice's top edge flush
+       against the viewport top — i.e. right underneath the sticky header,
+       hidden. scroll-margin-top tells the browser to stop that many
+       pixels earlier, leaving room for the header. Reuses the same
+       --alqamara-header-total-h variable (set live in js/main.js from the
+       header's real measured height) already used for the TOC
+       scroll-margin-top and sticky-sidebar offset elsewhere in this
+       theme — see css/custom.css. */
+    scroll-margin-top: calc( var(--alqamara-header-total-h, 80px) + 20px ) !important;
+}
+
+/* WooCommerce Blocks renders an invisible anchor
+   (.with-scroll-to-top__scroll-point) just above each checkout step /
+   the top validation-error area and scrolls THAT into view rather than
+   the notice itself in some cases (step-level errors). Needs the same
+   offset for the same reason as the notice banner above. */
+.with-scroll-to-top__scroll-point {
+    scroll-margin-top: calc( var(--alqamara-header-total-h, 80px) + 20px );
+}
+
+/* Field-level validation errors: WooCommerce Blocks also scrollIntoViews
+   the first invalid field directly (e.g. an empty required address field)
+   when "Place order" is clicked. Same sticky-header overlap problem. */
+.wc-block-components-checkout-step.has-error input,
+.wc-block-components-checkout-step.has-error select,
+.wc-block-checkout__form input:invalid,
+.wc-block-checkout__form select:invalid {
+    scroll-margin-top: calc( var(--alqamara-header-total-h, 80px) + 20px );
+}
+.wc-block-components-notice-banner.is-error,
+.wc-block-components-notice-banner--error {
+    background      : #fef2f2 !important;
+    border-left-color: var(--alqamara-wc-error, #dc2626) !important;
+    color           : #991b1b !important;
+}
+.wc-block-components-notice-banner.is-success,
+.wc-block-components-notice-banner--success {
+    background      : #f0fdf4 !important;
+    border-left-color: var(--alqamara-wc-success, #16a34a) !important;
+    color           : #166534 !important;
+}
+.wc-block-components-notice-banner.is-info,
+.wc-block-components-notice-banner.is-warning,
+.wc-block-components-notice-banner--info {
+    background      : #fffbeb !important;
+    border-left-color: #d97706 !important;
+    color           : #92400e !important;
+}
+/* Snackbar (toast-style) notices */
+.wc-block-components-notice-snackbar__content {
+    background   : var(--alqamara-primary, #0f172a) !important;
+    color        : #fff !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    font-size    : .88rem !important;
+    box-shadow   : var(--alqamara-wc-shadow-h) !important;
+    padding      : .65rem 1rem !important;
+}
+
+/* ── 23c. Checkout block mobile/tablet responsive ─────────────────────────
+ * Superseded by the display:contents section below (≤991px).
+ * Kept as comment only for reference.
+ * ── */
+
+/* ── 23d. Cart / Checkout mobile responsive ─────────────────────────────── */
+/*
+ * WC Blocks handles cart item layout + cart sidebar stacking via its own
+ * container queries (@container max-width: 699px) and .is-small/.is-mobile
+ * class-based grid. Do NOT override those — let WC Blocks do its job.
+ *
+ * We handle:
+ *   1. Cart image size clamped to grid column (80px) — prevents text overlap
+ *   2. Cart table padding aligns with steps bar (12px each side)
+ *   3. Gap between cart image and product name
+ *   4. Checkout sidebar stacking + padding alignment with steps bar
+ */
+/* ── Cart mobile grid fix ──────────────────────────────────────────────────
+   WC Blocks @container (max-width: 699px) sets the cart row to:
+     display: grid; grid-template-columns: 80px 132px;
+   The "132px" for the product column is FIXED — it does not stretch or shrink.
+   At 768-991px viewport, the sidebar appears and the main cart column narrows;
+   the container query (<699px) kicks in inside this narrower column, but our
+   previous @media (max-width: 767px) rules did NOT cover 768px+.
+   At 320px viewport, "132px product + 80px image + ~80px total" = ~292px
+   minimum, which overflows a 296px content area.
+
+   Fix: override grid-template-columns so product column is "1fr" (flexible)
+   and image column is a fixed but reasonable size. Also fix the td padding
+   that WC Blocks zeroes out via its own container query rule. */
+
+/* Normal mobile/tablet (≤991.98px) */
+@media (max-width: 991.98px) {
+    /* WC Blocks zeroes td padding in @container (max-width:699px).
+       We re-add horizontal breathing room on the ROW instead (grid padding). */
+    .wc-block-cart table.wc-block-cart-items .wc-block-cart-items__row {
+        grid-template-columns: 80px 1fr !important;
+        padding-left : .75rem !important;
+        padding-right: .75rem !important;
+    }
+    /* Keep image TD constrained to column 1 width.
+       WC Blocks @container adds padding-right: 16px to this TD — remove it so the
+       full 80px is usable image space. overflow: hidden clips any stray pixel. */
+    .wc-block-cart-item__image {
+        width    : 80px !important;
+        min-width: 80px !important;
+        max-width: 80px !important;
+        padding   : 0 !important;
+        overflow  : hidden !important;
+    }
+    /* WC Blocks root CSS sets img width/height to 84px — override to fit column */
+    .wc-block-cart-item__image img {
+        width    : 80px !important;
+        max-width: 80px !important;
+        height   : 80px !important;
+        display  : block !important;
+    }
+    /* Gap between image and product name */
+    .wc-block-cart-item__product {
+        padding-left: .75rem !important;
+    }
+    /* Reduce product title font size on mobile */
+    .wc-block-cart-item__product .wc-block-components-product-name,
+    .wc-block-cart-item__product .wc-block-components-product-name a {
+        font-size  : .82rem !important;
+        line-height: 1.35 !important;
+    }
+}
+
+/* Very narrow (≤360px): shrink image column to 60px */
+@media (max-width: 360px) {
+    .wc-block-cart table.wc-block-cart-items .wc-block-cart-items__row {
+        grid-template-columns: 60px 1fr !important;
+        padding-left : .5rem !important;
+        padding-right: .5rem !important;
+    }
+    .wc-block-cart-item__image {
+        width    : 60px !important;
+        min-width: 60px !important;
+        max-width: 60px !important;
+        padding   : 0 !important;
+        overflow  : hidden !important;
+    }
+    .wc-block-cart-item__image img {
+        width    : 60px !important;
+        max-width: 60px !important;
+        height   : 60px !important;
+        display  : block !important;
+    }
+    
+}
+
+/* ── Mobile/Tablet (≤991px): form steps → order summary → terms → Place Order
+ *
+ * display:contents on __main and __form dissolves their layout boxes so their
+ * children become direct flex items of sidebar-layout (flex-direction:column).
+ * flex `order` then controls the exact sequence:
+ *
+ *   notices        →  5
+ *   checkout steps → 10
+ *   sidebar        → 50  (full order summary, between form and terms)
+ *   terms          → 75  ("By proceeding..." text, above button)
+ *   actions        → 100 (Place Order button — always last)
+ *
+ * Covers: mobile (≤767px) AND tablet (768–991px) — fixes centering at 880–991px.
+ *
+ * WC Blocks fill-wrapper: injects a mini order summary accordion inside
+ * __actions on narrow viewports. Since we show the full sidebar (order:50),
+ * the fill-wrapper is redundant — hide it to avoid double order summary.
+ */
+@media (max-width: 991px) {
+    /* Flex column on outer container */
+    .woocommerce-checkout .wc-block-components-sidebar-layout {
+        flex-direction: column !important;
+    }
+
+    /* Dissolve __main and __form — their children become direct flex items of sidebar-layout */
+    .woocommerce-checkout .wc-block-checkout__main,
+    .woocommerce-checkout .wc-block-checkout__form {
+        display: contents !important;
+    }
+
+    /* Notices */
+    .woocommerce-checkout .wc-block-components-notices {
+        order      : 5 !important;
+        width      : 100% !important;
+        box-sizing : border-box !important;
+    }
+
+    /* Form step cards */
+    .woocommerce-checkout .wc-block-components-checkout-step {
+        order         : 10 !important;
+        width         : 100% !important;
+        box-sizing    : border-box !important;
+        padding-left  : 1.25rem !important;
+        padding-right : 1.25rem !important;
+    }
+    /* Inner card padding compact on mobile/tablet */
+    .woocommerce-checkout .wc-block-checkout__contact-fields,
+    .woocommerce-checkout .wc-block-checkout__shipping-fields,
+    .woocommerce-checkout .wc-block-checkout__shipping-option,
+    .woocommerce-checkout .wc-block-checkout__payment-method,
+    .woocommerce-checkout .wc-block-checkout__order-notes {
+        padding: 1rem !important;
+    }
+
+    /* Order summary sidebar — placed BETWEEN form and terms/button */
+    .woocommerce-checkout .wc-block-checkout__sidebar {
+        order      : 50 !important;
+        display    : block !important;
+        width      : 100% !important;
+        max-width  : 100% !important;
+        position   : static !important;
+        padding-left: 0 !important;
+        box-sizing : border-box !important;
+    }
+
+    /* Hide WC Blocks fill-wrapper (mini order summary toggle inside __actions)
+       — sidebar already shows the full order summary above, no need for duplicate */
+    .woocommerce-checkout .wc-block-checkout__actions > div:first-child {
+        display: none !important;
+    }
+
+    /* Terms text: ABOVE Place Order button, BELOW order summary */
+    .woocommerce-checkout .wc-block-checkout__terms {
+        order         : 75 !important;
+        width         : 100% !important;
+        padding-left  : 1.25rem !important;
+        padding-right : 1.25rem !important;
+        box-sizing    : border-box !important;
+    }
+
+    /* Place Order button — always last */
+    .woocommerce-checkout .wc-block-checkout__actions {
+        order         : 100 !important;
+        width         : 100% !important;
+        padding-left  : 0 !important;
+        padding-right : 0 !important;
+        margin-top    : 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+        box-sizing    : border-box !important;
+    }
+    .woocommerce-checkout .wc-block-checkout__actions_row {
+        padding-left  : 0 !important;
+        padding-right : 0 !important;
+        margin-top    : 1rem !important;
+    }
+
+    }
+
+/* ── @container: WC Blocks internal edge cases (no sidebar hide needed now) ── */
+@container (max-width: 699px) {
+    .wc-block-checkout__actions {
+        padding-left : 0 !important;
+        padding-right: 0 !important;
+        margin-top   : 2rem !important;
+    }
+    .wc-block-checkout__actions_row {
+        padding-left : 0 !important;
+        padding-right: 0 !important;
+        margin-top   : 1.5rem !important;
+    }
+}
+
+/* ── 24. Empty Cart Block ─────────────────────────────────────────────────── */
+
+/* Cart icon — replace WC default sad-face with a shopping cart SVG */
+.wc-block-cart__empty-cart__title.with-empty-cart-icon::before {
+    background-color    : var(--alqamara-accent, #b8912a) !important;
+    height              : 4.5em !important;
+    width               : 4.5em !important;
+    margin              : 2.5rem auto 1.25em !important;
+    display             : block !important;
+    -webkit-mask-image  : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 0 0-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.875 1.875 0 0 0 3.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zM16.5 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z'/%3E%3C/svg%3E") !important;
+    mask-image          : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 0 0-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.875 1.875 0 0 0 3.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zM16.5 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z'/%3E%3C/svg%3E") !important;
+    -webkit-mask-repeat : no-repeat !important;
+    mask-repeat         : no-repeat !important;
+    -webkit-mask-size   : contain !important;
+    mask-size           : contain !important;
+    -webkit-mask-position: center !important;
+    mask-position       : center !important;
+    content             : '' !important;
+}
+
+/* Empty cart heading text */
+.wc-block-cart__empty-cart__title {
+    font-size    : 1.35rem !important;
+    font-weight  : 700 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    margin-bottom: .5rem !important;
+}
+
+/* Dot-line separator between empty message and "New in store" */
+.wp-block-woocommerce-empty-cart-block .wp-block-separator {
+    margin      : 1.75rem auto !important;
+    max-width   : 180px !important;
+    opacity     : .45 !important;
+    border-color: var(--alqamara-accent, #b8912a) !important;
+}
+
+/* ── 25. Order Received (Thank You) Page ─────────────────────────────────────
+   Classic WC template: .woocommerce-order-received body class
+   =========================================================================== */
+
+/* ---- Narrower content width -----------------------------------------------
+   A single-purpose confirmation page doesn't need the full shop-page
+   container width. #alqamara-wc-main is the page's main WooCommerce content
+   wrapper. */
+.woocommerce-order-received #alqamara-wc-main {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ---- Thank you notice ---------------------------------------------------- */
+.woocommerce-order-received .woocommerce-thankyou-order-received {
+    background   : #f0faf4 !important;
+    border-left  : 4px solid #38a169 !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    color        : #276749 !important;
+    font-weight  : 600 !important;
+    padding      : .85rem 1.1rem !important;
+    margin-bottom: 1.25rem !important;
+}
+
+.woocommerce-order-received ul.woocommerce-order-overview + p {
+    background   : var(--alqamara-wc-light, #f8f9fa) !important;
+    border       : 1px solid var(--alqamara-wc-border, #e5e7eb) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    padding      : .85rem 1.1rem !important;
+    margin       : 0 0 1.5rem !important;
+    font-size    : .9rem !important;
+    color        : var(--alqamara-wc-muted, #6b7280) !important;
+}
+
+/* ---- Order overview info card -------------------------------------------- */
+.woocommerce-order-received ul.woocommerce-order-overview {
+    display      : flex !important;
+    flex-wrap    : wrap !important;
+    list-style   : none !important;
+    margin       : 0 0 1.5rem !important;
+    padding      : 0 !important;
+    background   : #fff !important;
+    border       : 1px solid var(--alqamara-wc-border) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    box-shadow   : var(--alqamara-wc-shadow) !important;
+    overflow     : hidden !important;
+}
+.woocommerce-order-received ul.woocommerce-order-overview li {
+    flex        : 1 1 0 !important;
+    min-width   : 120px !important;
+    padding     : 1rem 1.25rem !important;
+    border-right: 1px solid var(--alqamara-wc-border) !important;
+    margin      : 0 !important;
+    font-size   : .88rem !important;
+    line-height : 1.4 !important;
+}
+.woocommerce-order-received ul.woocommerce-order-overview li:last-child {
+    border-right: none !important;
+}
+/* Label (strong) */
+.woocommerce-order-received ul.woocommerce-order-overview li strong {
+    display       : block !important;
+    font-size     : .78rem !important;
+    font-weight   : 600 !important;
+    letter-spacing: .06em !important;
+    color         : var(--alqamara-wc-muted, #6b7280) !important;
+    margin-bottom : .25rem !important;
+}
+
+/* ---- Order details section card ------------------------------------------ */
+.woocommerce-order-received .woocommerce-order-details {
+    background   : #fff !important;
+    border       : 1px solid var(--alqamara-wc-border) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    box-shadow   : var(--alqamara-wc-shadow) !important;
+    padding      : 1.25rem !important;
+    margin-bottom: 1.5rem !important;
+}
+.woocommerce-order-received .woocommerce-order-details__title {
+    font-size    : 1.2rem !important;
+    font-weight  : 700 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    border-bottom: 2px solid var(--alqamara-wc-border) !important;
+    padding-bottom: .6rem !important;
+    margin-top   : 0 !important;
+    margin-bottom: .75rem !important;
+}
+
+/* ---- Order details table ------------------------------------------------- */
+.woocommerce-order-received table.woocommerce-table--order-details {
+    width          : 100% !important;
+    border-collapse: collapse !important;
+}
+.woocommerce-order-received table.woocommerce-table--order-details thead th {
+    font-size     : 1rem !important;
+    font-weight   : 700 !important;
+    color         : var(--alqamara-primary, #0f172a) !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    border-bottom : 2px solid var(--alqamara-wc-border) !important;
+    padding       : .5rem 0 .6rem !important;
+}
+.woocommerce-order-received table.woocommerce-table--order-details td,
+.woocommerce-order-received table.woocommerce-table--order-details tbody th {
+    padding      : .75rem 0 !important;
+    border-bottom: 1px solid var(--alqamara-wc-border) !important;
+    vertical-align: middle !important;
+}
+.woocommerce-order-received table.woocommerce-table--order-details tbody tr:last-child td,
+.woocommerce-order-received table.woocommerce-table--order-details tbody tr:last-child th {
+    border-bottom: none !important;
+}
+/* Product name link */
+.woocommerce-order-received .woocommerce-table__product-name a {
+    color          : var(--alqamara-primary, #0f172a) !important;
+    font-weight    : 600 !important;
+    text-decoration: none !important;
+}
+.woocommerce-order-received .woocommerce-table__product-name a:hover {
+    color: var(--alqamara-accent, #b8912a) !important;
+}
+/* Footer rows (subtotal, shipping, total, payment) */
+.woocommerce-order-received table.woocommerce-table--order-details tfoot th,
+.woocommerce-order-received table.woocommerce-table--order-details tfoot td {
+    padding      : .55rem 0 !important;
+    border-bottom: 1px solid var(--alqamara-wc-border) !important;
+    font-size    : .9rem !important;
+}
+.woocommerce-order-received table.woocommerce-table--order-details tfoot tr:last-child th,
+.woocommerce-order-received table.woocommerce-table--order-details tfoot tr:last-child td {
+    border-bottom: none !important;
+    font-weight  : 700 !important;
+    font-size    : 1rem !important;
+    color        : var(--alqamara-accent, #b8912a) !important;
+}
+
+/* ---- Address section — single unified box -------------------------------- */
+.woocommerce-order-received .woocommerce-customer-details {
+    display      : flex !important;
+    gap          : 0 !important;
+    margin-top   : 0 !important;
+    background   : #fff !important;
+    border       : 1px solid var(--alqamara-wc-border) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    box-shadow   : var(--alqamara-wc-shadow) !important;
+    overflow     : hidden !important;
+}
+.woocommerce-order-received .woocommerce-column--billing-address,
+.woocommerce-order-received .woocommerce-column--shipping-address {
+    flex         : 1 !important;
+    background   : transparent !important;
+    border       : none !important;
+    border-radius: 0 !important;
+    box-shadow   : none !important;
+    padding      : 1.25rem !important;
+}
+/* Divider between Billing (1st column) and Shipping (2nd column), matching
+   the one .alqamara-mb-payment-details already has on its own left edge below —
+   keeps all three columns visually separated the same way. */
+.woocommerce-order-received .woocommerce-column--billing-address {
+    border-right: 1px solid var(--alqamara-wc-border) !important;
+}
+/* The addresses <section> (wraps Billing+Shipping) is one flex item at the
+   outer .woocommerce-customer-details level, sibling to .alqamara-mb-payment-details
+   below — give it flex-grow 2 (representing its 2 inner columns) against
+   payment-details' flex-grow 1 (1 column) so all THREE columns end up an
+   even three-way split instead of payment-details being squeezed thin. */
+.woocommerce-order-received .woocommerce-customer-details > .woocommerce-columns {
+    flex    : 7 1 0 !important;
+    min-width: 0 !important;
+}
+.woocommerce-order-received h2.woocommerce-column__title {
+    font-size    : 1rem !important;
+    font-weight  : 700 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    border-bottom: 2px solid var(--alqamara-wc-border) !important;
+    padding-bottom: .6rem !important;
+    margin-top   : 0 !important;
+    margin-bottom: .75rem !important;
+}
+.woocommerce-order-received address {
+    font-style: normal !important;
+    font-size : .88rem !important;
+    line-height: 1.75 !important;
+    color     : var(--alqamara-primary, #0f172a) !important;
+}
+
+/* ---- Billing-address-only layout (no shipping address on the order) ------
+   WooCommerce only wraps the addresses in .woocommerce-columns >
+   .woocommerce-column when there IS a shipping address to sit beside the
+   billing one. For a billing-only order (virtual products, local pickup,
+   shipping disabled) its order-details-customer.php template prints the
+   <h2> and <address> as DIRECT children of .woocommerce-customer-details
+   instead — and since that element is a flex row here, the two became two
+   narrow side-by-side columns with no padding: the heading squeezed into a
+   ~100px sliver against the card's left border, the address crammed next
+   to it. Reported from a real order on the preview site.
+
+   Because a direct-child <h2>/<address> only ever exists in the
+   billing-only case (in the two-column case they're nested one level
+   deeper), targeting `>` here needs no feature detection and cannot affect
+   the normal Billing + Shipping layout above. Give them a full-width row
+   each plus the same 1.25rem padding the real columns use, so a
+   billing-only order renders as one clean full-width card. ------------- */
+.woocommerce-order-received .woocommerce-customer-details { flex-wrap: wrap !important; }
+.woocommerce-order-received .woocommerce-customer-details > h2.woocommerce-column__title,
+.woocommerce-order-received .woocommerce-customer-details > address {
+    flex         : 1 1 100% !important;
+    min-width    : 100% !important;
+    padding-left : 1.25rem !important;
+    padding-right: 1.25rem !important;
+}
+.woocommerce-order-received .woocommerce-customer-details > h2.woocommerce-column__title {
+    padding-top: 1.25rem !important;
+}
+.woocommerce-order-received .woocommerce-customer-details > address {
+    padding-bottom: 1.25rem !important;
+}
+/* ---- Mobile responsive --------------------------------------------------- */
+@media (max-width: 767px) {
+    .woocommerce-order-received ul.woocommerce-order-overview li {
+        flex     : 1 1 45% !important;
+        min-width: 0 !important;
+        border-bottom: 1px solid var(--alqamara-wc-border) !important;
+    }
+    .woocommerce-order-received .woocommerce-customer-details {
+        flex-direction: column !important;
+    }
+    
+}
+
+/* "New in store" heading — bigger + golden underline */
+.wp-block-woocommerce-empty-cart-block h2:not(.with-empty-cart-icon),
+.wp-block-woocommerce-empty-cart-block h3:not(.with-empty-cart-icon) {
+    margin-top    : .25rem !important;
+    margin-bottom : .5rem !important;
+    padding-bottom: .6rem !important;
+    font-size     : 1.75rem !important;
+    font-weight   : 700 !important;
+    color         : var(--alqamara-primary, #0f172a) !important;
+    text-align    : center;
+}
+.wp-block-woocommerce-empty-cart-block h2:not(.with-empty-cart-icon)::after,
+.wp-block-woocommerce-empty-cart-block h3:not(.with-empty-cart-icon)::after {
+    content      : '' !important;
+    display      : block !important;
+    width        : 50px !important;
+    height       : 3px !important;
+    background   : var(--alqamara-accent, #b8912a) !important;
+    border-radius: 2px !important;
+    margin       : .4rem auto 1.25rem !important;
+}
+
+/* ── 24a. "New in store" product grid — matches archive card style ─────── */
+/*
+   WC Blocks uses selectors like .wc-block-grid.has-4-columns .wc-block-grid__product
+   (3 classes) with !important. We need 4+ class specificity to win.
+   Context: .wp-block-woocommerce-empty-cart-block .wc-block-grid (2 classes) + item selectors.
+*/
+
+/* Grid container */
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__products {
+    display               : grid !important;
+    grid-template-columns : repeat(4, minmax(0, 1fr)) !important;
+    gap                   : 1.25rem !important;
+    list-style            : none !important;
+    padding               : 0 !important;
+    margin                : 0 !important;
+    flex-wrap             : unset !important; /* cancel WC flex-wrap */
+    flex-direction        : unset !important;
+}
+
+/* Product card — matches .alqamara-pw-card archive style */
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product {
+    width          : 100% !important;
+    min-width      : 0 !important;
+    max-width      : none !important;   /* WC sets max-width:25% for flex; breaks our grid */
+    flex-basis     : auto !important;
+    flex-shrink    : 1 !important;
+    margin         : 0 !important;
+    background     : #fff !important;
+    border         : 1px solid #e9ecef !important;
+    border-radius  : 10px !important;
+    box-shadow     : var(--alqamara-wc-shadow) !important;
+    overflow       : hidden !important;
+    transition     : box-shadow .25s, transform .25s, border-color .25s !important;
+    display        : flex !important;
+    flex-direction : column !important;
+    position       : relative !important;
+}
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product:hover {
+    transform    : translateY(-3px) !important;
+    box-shadow   : 0 8px 28px rgba(0,0,0,.1) !important;
+    border-color : var(--alqamara-accent, #b8912a) !important;
+}
+
+/* Product link — block so image fills card width */
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-link {
+    display        : block !important;
+    width          : 100% !important;
+    text-decoration: none !important;
+    color          : inherit !important;
+}
+
+/* Image + hover overlay — same as .alqamara-pw-cart-overlay on archive cards */
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-image {
+    display      : block !important;
+    width        : 100% !important;
+    aspect-ratio : 1 / 1 !important;
+    overflow     : hidden !important;
+    margin       : 0 !important;
+    padding      : 0 !important;
+    position     : relative !important;
+}
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-image img {
+    display   : block !important;
+    width     : 100% !important;
+    height    : 100% !important;
+    object-fit: cover !important;
+    transition: transform .4s ease !important;
+    margin    : 0 !important;
+}
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product:hover .wc-block-grid__product-image img {
+    transform: scale(1.04) !important;
+}
+/* Dark overlay — ::before */
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-image::before {
+    content   : '' !important;
+    position  : absolute !important;
+    inset     : 0 !important;
+    background: rgba(0,0,0,.48) !important;
+    opacity   : 0 !important;
+    transition: opacity .25s ease !important;
+    z-index   : 3 !important;
+}
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product:hover .wc-block-grid__product-image::before {
+    opacity: 1 !important;
+}
+/* "View Details" pill button — ::after */
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-image::after {
+    content      : 'View Details' !important;
+    position     : absolute !important;
+    top          : 50% !important;
+    left         : 50% !important;
+    transform    : translate(-50%, -50%) !important;
+    padding      : .35rem 1.1rem !important;
+    font-size    : .78rem !important;
+    font-weight  : 600 !important;
+    background   : #fff !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    border-radius: 4px !important;
+    white-space  : nowrap !important;
+    line-height  : 1.5 !important;
+    opacity      : 0 !important;
+    transition   : opacity .25s ease !important;
+    z-index      : 4 !important;
+    pointer-events: none !important;
+}
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product:hover .wc-block-grid__product-image::after {
+    opacity: 1 !important;
+}
+
+/* Title — centered */
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-title {
+    font-weight        : 600 !important;
+    font-size          : .9rem !important;
+    color              : var(--alqamara-primary, #0f172a) !important;
+    padding            : .75rem .85rem .3rem !important;
+    margin             : 0 !important;
+    line-height        : 1.4 !important;
+    text-align         : center !important;
+    display            : -webkit-box !important;
+    -webkit-line-clamp : 2 !important;
+    -webkit-box-orient : vertical !important;
+    overflow           : hidden !important;
+}
+
+/* Price — centered */
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-price {
+    padding    : 0 .85rem .1rem !important;
+    margin     : 0 !important;
+    font-size  : .95rem !important;
+    font-weight: 700 !important;
+    color      : var(--alqamara-accent, #b8912a) !important;
+    text-align : center !important;
+}
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-price del,
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-price del .amount {
+    color          : var(--alqamara-wc-muted) !important;
+    font-weight    : 400 !important;
+    opacity        : .65 !important;
+    font-size      : .82rem !important;
+    text-decoration: line-through !important;
+}
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-price ins {
+    text-decoration: none !important;
+}
+
+/* Add to cart */
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-add-to-cart {
+    padding   : .5rem .85rem .85rem !important;
+    margin-top: auto !important;
+}
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-add-to-cart .wp-block-button__link,
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-add-to-cart a.button,
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-add-to-cart button {
+    display        : block !important;
+    width          : 100% !important;
+    text-align     : center !important;
+    background     : var(--alqamara-accent, #b8912a) !important;
+    color          : #fff !important;
+    border         : none !important;
+    border-radius  : var(--alqamara-wc-radius) !important;
+    padding        : .45rem 1rem !important;
+    font-size      : .85rem !important;
+    font-weight    : 600 !important;
+    cursor         : pointer !important;
+    transition     : background .2s !important;
+    text-decoration: none !important;
+}
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-add-to-cart .wp-block-button__link:hover,
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-add-to-cart a.button:hover,
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-add-to-cart button:hover {
+    background: var(--alqamara-accent-dark, #9a7821) !important;
+    color     : #fff !important;
+}
+
+/* Sale badge — perfect circle, matches .alqamara-pw-sale-badge on archive cards */
+.wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__product-onsale {
+    position       : absolute !important;
+    top            : .55rem !important;
+    left           : .55rem !important;
+    display        : flex !important;
+    align-items    : center !important;
+    justify-content: center !important;
+    background     : var(--alqamara-accent, #b8912a) !important;
+    color          : #fff !important;
+    font-size      : .68rem !important;
+    font-weight    : 700 !important;
+    letter-spacing : -.01em !important;
+    width          : 2.4rem !important;
+    height         : 2.4rem !important;
+    min-width      : 0 !important;
+    padding        : 0 !important;
+    margin         : 0 !important;
+    overflow       : hidden !important;
+    border-radius  : 50% !important;
+    z-index        : 5 !important;
+    pointer-events : none !important;
+    box-shadow     : 0 2px 6px rgba(0,0,0,.2) !important;
+    line-height    : 1 !important;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__products {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+@media (max-width: 479px) {
+    .wp-block-woocommerce-empty-cart-block .wc-block-grid .wc-block-grid__products {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* =============================================================================
+   25. Single Product — Social Share Buttons (.alqamara-share-*)
+   MOVED to css/custom.css (search "Social Share Buttons") so the same
+   styling also applies on blog posts, which don't load this stylesheet.
+   Rendered via alqamara_render_share_buttons (inc/helpers.php), called
+   from woocommerce_single_product_summary (inc/woocommerce.php 6-B) here
+   and from single.php for blog posts.
+============================================================================= */
+
+/* =============================================================================
+   26. My Account Page
+   Dashboard · Orders · Downloads · Addresses · Account Details · Login
+============================================================================= */
+
+/* ── 26a. Layout ─────────────────────────────────────────────────────────── */
+/* WC wraps nav + content in .woocommerce — make it flex.
+ * Scoped to "#alqamara-wc-main > .woocommerce" (direct child of the page's main
+ * WC content wrapper), NOT the old ".woocommerce-account .woocommerce" —
+ * that selector matched ANY element with class "woocommerce" anywhere on
+ * a My Account page, which also includes the footer's WooCommerce product
+ * widgets (their wrapper div carries class "widget woocommerce
+ * widget_top_rated_products") and the mini-cart drawer (also class
+ * "woocommerce"). Found live
+ * "Top Rated Products" widget was being forced into this same flex row
+ * layout, pushing its title and product list side-by-side instead of
+ * stacked and spilling the product title into the next footer column.
+ *
+ * FURTHER SCOPED to `body.woocommerce-account` — found live
+ * `#alqamara-wc-main > .woocommerce` ALSO matches the classic order-received
+ * (Thank You) page markup, where WooCommerce's thankyou.php template
+ * wraps its own content in a plain `<div class="woocommerce">` that is
+ * likewise a direct child of `#alqamara-wc-main`. Without page-type scoping,
+ * this rule turned THAT wrapper into a flex row too, so the funnel-steps
+ * bar (inserted as a sibling of `.woocommerce-order` by js/main.js) and
+ * the actual order content ended up side-by-side instead of stacked full
+ * width — the bug the user reported via screenshot. My Account is the
+ * only page that actually needs the nav+content flex row, so this and
+ * the sibling rules below are now scoped to it explicitly. */
+body.woocommerce-account #alqamara-wc-main > .woocommerce {
+    display  : flex !important;
+    gap      : 1.5rem !important;
+    align-items: flex-start !important;
+}
+body.woocommerce-account #alqamara-wc-main > .woocommerce::before,
+body.woocommerce-account #alqamara-wc-main > .woocommerce::after {
+    display: none !important;
+}
+
+/* ── 26b. Sidebar navigation ─────────────────────────────────────────────── */
+.woocommerce-MyAccount-navigation {
+    flex         : 0 0 220px !important;
+    width        : 220px !important;
+    background   : #fff !important;
+    border       : 1px solid var(--alqamara-wc-border) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    box-shadow   : var(--alqamara-wc-shadow) !important;
+    overflow     : hidden !important;
+}
+.woocommerce-MyAccount-navigation ul {
+    list-style: none !important;
+    margin    : 0 !important;
+    padding   : 0 !important;
+}
+.woocommerce-MyAccount-navigation li {
+    border-bottom: 1px solid var(--alqamara-wc-border) !important;
+    margin       : 0 !important;
+}
+.woocommerce-MyAccount-navigation li:last-child { border-bottom: none !important; }
+
+/* Nav links */
+.woocommerce-MyAccount-navigation li a {
+    display        : flex !important;
+    align-items    : center !important;
+    gap            : .65rem !important;
+    padding        : .85rem 1.1rem !important;
+    color          : var(--alqamara-primary, #0f172a) !important;
+    font-weight    : 500 !important;
+    font-size      : .88rem !important;
+    text-decoration: none !important;
+    transition     : background .15s, color .15s, padding-left .15s !important;
+}
+.woocommerce-MyAccount-navigation li a::before {
+    content            : '' !important;
+    display            : inline-block !important;
+    width              : 16px !important;
+    height             : 16px !important;
+    background-size    : contain !important;
+    background-repeat  : no-repeat !important;
+    background-position: center !important;
+    flex-shrink        : 0 !important;
+    opacity            : .55 !important;
+    transition         : opacity .15s !important;
+}
+.woocommerce-MyAccount-navigation li a:hover {
+    background  : var(--alqamara-wc-light, #f9fafb) !important;
+    color       : var(--alqamara-accent, #b8912a) !important;
+    padding-left: 1.35rem !important;
+}
+.woocommerce-MyAccount-navigation li a:hover::before { opacity: 1 !important; }
+
+/* Active state */
+.woocommerce-MyAccount-navigation li.is-active a {
+    background : var(--alqamara-accent, #b8912a) !important;
+    color      : #fff !important;
+    font-weight: 600 !important;
+}
+.woocommerce-MyAccount-navigation li.is-active a::before {
+    opacity: 1 !important;
+    filter : brightness(0) invert(1) !important;
+}
+
+/* SVG icons per item (accent color stroke, URL-encoded) */
+.woocommerce-MyAccount-navigation-link--dashboard a::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8912a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='7' height='7'/%3E%3Crect x='14' y='3' width='7' height='7'/%3E%3Crect x='3' y='14' width='7' height='7'/%3E%3Crect x='14' y='14' width='7' height='7'/%3E%3C/svg%3E") !important;
+}
+.woocommerce-MyAccount-navigation-link--orders a::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8912a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2'/%3E%3Crect x='9' y='3' width='6' height='4' rx='1'/%3E%3Cline x1='9' y1='12' x2='15' y2='12'/%3E%3Cline x1='9' y1='16' x2='13' y2='16'/%3E%3C/svg%3E") !important;
+}
+
+.woocommerce-MyAccount-navigation-link--downloads a::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8912a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4'/%3E%3Cpolyline points='7 10 12 15 17 10'/%3E%3Cline x1='12' y1='15' x2='12' y2='3'/%3E%3C/svg%3E") !important;
+}
+.woocommerce-MyAccount-navigation-link--edit-address a::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8912a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z'/%3E%3Ccircle cx='12' cy='9' r='2.5'/%3E%3C/svg%3E") !important;
+}
+.woocommerce-MyAccount-navigation-link--edit-account a::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8912a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E") !important;
+}
+.woocommerce-MyAccount-navigation-link--customer-logout a::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e53e3e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4'/%3E%3Cpolyline points='16 17 21 12 16 7'/%3E%3Cline x1='21' y1='12' x2='9' y2='12'/%3E%3C/svg%3E") !important;
+}
+/* Log out — always red, never accent active style */
+.woocommerce-MyAccount-navigation-link--customer-logout a,
+.woocommerce-MyAccount-navigation-link--customer-logout a:hover {
+    color     : #e53e3e !important;
+}
+.woocommerce-MyAccount-navigation-link--customer-logout a:hover {
+    background: #fff5f5 !important;
+}
+.woocommerce-MyAccount-navigation-link--customer-logout a::before {
+    opacity: .7 !important;
+    filter : none !important;  /* keep red icon, don't invert */
+}
+
+/* ── 26c. Content area card ───────────────────────────────────────────────── */
+.woocommerce-MyAccount-content {
+    flex         : 1 1 0 !important;
+    min-width    : 0 !important;
+    background   : #fff !important;
+    border       : 1px solid var(--alqamara-wc-border) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    box-shadow   : var(--alqamara-wc-shadow) !important;
+    padding      : 1.5rem !important;
+}
+
+/* ── 26d. Section headings inside content ────────────────────────────────── */
+.woocommerce-MyAccount-content h2,
+.woocommerce-MyAccount-content h3 {
+    font-size    : 1rem !important;
+    font-weight  : 700 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    border-bottom: 2px solid var(--alqamara-wc-border) !important;
+    padding-bottom: .6rem !important;
+    margin-top   : 0 !important;
+    margin-bottom: .85rem !important;
+}
+
+/* ── 26e. Dashboard welcome text ─────────────────────────────────────────── */
+.woocommerce-dashboard .woocommerce-MyAccount-content > p:first-child {
+    font-size    : .92rem !important;
+    color        : var(--alqamara-wc-muted, #6b7280) !important;
+    border-bottom: 1px solid var(--alqamara-wc-border) !important;
+    padding-bottom: .85rem !important;
+    margin-bottom : 1rem !important;
+}
+.woocommerce-dashboard .woocommerce-MyAccount-content > p:first-child strong {
+    color    : var(--alqamara-primary, #0f172a) !important;
+    font-size: 1rem !important;
+}
+
+/* ── 26f. Orders table ────────────────────────────────────────────────────── */
+.woocommerce-MyAccount-content table.woocommerce-orders-table,
+.woocommerce-MyAccount-content table.shop_table {
+    width          : 100% !important;
+    border-collapse: collapse !important;
+}
+.woocommerce-MyAccount-content table.woocommerce-orders-table thead th,
+.woocommerce-MyAccount-content table.shop_table thead th {
+    font-size     : .88rem !important;
+    font-weight   : 700 !important;
+    color         : var(--alqamara-primary, #0f172a) !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    border-bottom : 2px solid var(--alqamara-wc-border) !important;
+    padding       : .5rem .75rem .6rem !important;
+    text-align    : left !important;
+}
+.woocommerce-MyAccount-content table.woocommerce-orders-table tbody td,
+.woocommerce-MyAccount-content table.shop_table tbody td {
+    padding       : .75rem !important;
+    border-bottom : 1px solid var(--alqamara-wc-border) !important;
+    font-size     : .875rem !important;
+    vertical-align: middle !important;
+}
+.woocommerce-MyAccount-content table tbody tr:last-child td { border-bottom: none !important; }
+
+/* "View" / action buttons in orders table */
+.woocommerce-MyAccount-content .woocommerce-button.button,
+.woocommerce-MyAccount-content td .button {
+    background   : transparent !important;
+    border       : 1.5px solid var(--alqamara-accent, #b8912a) !important;
+    color        : var(--alqamara-accent, #b8912a) !important;
+    padding      : .3rem .85rem !important;
+    border-radius: 4px !important;
+    font-size    : .78rem !important;
+    font-weight  : 600 !important;
+    transition   : background .15s, color .15s !important;
+    text-decoration: none !important;
+}
+.woocommerce-MyAccount-content .woocommerce-button.button:hover,
+.woocommerce-MyAccount-content td .button:hover {
+    background: var(--alqamara-accent, #b8912a) !important;
+    color     : #fff !important;
+}
+
+/* Order status mark */
+.woocommerce-MyAccount-content mark.order-status {
+    background   : var(--alqamara-wc-light, #f3f4f6) !important;
+    border-radius: 20px !important;
+    padding      : .2rem .7rem !important;
+    font-size    : .75rem !important;
+    font-weight  : 600 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+}
+.woocommerce-MyAccount-content mark.order-status.status-completed { background: #d1fae5 !important; color: #065f46 !important; }
+.woocommerce-MyAccount-content mark.order-status.status-processing { background: #dbeafe !important; color: #1e40af !important; }
+.woocommerce-MyAccount-content mark.order-status.status-on-hold { background: #fef3c7 !important; color: #92400e !important; }
+.woocommerce-MyAccount-content mark.order-status.status-cancelled { background: #fee2e2 !important; color: #991b1b !important; }
+/*
+   colors only covered the statuses visible in testing at the time; these
+   3 fill out the rest of WooCommerce's default status set so nothing
+   falls back to the plain neutral color. */
+.woocommerce-MyAccount-content mark.order-status.status-pending { background: #fef9c3 !important; color: #854d0e !important; }
+.woocommerce-MyAccount-content mark.order-status.status-refunded { background: #e0e7ff !important; color: #3730a3 !important; }
+.woocommerce-MyAccount-content mark.order-status.status-failed { background: #fecaca !important; color: #7f1d1d !important; }
+
+/* ── 26g. Addresses ──────────────────────────────────────────────────────── */
+.woocommerce-MyAccount-content .woocommerce-Addresses {
+    display: flex !important;
+    gap    : 1rem !important;
+}
+.woocommerce-MyAccount-content .woocommerce-Address {
+    flex         : 1 !important;
+    border       : 1px solid var(--alqamara-wc-border) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    padding      : 1.1rem 1.25rem !important;
+}
+.woocommerce-MyAccount-content .woocommerce-Address-title {
+    display        : flex !important;
+    justify-content: space-between !important;
+    align-items    : center !important;
+    border-bottom  : 2px solid var(--alqamara-wc-border) !important;
+    padding-bottom : .5rem !important;
+    margin-bottom  : .75rem !important;
+}
+.woocommerce-MyAccount-content .woocommerce-Address-title h3 {
+    font-size    : 1rem !important;
+    font-weight  : 700 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    border-bottom: none !important;
+    padding      : 0 !important;
+    margin       : 0 !important;
+}
+.woocommerce-MyAccount-content .woocommerce-Address-title .edit,
+.woocommerce-MyAccount-content address + a.edit {
+    font-size      : .78rem !important;
+    font-weight    : 600 !important;
+    color          : var(--alqamara-accent, #b8912a) !important;
+    text-decoration: none !important;
+    border         : 1.5px solid var(--alqamara-accent, #b8912a) !important;
+    border-radius  : 4px !important;
+    padding        : .2rem .65rem !important;
+    transition     : background .15s, color .15s !important;
+}
+.woocommerce-MyAccount-content .woocommerce-Address-title .edit:hover,
+.woocommerce-MyAccount-content address + a.edit:hover {
+    background: var(--alqamara-accent, #b8912a) !important;
+    color     : #fff !important;
+}
+.woocommerce-MyAccount-content address {
+    font-style : normal !important;
+    font-size  : .875rem !important;
+    line-height: 1.8 !important;
+    color      : var(--alqamara-primary, #0f172a) !important;
+}
+
+/* ── 26h. Account details & address edit forms ────────────────────────────── */
+.woocommerce-MyAccount-content .woocommerce-form-row,
+.woocommerce-MyAccount-content .form-row {
+    margin-bottom: .85rem !important;
+}
+.woocommerce-MyAccount-content .woocommerce-form-row label,
+.woocommerce-MyAccount-content .form-row label {
+    display      : block !important;
+    font-size    : .83rem !important;
+    font-weight  : 600 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    margin-bottom: .3rem !important;
+}
+.woocommerce-MyAccount-content input.input-text,
+.woocommerce-MyAccount-content select,
+.woocommerce-MyAccount-content textarea {
+    width        : 100% !important;
+    border       : 1.5px solid var(--alqamara-wc-border) !important;
+    border-radius: 6px !important;
+    padding      : .6rem .85rem !important;
+    font-size    : .9rem !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    background   : #fff !important;
+    transition   : border-color .2s, box-shadow .2s !important;
+}
+.woocommerce-MyAccount-content input.input-text:focus,
+.woocommerce-MyAccount-content select:focus,
+.woocommerce-MyAccount-content textarea:focus {
+    border-color: var(--alqamara-accent, #b8912a) !important;
+    outline     : none !important;
+    box-shadow  : 0 0 0 3px rgba(184,145,42,.12) !important;
+}
+.woocommerce-MyAccount-content fieldset {
+    border       : 1px solid var(--alqamara-wc-border) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    padding      : 1.1rem 1.25rem !important;
+    margin       : 1.25rem 0 !important;
+}
+.woocommerce-MyAccount-content fieldset legend {
+    font-size  : .88rem !important;
+    font-weight: 700 !important;
+    color      : var(--alqamara-primary, #0f172a) !important;
+    padding    : 0 .5rem !important;
+}
+/* Submit buttons */
+.woocommerce-MyAccount-content button[type="submit"],
+.woocommerce-MyAccount-content .woocommerce-Button[type="submit"],
+.woocommerce-MyAccount-content input[type="submit"] {
+    background   : var(--alqamara-accent, #b8912a) !important;
+    color        : #fff !important;
+    border       : none !important;
+    padding      : .65rem 1.75rem !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    font-weight  : 600 !important;
+    font-size    : .95rem !important;
+    cursor       : pointer !important;
+    transition   : background .2s !important;
+    margin-top   : .5rem !important;
+}
+.woocommerce-MyAccount-content button[type="submit"]:hover,
+.woocommerce-MyAccount-content .woocommerce-Button[type="submit"]:hover,
+.woocommerce-MyAccount-content input[type="submit"]:hover {
+    background: var(--alqamara-accent-dark, #9a7821) !important;
+}
+
+/* ── 26i. Notices ────────────────────────────────────────────────────────── */
+.woocommerce-MyAccount-content .woocommerce-message,
+.woocommerce-MyAccount-content .woocommerce-notice--success {
+    background   : #f0faf4 !important;
+    border-left  : 4px solid #38a169 !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    color        : #276749 !important;
+    font-weight  : 500 !important;
+    padding      : .75rem 1rem !important;
+    margin-bottom: 1rem !important;
+    list-style   : none !important;
+}
+.woocommerce-MyAccount-content .woocommerce-error {
+    background   : #fff5f5 !important;
+    border-left  : 4px solid #e53e3e !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    color        : #c53030 !important;
+    padding      : .75rem 1rem !important;
+    margin-bottom: 1rem !important;
+    list-style   : none !important;
+}
+
+/* ── 26j. Mobile ─────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+    body.woocommerce-account #alqamara-wc-main > .woocommerce {
+        flex-direction: column !important;
+    }
+    .woocommerce-MyAccount-navigation {
+        flex : none !important;
+        width: 100% !important;
+    }
+    .woocommerce-MyAccount-navigation ul {
+        display              : grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    .woocommerce-MyAccount-navigation li {
+        border-right : none !important;
+        border-bottom: 1px solid var(--alqamara-wc-border) !important;
+    }
+    /* Divider only between left and right column */
+    .woocommerce-MyAccount-navigation li:nth-child(odd) {
+        border-right: 1px solid var(--alqamara-wc-border) !important;
+    }
+    /* Last row: both items get no bottom border (card border acts as boundary) */
+    .woocommerce-MyAccount-navigation li:nth-last-child(-n+2) {
+        border-bottom: none !important;
+    }
+    .woocommerce-MyAccount-content .woocommerce-Addresses {
+        flex-direction: column !important;
+    }
+    .woocommerce-MyAccount-content table.woocommerce-orders-table thead { display: none !important; }
+    .woocommerce-MyAccount-content table.woocommerce-orders-table tbody td {
+        display: block !important;
+        text-align: right !important;
+        padding: .5rem .75rem !important;
+    }
+    .woocommerce-MyAccount-content table.woocommerce-orders-table tbody td::before {
+        content    : attr(data-title) !important;
+        float      : left !important;
+        font-weight: 700 !important;
+    }
+}
+
+/* =============================================================================
+   27. Login / Register Page
+   Body class: .woocommerce-account (no .logged-in)
+   Forms: .woocommerce-form-login  /  .woocommerce-form-register
+============================================================================= */
+
+/* Override section 26 layout for the logged-out state — no sidebar, column-centered */
+.woocommerce-account:not(.logged-in) .woocommerce {
+    flex-direction: column !important;
+    align-items   : center !important;
+}
+
+/* Hide external headings (single-form & two-column) — moved inside cards */
+.woocommerce-account:not(.logged-in) .woocommerce > h2,
+.woocommerce-account:not(.logged-in) .u-column1 h2,
+.woocommerce-account:not(.logged-in) .u-column2 h2 {
+    display: none !important;
+}
+/* Remove WC's default form top-margin in single-form mode */
+.woocommerce-account:not(.logged-in) .woocommerce > .woocommerce-form-login,
+.woocommerce-account:not(.logged-in) .woocommerce > .woocommerce-form-register {
+    margin-top: 0 !important;
+}
+/* Inject "Login" / "Register" headings inside each card — same as Reset Password */
+.woocommerce-form-login::before {
+    content      : "Login";
+    display      : block !important;
+    font-size    : 1.1rem !important;
+    font-weight  : 700 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    border-bottom: 2px solid var(--alqamara-wc-border) !important;
+    padding-bottom: .65rem !important;
+    margin-bottom: 1.1rem !important;
+}
+.woocommerce-form-register::before {
+    content      : "Register";
+    display      : block !important;
+    font-size    : 1.1rem !important;
+    font-weight  : 700 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    border-bottom: 2px solid var(--alqamara-wc-border) !important;
+    padding-bottom: .65rem !important;
+    margin-bottom: 1.1rem !important;
+}
+
+/* ── 27a. Form cards ─────────────────────────────────────────────────────── */
+.woocommerce-form-login,
+.woocommerce-form-register {
+    background   : #fff !important;
+    border       : 1px solid var(--alqamara-wc-border) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    box-shadow   : var(--alqamara-wc-shadow) !important;
+    padding      : 1.75rem 2rem !important;
+    width        : 100% !important;  /* needed in flex-column + align-items:center */
+    max-width    : 480px !important;
+    margin       : 0 !important;
+}
+
+/* ── 27b. Form headings ──────────────────────────────────────────────────── */
+.woocommerce-form-login h2,
+.woocommerce-form-register h2 {
+    font-size    : 1.1rem !important;
+    font-weight  : 700 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    border-bottom: 2px solid var(--alqamara-wc-border) !important;
+    padding-bottom: .65rem !important;
+    margin-top   : 0 !important;
+    margin-bottom: 1.25rem !important;
+}
+
+/* ── 27c. Labels ─────────────────────────────────────────────────────────── */
+.woocommerce-form-login .woocommerce-form__label,
+.woocommerce-form-register .woocommerce-form__label {
+    display      : block !important;
+    font-size    : .83rem !important;
+    font-weight  : 600 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    margin-bottom: .3rem !important;
+}
+
+/* ── 27d. Text inputs ────────────────────────────────────────────────────── */
+.woocommerce-form-login input[type="text"],
+.woocommerce-form-login input[type="password"],
+.woocommerce-form-login input[type="email"],
+.woocommerce-form-register input[type="text"],
+.woocommerce-form-register input[type="password"],
+.woocommerce-form-register input[type="email"] {
+    width        : 100% !important;
+    border       : 1.5px solid var(--alqamara-wc-border) !important;
+    border-radius: 6px !important;
+    padding      : .6rem .85rem !important;
+    font-size    : .9rem !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    background   : #fff !important;
+    transition   : border-color .2s, box-shadow .2s !important;
+}
+.woocommerce-form-login input[type="text"]:focus,
+.woocommerce-form-login input[type="password"]:focus,
+.woocommerce-form-login input[type="email"]:focus,
+.woocommerce-form-register input[type="text"]:focus,
+.woocommerce-form-register input[type="password"]:focus,
+.woocommerce-form-register input[type="email"]:focus {
+    border-color: var(--alqamara-accent, #b8912a) !important;
+    outline     : none !important;
+    box-shadow  : 0 0 0 3px rgba(184,145,42,.12) !important;
+}
+
+/* ── 27e. Form row spacing ───────────────────────────────────────────────── */
+.woocommerce-form-login .woocommerce-form-row,
+.woocommerce-form-register .woocommerce-form-row {
+    margin-bottom: .85rem !important;
+}
+
+/* ── 27f. Remember me row ────────────────────────────────────────────────── */
+.woocommerce-form-login__rememberme {
+    display    : flex !important;
+    align-items: center !important;
+    gap        : .4rem !important;
+    font-size  : .85rem !important;
+    cursor     : pointer !important;
+}
+
+/* ── 27g. Submit buttons ─────────────────────────────────────────────────── */
+.woocommerce-form-login__submit,
+.woocommerce-form-register input[type="submit"],
+.woocommerce-form-login input[type="submit"] {
+    background     : var(--alqamara-accent, #b8912a) !important;
+    color          : #fff !important;
+    border         : none !important;
+    padding        : .65rem 1.75rem !important;
+    border-radius  : var(--alqamara-wc-radius) !important;
+    font-weight    : 600 !important;
+    font-size      : .95rem !important;
+    cursor         : pointer !important;
+    transition     : background .2s !important;
+    text-decoration: none !important;
+    margin-top     : .25rem !important;
+}
+.woocommerce-form-login__submit:hover,
+.woocommerce-form-register input[type="submit"]:hover,
+.woocommerce-form-login input[type="submit"]:hover {
+    background: var(--alqamara-accent-dark, #9a7821) !important;
+    color     : #fff !important;
+}
+
+/* ── 27h. Lost password + privacy text ──────────────────────────────────── */
+.woocommerce-form-login .lost_password {
+    margin-top: .65rem !important;
+}
+.woocommerce-form-login .lost_password a {
+    font-size      : .82rem !important;
+    color          : var(--alqamara-accent, #b8912a) !important;
+    text-decoration: none !important;
+}
+.woocommerce-form-login .lost_password a:hover { text-decoration: underline !important; }
+.woocommerce-privacy-policy-text {
+    font-size: .8rem !important;
+    color    : var(--alqamara-wc-muted, #6b7280) !important;
+    margin   : .75rem 0 !important;
+    line-height: 1.6 !important;
+}
+.woocommerce-privacy-policy-text a { color: var(--alqamara-accent, #b8912a) !important; }
+
+/* ── 27i. Logged-out message ─────────────────────────────────────────────── */
+.woocommerce-account:not(.logged-in) .woocommerce-message {
+    background   : #fffbeb !important;
+    border-left  : 4px solid var(--alqamara-accent, #b8912a) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    color        : #78350f !important;
+    font-size    : .9rem !important;
+    padding      : .75rem 1rem !important;
+    margin-bottom: 1rem !important;
+    list-style   : none !important;
+}
+
+/* ── 27j. Two-column layout (Login + Register) ───────────────────────────── */
+/* WC wraps both forms in .u-columns.col2-set when registration is enabled */
+.woocommerce-account:not(.logged-in) .woocommerce .u-columns.col2-set {
+    display  : flex !important;
+    gap      : 1.5rem !important;
+    width    : 100% !important;
+    max-width: 980px !important;
+}
+.woocommerce-account:not(.logged-in) .woocommerce .u-column1,
+.woocommerce-account:not(.logged-in) .woocommerce .u-column2 {
+    flex : 1 !important;
+    float: none !important;
+    width: auto !important;
+}
+/* Column headings ("Login" / "Register") */
+.woocommerce-account:not(.logged-in) .u-column1 h2,
+.woocommerce-account:not(.logged-in) .u-column2 h2 {
+    font-size    : 1.1rem !important;
+    font-weight  : 700 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    margin-bottom: .65rem !important;
+}
+/* Privacy policy text inside register form */
+.woocommerce-form-register .woocommerce-privacy-policy-text {
+    font-size  : .8rem !important;
+    color      : var(--alqamara-wc-muted, #6b7280) !important;
+    margin     : .75rem 0 !important;
+    line-height: 1.6 !important;
+}
+/* "A link to set a new password…" helper text */
+.woocommerce-form-register > p:not([class]) {
+    font-size  : .82rem !important;
+    color      : var(--alqamara-wc-muted, #6b7280) !important;
+    margin     : .25rem 0 .85rem !important;
+    line-height: 1.5 !important;
+}
+
+/* ── 27k. Hide breadcrumb bar on logged-out login/register page only ─────── */
+/* Lost Password keeps its breadcrumb (woocommerce-lost-password class)       */
+.woocommerce-account:not(.logged-in):not(.woocommerce-lost-password) .alqamara-shop-header-bar {
+    display: none !important;
+}
+
+/* ── 27l-0. Lost Password — reduce flex gap inside .woocommerce wrapper ────── */
+.woocommerce-lost-password .woocommerce {
+    gap: 1rem !important;
+}
+
+/* ── 27l. Lost / Reset Password page ─────────────────────────────────────── */
+/* Body class: woocommerce-lost-password */
+.woocommerce-ResetPassword {
+    background   : #fff !important;
+    border       : 1px solid var(--alqamara-wc-border) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    box-shadow   : var(--alqamara-wc-shadow) !important;
+    padding      : 1.75rem 2rem !important;
+    width        : 100% !important;
+    max-width    : 480px !important;
+    margin       : 0 auto !important;
+}
+/* Heading injected at the top of the card */
+.woocommerce-lost-password .woocommerce-ResetPassword::before {
+    content      : "Reset Password";
+    display      : block !important;
+    font-size    : 1.1rem !important;
+    font-weight  : 700 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    border-bottom: 2px solid var(--alqamara-wc-border) !important;
+    padding-bottom: .65rem !important;
+    margin-bottom: 1.1rem !important;
+}
+/* Description paragraph (first <p> inside the form) */
+.woocommerce-ResetPassword > p:first-of-type {
+    font-size    : .85rem !important;
+    color        : var(--alqamara-wc-muted, #6b7280) !important;
+    line-height  : 1.6 !important;
+    background   : var(--alqamara-wc-light, #f9fafb) !important;
+    border-left  : 3px solid var(--alqamara-accent, #b8912a) !important;
+    border-radius: 4px !important;
+    padding      : .6rem .85rem !important;
+    margin-bottom: 1rem !important;
+}
+/* Override WC's 47%-wide form-row-first on this single-input form */
+.woocommerce-ResetPassword .woocommerce-form-row,
+.woocommerce-ResetPassword .form-row-first,
+.woocommerce-ResetPassword .form-row-last {
+    width        : 100% !important;
+    float        : none !important;
+    margin-right : 0 !important;
+    margin-left  : 0 !important;
+}
+/* Input itself — full width with correct box model */
+.woocommerce-ResetPassword input.input-text,
+.woocommerce-ResetPassword input[type="text"],
+.woocommerce-ResetPassword input[type="email"] {
+    width     : 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Label */
+.woocommerce-ResetPassword label {
+    display      : block !important;
+    font-size    : .83rem !important;
+    font-weight  : 600 !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    margin-bottom: .3rem !important;
+}
+/* Input */
+.woocommerce-ResetPassword input[type="text"],
+.woocommerce-ResetPassword input[type="email"] {
+    width        : 100% !important;
+    border       : 1.5px solid var(--alqamara-wc-border) !important;
+    border-radius: 6px !important;
+    padding      : .6rem .85rem !important;
+    font-size    : .9rem !important;
+    color        : var(--alqamara-primary, #0f172a) !important;
+    background   : #fff !important;
+    transition   : border-color .2s, box-shadow .2s !important;
+}
+.woocommerce-ResetPassword input[type="text"]:focus,
+.woocommerce-ResetPassword input[type="email"]:focus {
+    border-color: var(--alqamara-accent, #b8912a) !important;
+    outline     : none !important;
+    box-shadow  : 0 0 0 3px rgba(184,145,42,.12) !important;
+}
+/* Submit button */
+.woocommerce-ResetPassword button[type="submit"] {
+    background   : var(--alqamara-accent, #b8912a) !important;
+    color        : #fff !important;
+    border       : none !important;
+    padding      : .65rem 1.75rem !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    font-weight  : 600 !important;
+    font-size    : .95rem !important;
+    cursor       : pointer !important;
+    transition   : background .2s !important;
+    margin-top   : .25rem !important;
+}
+.woocommerce-ResetPassword button[type="submit"]:hover {
+    background: var(--alqamara-accent-dark, #9a7821) !important;
+}
+
+/* ── 27l. Mobile ─────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+    .woocommerce-account:not(.logged-in) .woocommerce {
+        flex-direction: column !important;
+        align-items   : stretch !important;
+    }
+    .woocommerce-account:not(.logged-in) .woocommerce .u-columns.col2-set {
+        flex-direction: column !important;
+    }
+    .woocommerce-form-login,
+    .woocommerce-form-register,
+    .woocommerce-ResetPassword {
+        max-width: none !important;
+        padding  : 1.25rem !important;
+    }
+}
+
+/* AJAX shop filtering (js/alqamara-ajax-shop.js) reuses the existing
+   .alqamara-products-col[aria-busy="true"] spinner defined earlier in this file —
+   no separate loading style needed here. */
+
+
+
+/* Visible keyboard focus on the quantity box and the product search field. */
+.quantity:focus-within,
+.woocommerce-product-search:focus-within {
+    outline: 2px solid var(--alqamara-accent, #b8912a);
+    outline-offset: 2px;
+}

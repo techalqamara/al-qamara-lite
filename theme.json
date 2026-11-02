@@ -1,0 +1,84 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/theme.json",
+    "version": 2,
+    "settings": {
+        "appearanceTools": true,
+        "layout": {
+            "contentSize": "800px"
+        },
+        "color": {
+            "custom": true,
+            "customGradient": true,
+            "link": true,
+            "palette": [
+                { "slug": "primary",       "name": "Primary (Navy)",  "color": "#0f172a" },
+                { "slug": "primary-dark",  "name": "Primary Dark",    "color": "#060b12" },
+                { "slug": "accent",        "name": "Accent (Gold)",   "color": "#b8912a" },
+                { "slug": "accent-dark",   "name": "Accent Dark",     "color": "#a8863a" },
+                { "slug": "dark",          "name": "Dark",            "color": "#14182a" },
+                { "slug": "body",          "name": "Body Text",       "color": "#333333" },
+                { "slug": "muted",         "name": "Muted",           "color": "#6c757d" },
+                { "slug": "surface",       "name": "Surface (Cream)", "color": "#f7f4ec" },
+                { "slug": "tint",          "name": "Tint",            "color": "#f3efe3" },
+                { "slug": "border",        "name": "Border",          "color": "#e5e2d6" },
+                { "slug": "on-dark",       "name": "On Dark",         "color": "#ffffff" },
+                { "slug": "on-dark-muted", "name": "On Dark Muted",   "color": "#c3c9d6" },
+                { "slug": "white",         "name": "White",           "color": "#ffffff" },
+                { "slug": "black",         "name": "Black",           "color": "#111111" }
+            ]
+        },
+        "typography": {
+            "customFontSize": true,
+            "lineHeight": true,
+            "fontFamilies": [
+                {
+                    "slug": "body",
+                    "name": "Body Font (Poppins)",
+                    "fontFamily": "'Poppins', sans-serif"
+                },
+                {
+                    "slug": "heading",
+                    "name": "Heading Font (Playfair Display)",
+                    "fontFamily": "'Playfair Display', Georgia, serif"
+                }
+            ],
+            "fontSizes": [
+                { "slug": "small",    "name": "Small",       "size": "0.875rem" },
+                { "slug": "medium",   "name": "Medium",      "size": "1rem"     },
+                { "slug": "large",    "name": "Large",       "size": "1.25rem"  },
+                { "slug": "x-large",  "name": "Extra Large", "size": "1.75rem"  },
+                { "slug": "xx-large", "name": "Huge",        "size": "2.5rem"   }
+            ]
+        },
+        "spacing": {
+            "padding": true,
+            "margin": true,
+            "blockGap": true,
+            "units": [ "px", "em", "rem", "%", "vw" ]
+        }
+    },
+    "styles": {
+        "color": {
+            "background": "#ffffff",
+            "text": "#333333"
+        },
+        "typography": {
+            "fontFamily": "'Poppins', sans-serif",
+            "fontSize": "1rem",
+            "lineHeight": "1.7"
+        },
+        "elements": {
+            "heading": {
+                "typography": {
+                    "fontFamily": "'Playfair Display', Georgia, serif",
+                    "fontWeight": "700"
+                },
+                "color": { "text": "#0f172a" }
+            },
+            "link": {
+                "color": { "text": "#0b5cd5" },
+                ":hover": { "color": { "text": "#b8912a" } }
+            }
+        }
+    }
+}

@@ -1,0 +1,2100 @@
+# Copyright (C) 2026 Tech Al Qamara
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Al Qamara Lite 1.0.5\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/al-qamara-lite\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2026-10-13 02:47+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: al-qamara-lite\n"
+
+#. Theme Name of the theme
+msgid "Al Qamara Lite"
+msgstr ""
+
+#. Description of the theme
+msgid "A clean, fast theme for blogs, business sites and WooCommerce stores. Built on Bootstrap 5, with a mobile slide-in menu, a widget-driven homepage, a Customizer-based header, footer and colour options, and full WooCommerce styling."
+msgstr ""
+
+#. Author of the theme
+msgid "Tech Al Qamara"
+msgstr ""
+
+#. Author URI of the theme
+msgid "https://profiles.wordpress.org/alqamara/"
+msgstr ""
+
+#: inc/customizer.php:1576
+msgid "\"View All\" Button Text"
+msgstr ""
+
+#. translators: %d: number of comments
+#: comments.php:29
+msgid "%d Comment"
+msgid_plural "%d Comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d = number of posts in this category
+#: inc/widgets.php:1009
+msgid "%d Post"
+msgid_plural "%d Posts"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d = number of products in this category
+#: inc/widgets.php:1006
+msgid "%d Product"
+msgid_plural "%d Products"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of items in the cart
+#: inc/woocommerce.php:284
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of items in the cart
+#: header.php:301
+msgid "%d item(s)"
+msgstr ""
+
+#. translators: %d: number of posts
+#: archive.php:54 archive.php:132 page-templates/template-blog.php:55
+msgid "%d post found"
+msgid_plural "%d posts found"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of results
+#: search.php:53 search.php:105
+msgid "%d result found"
+msgid_plural "%d results found"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: number of comments
+#: index.php:68 single.php:54 single.php:112
+msgid "%s Comment"
+msgid_plural "%s Comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/widgets.php:108
+msgid "&#8212; All &#8212;"
+msgstr ""
+
+#: inc/customizer.php:1561
+msgid "2 Columns"
+msgstr ""
+
+#: inc/customizer.php:1065
+msgid "2 columns"
+msgstr ""
+
+#: inc/customizer.php:1562
+msgid "3 Columns"
+msgstr ""
+
+#: inc/customizer.php:1066
+msgid "3 columns"
+msgstr ""
+
+#: inc/customizer.php:1563
+msgid "4 Columns"
+msgstr ""
+
+#: inc/customizer.php:1067
+msgid "4 columns"
+msgstr ""
+
+#: 404.php:25
+msgid "404 Error"
+msgstr ""
+
+#: inc/customizer.php:1068
+msgid "5 columns"
+msgstr ""
+
+#: inc/helpers.php:238 inc/helpers.php:259
+msgid "About"
+msgstr ""
+
+#: front-page.php:237 inc/customizer.php:1707 inc/customizer.php:1723 inc/customizer.php:2113 inc/customizer.php:2120
+msgid "About Us"
+msgstr ""
+
+#: inc/customizer.php:278
+msgid "Accent Color (Gold)"
+msgstr ""
+
+#: header.php:431
+msgid "Account"
+msgstr ""
+
+#: functions.php:235
+msgid "Add any widget — Navigation Menu, Text, Custom HTML etc."
+msgstr ""
+
+#: inc/customizer.php:1024
+msgid "Add widgets in Appearance → Widgets → Shop Sidebar."
+msgstr ""
+
+#: inc/contact-widget.php:48
+msgid "Address"
+msgstr ""
+
+#: inc/customizer.php:561
+msgid "Agency (CTA Button)"
+msgstr ""
+
+#: inc/widgets.php:973
+msgid "Al Qamara: Category Showcase"
+msgstr ""
+
+#: inc/contact-widget.php:58
+msgid "Al Qamara: Contact Info"
+msgstr ""
+
+#: inc/widgets.php:157
+msgid "Al Qamara: Posts & Products"
+msgstr ""
+
+#: inc/customizer.php:770
+msgid "Aligns the breadcrumb, title and meta inside the banner."
+msgstr ""
+
+#: inc/customizer.php:1443
+msgid "All Rights Reserved."
+msgstr ""
+
+#: inc/customizer.php:688
+msgid "Applies to the solid header on inner pages and sticky state. Leave empty to use the Global Primary Color. Not used when Header Layout = Two Rows — see the two row colors below instead."
+msgstr ""
+
+#: archive.php:102
+msgid "Archive"
+msgstr ""
+
+#: inc/customizer.php:860
+msgid "Archive Page"
+msgstr ""
+
+#: archive.php:90
+msgid "Author"
+msgstr ""
+
+#: inc/widgets.php:1344
+msgid "Automatically forced to 1 in sidebars and footer columns. If a slider is enabled below and more categories exist than fit in these columns, it will slide through the rest."
+msgstr ""
+
+#: inc/widgets.php:868 inc/widgets.php:1410
+msgid "Autoplay"
+msgstr ""
+
+#: inc/widgets.php:871 inc/widgets.php:1415
+msgid "Autoplay Speed (ms)"
+msgstr ""
+
+#: front-page.php:279 inc/customizer.php:1848
+msgid "Available after launch to fix issues, add features, and keep things running smoothly."
+msgstr ""
+
+#: inc/helpers.php:171
+msgid "Awaiting moderation"
+msgstr ""
+
+#: 404.php:75 archive.php:222 index.php:108 search.php:210
+msgid "Back to Home"
+msgstr ""
+
+#: footer.php:197
+msgid "Back to top"
+msgstr ""
+
+#: inc/customizer.php:1328
+msgid "Background"
+msgstr ""
+
+#: inc/customizer.php:1340 inc/customizer.php:1592 inc/customizer.php:1688 inc/customizer.php:1765 inc/customizer.php:1913
+msgid "Background Color"
+msgstr ""
+
+#: inc/customizer.php:1352 inc/customizer.php:1607 inc/customizer.php:1697 inc/customizer.php:1774 inc/customizer.php:1924
+msgid "Background Image"
+msgstr ""
+
+#: inc/customizer.php:786
+msgid "Banner Background Color"
+msgstr ""
+
+#: inc/customizer.php:797
+msgid "Banner Background Image"
+msgstr ""
+
+#: inc/customizer.php:769
+msgid "Banner Content Alignment"
+msgstr ""
+
+#: inc/customizer.php:845
+msgid "Banner Image Position"
+msgstr ""
+
+#: inc/customizer.php:834
+msgid "Banner Secondary Text Color"
+msgstr ""
+
+#: inc/customizer.php:824
+msgid "Banner Title Text Color"
+msgstr ""
+
+#: inc/customizer.php:1721 inc/customizer.php:2118
+msgid "Beyond Development: We Build Relationships That Last"
+msgstr ""
+
+#: inc/customizer.php:1940
+msgid "Blog / Latest Posts"
+msgstr ""
+
+#: inc/widgets.php:990
+msgid "Blog Categories"
+msgstr ""
+
+#: index.php:122
+msgid "Blog Sidebar"
+msgstr ""
+
+#: inc/customizer.php:393
+msgid "Body Font"
+msgstr ""
+
+#: inc/customizer.php:407
+msgid "Body Font Size (px)"
+msgstr ""
+
+#: inc/customizer.php:284
+msgid "Body Text Color"
+msgstr ""
+
+#: inc/contact-widget.php:160
+msgid "Bold label"
+msgstr ""
+
+#: inc/customizer.php:296
+msgid "Border / Divider Color"
+msgstr ""
+
+#: inc/customizer.php:1125
+msgid "Bottom (default)"
+msgstr ""
+
+#: inc/customizer.php:1121
+msgid "Bottom: thumbnails below main image. Left: vertical strip on left side."
+msgstr ""
+
+#: inc/widgets.php:1365
+msgid "Box / Overlay (image with name on top)"
+msgstr ""
+
+#: inc/customizer.php:1197
+msgid "Brand Column"
+msgstr ""
+
+#: inc/helpers.php:516 inc/woocommerce.php:244
+msgid "Breadcrumb"
+msgstr ""
+
+#: front-page.php:280 inc/customizer.php:1849
+msgid "Built with security best practices and thoroughly tested for stability."
+msgstr ""
+
+#: inc/customizer.php:71
+msgid "Button 1 Text"
+msgstr ""
+
+#: inc/customizer.php:1996
+msgid "Button 1 Text (solid)"
+msgstr ""
+
+#: inc/customizer.php:76 inc/customizer.php:2001
+msgid "Button 1 URL"
+msgstr ""
+
+#: inc/customizer.php:87
+msgid "Button 2 Text"
+msgstr ""
+
+#: inc/customizer.php:2002
+msgid "Button 2 Text (outline)"
+msgstr ""
+
+#: inc/customizer.php:92 inc/customizer.php:2003
+msgid "Button 2 URL"
+msgstr ""
+
+#: inc/widgets.php:854
+msgid "Button Label"
+msgstr ""
+
+#: inc/customizer.php:1743
+msgid "Button Page"
+msgstr ""
+
+#: inc/customizer.php:1723
+msgid "Button Text"
+msgstr ""
+
+#: inc/customizer.php:1981
+msgid "CTA Banner"
+msgstr ""
+
+#: inc/customizer.php:625
+msgid "CTA Button Text"
+msgstr ""
+
+#: inc/customizer.php:647
+msgid "CTA Button URL"
+msgstr ""
+
+#: comments.php:87
+msgid "Cancel Reply"
+msgstr ""
+
+#: header.php:291 header.php:373 header.php:426 inc/customizer.php:1169
+msgid "Cart"
+msgstr ""
+
+#: sidebar.php:42
+msgid "Categories"
+msgstr ""
+
+#: inc/widgets.php:1300
+msgid "Categories to Feature"
+msgstr ""
+
+#: archive.php:82
+msgid "Category"
+msgstr ""
+
+#: inc/widgets.php:1285
+msgid "Category Type"
+msgstr ""
+
+#: inc/customizer.php:193 inc/customizer.php:775
+msgid "Center"
+msgstr ""
+
+#: inc/customizer.php:613
+msgid "Center (Default)"
+msgstr ""
+
+#: inc/customizer.php:147 inc/customizer.php:851 inc/customizer.php:1370
+msgid "Center Bottom"
+msgstr ""
+
+#: inc/customizer.php:145 inc/customizer.php:849 inc/customizer.php:1368
+msgid "Center Center"
+msgstr ""
+
+#: inc/customizer.php:146 inc/customizer.php:850 inc/customizer.php:1369
+msgid "Center Top"
+msgstr ""
+
+#: page-templates/template-blog.php:169
+msgid "Check back soon for new posts."
+msgstr ""
+
+#: header.php:309 inc/woocommerce.php:292
+msgid "Checkout"
+msgstr ""
+
+#: inc/widgets.php:1366
+msgid "Circle / Outline (round image, name below)"
+msgstr ""
+
+#: front-page.php:276 inc/customizer.php:1845
+msgid "Clean Code"
+msgstr ""
+
+#: front-page.php:278 inc/customizer.php:1847
+msgid "Clear Communication"
+msgstr ""
+
+#: inc/customizer.php:1646 inc/customizer.php:2162
+msgid "Client Satisfaction"
+msgstr ""
+
+#: header.php:377
+msgid "Close cart"
+msgstr ""
+
+#: header.php:454
+msgid "Close menu"
+msgstr ""
+
+#: inc/customizer.php:304
+msgid "Color of text links inside pages, posts and other content, so they can be told apart from ordinary text. Buttons, menus and widgets are not affected."
+msgstr ""
+
+#: inc/customizer.php:309
+msgid "Color of those links when the mouse is over them. It does not follow the Accent color, so you can change one without the other."
+msgstr ""
+
+#: inc/widgets.php:768 inc/widgets.php:1336
+msgid "Columns"
+msgstr ""
+
+#: comments.php:125
+msgid "Comment"
+msgstr ""
+
+#: comments.php:53
+msgid "Comment navigation"
+msgstr ""
+
+#: comments.php:73
+msgid "Comments are closed."
+msgstr ""
+
+#: inc/helpers.php:239 inc/helpers.php:260
+msgid "Contact"
+msgstr ""
+
+#: inc/customizer.php:188
+msgid "Content Alignment"
+msgstr ""
+
+#: inc/customizer.php:290
+msgid "Content Body Background"
+msgstr ""
+
+#: inc/customizer.php:302
+msgid "Content Link Color"
+msgstr ""
+
+#: inc/customizer.php:307
+msgid "Content Link Hover Color"
+msgstr ""
+
+#: inc/customizer.php:1285
+msgid "Copyright Text"
+msgstr ""
+
+#: inc/customizer.php:1297
+msgid "Copyright Text (HTML allowed)"
+msgstr ""
+
+#: front-page.php:282 inc/customizer.php:1851
+msgid "Creative Design"
+msgstr ""
+
+#: inc/customizer.php:164
+msgid "Dark Overlay on Hero Image"
+msgstr ""
+
+#: inc/widgets.php:790
+msgid "Date"
+msgstr ""
+
+#: inc/customizer.php:560
+msgid "Default (Navbar only)"
+msgstr ""
+
+#: inc/customizer.php:1109
+msgid "Default (WooCommerce standard)"
+msgstr ""
+
+#: functions.php:202
+msgid "Default Sidebar"
+msgstr ""
+
+#: inc/customizer.php:1105
+msgid "Default: WooCommerce standard layout. Sticky Gallery: image fixed on left, content & tabs scroll on right."
+msgstr ""
+
+#: inc/customizer.php:555
+msgid "Default: navbar only. Agency: adds CTA button (navbar centered). Shop: adds WooCommerce icons (requires WooCommerce)."
+msgstr ""
+
+#: inc/widgets.php:1362
+msgid "Design Style"
+msgstr ""
+
+#. translators: %s: developer name with link
+#: footer.php:165
+msgid "Developed by %s"
+msgstr ""
+
+#: inc/widgets.php:823
+msgid "Display"
+msgstr ""
+
+#: inc/customizer.php:1249
+msgid "Displays social icons below the brand description. URLs are set under Social Media Links."
+msgstr ""
+
+#: comments.php:104 inc/contact-widget.php:46
+msgid "Email"
+msgstr ""
+
+#: inc/contact-widget.php:60
+msgid "Email, phone, address, office/support hours, and one extra field. Each shows its icon and label once, with as many lines of text underneath as you add. Any field left empty is skipped."
+msgstr ""
+
+#: inc/widgets.php:865 inc/widgets.php:1395
+msgid "Enable Slider (Swiper)"
+msgstr ""
+
+#: inc/customizer.php:68 inc/customizer.php:1397
+msgid "Every business deserves honest digital support. We work with purpose — helping you build, grow, and sustain your online presence with integrity."
+msgstr ""
+
+#: inc/customizer.php:1500 inc/customizer.php:1720
+msgid "Eyebrow Label"
+msgstr ""
+
+#: inc/customizer.php:1814
+msgid "Eyebrow Text"
+msgstr ""
+
+#: inc/customizer.php:1263
+msgid "Facebook URL"
+msgstr ""
+
+#: front-page.php:277 inc/customizer.php:1846
+msgid "Fast Delivery"
+msgstr ""
+
+#: inc/customizer.php:1788
+msgid "Features (Why Us)"
+msgstr ""
+
+#: inc/widgets.php:734
+msgid "Filter by Category"
+msgstr ""
+
+#: inc/customizer.php:1235
+msgid "Footer Brand Description"
+msgstr ""
+
+#: inc/customizer.php:1308
+msgid "Footer Credit Text"
+msgstr ""
+
+#: inc/customizer.php:1320
+msgid "Footer Credit URL"
+msgstr ""
+
+#: inc/customizer.php:1223
+msgid "Footer Logo (optional)"
+msgstr ""
+
+#: inc/customizer.php:1191
+msgid "Footer Settings"
+msgstr ""
+
+#: functions.php:223
+msgid "Footer — Column 1"
+msgstr ""
+
+#: functions.php:224
+msgid "Footer — Column 2"
+msgstr ""
+
+#: functions.php:225
+msgid "Footer — Column 3"
+msgstr ""
+
+#: functions.php:226
+msgid "Footer — Column 4"
+msgstr ""
+
+#: functions.php:246
+msgid "Footer — Legal Row"
+msgstr ""
+
+#: inc/customizer.php:541
+msgid "Forces a solid header on the homepage, even at the top."
+msgstr ""
+
+#: front-page.php:331 inc/customizer.php:1946
+msgid "From the Blog"
+msgstr ""
+
+#: inc/customizer.php:36
+msgid "Front Page Settings"
+msgstr ""
+
+#: inc/customizer.php:2024
+msgid "Generic Row 1"
+msgstr ""
+
+#: inc/customizer.php:2041
+msgid "Generic Row 2"
+msgstr ""
+
+#: inc/customizer.php:2058
+msgid "Generic Row 3"
+msgstr ""
+
+#: front-page.php:466 inc/customizer.php:1996
+msgid "Get In Touch"
+msgstr ""
+
+#: inc/customizer.php:89 inc/customizer.php:1409
+msgid "Get in Touch"
+msgstr ""
+
+#: header.php:37 inc/customizer.php:620
+msgid "Get in touch"
+msgstr ""
+
+#: inc/customizer.php:995
+msgid "Global"
+msgstr ""
+
+#: inc/customizer.php:258
+msgid "Global Settings"
+msgstr ""
+
+#: inc/customizer.php:1557
+msgid "Grid Columns"
+msgstr ""
+
+#: woocommerce/archive-product.php:67
+msgid "Grid view"
+msgstr ""
+
+#: inc/customizer.php:1644 inc/customizer.php:2160
+msgid "Happy Clients"
+msgstr ""
+
+#: inc/customizer.php:416
+msgid "Header & Navigation"
+msgstr ""
+
+#: inc/customizer.php:687
+msgid "Header Background Color"
+msgstr ""
+
+#: inc/customizer.php:584
+msgid "Header Layout (Desktop)"
+msgstr ""
+
+#: inc/customizer.php:700
+msgid "Header Row 1 Background Color (Logo/Search row)"
+msgstr ""
+
+#: inc/customizer.php:712
+msgid "Header Row 2 Background Color (Menu row)"
+msgstr ""
+
+#: inc/customizer.php:554
+msgid "Header Style"
+msgstr ""
+
+#: inc/customizer.php:244
+msgid "Header Text Color (Transparent State)"
+msgstr ""
+
+#: inc/customizer.php:1721
+msgid "Heading"
+msgstr ""
+
+#: inc/customizer.php:379
+msgid "Heading Font (H1–H6)"
+msgstr ""
+
+#: inc/customizer.php:120
+msgid "Hero Background Image"
+msgstr ""
+
+#: inc/customizer.php:140
+msgid "Hero Image Position"
+msgstr ""
+
+#: inc/customizer.php:42
+msgid "Hero Section"
+msgstr ""
+
+#: inc/customizer.php:66
+msgid "Hero Subtitle"
+msgstr ""
+
+#: inc/customizer.php:61
+msgid "Hero Title"
+msgstr ""
+
+#: inc/helpers.php:237 inc/helpers.php:258 inc/helpers.php:461
+msgid "Home"
+msgstr ""
+
+#: functions.php:256
+msgid "Homepage — About Us"
+msgstr ""
+
+#: functions.php:257
+msgid "Homepage — Blog"
+msgstr ""
+
+#: functions.php:259
+msgid "Homepage — Generic Row 1"
+msgstr ""
+
+#: functions.php:260
+msgid "Homepage — Generic Row 2"
+msgstr ""
+
+#: functions.php:261
+msgid "Homepage — Generic Row 3"
+msgstr ""
+
+#: functions.php:255
+msgid "Homepage — Hero"
+msgstr ""
+
+#: functions.php:258
+msgid "Homepage — Newsletter"
+msgstr ""
+
+#: inc/customizer.php:1353
+msgid "If set, image overlays the background color. Recommended size: 1920×800px."
+msgstr ""
+
+#: inc/customizer.php:1698
+msgid "If set, overrides background color. Recommended size: 1920×600px."
+msgstr ""
+
+#: inc/customizer.php:1608 inc/customizer.php:1775 inc/customizer.php:1925
+msgid "If set, overrides background color. Recommended size: 1920×800px."
+msgstr ""
+
+#: inc/customizer.php:141
+msgid "If the main subject gets cropped out on some screens, change which part of the image stays in view."
+msgstr ""
+
+#: inc/customizer.php:1364
+msgid "Image Position"
+msgstr ""
+
+#: inc/customizer.php:1267
+msgid "Instagram URL"
+msgstr ""
+
+#. translators: %d: item number
+#: inc/customizer.php:1900
+msgid "Item %d — Description"
+msgstr ""
+
+#. translators: %d: item number
+#: inc/customizer.php:1870
+msgid "Item %d — Icon class"
+msgstr ""
+
+#. translators: %d: item number
+#: inc/customizer.php:1887
+msgid "Item %d — Title"
+msgstr ""
+
+#: inc/widgets.php:1355
+msgid "Item Count"
+msgstr ""
+
+#: inc/customizer.php:165
+msgid "Keeps the Hero text readable regardless of the photo. Only applies when a Hero Background Image is set. Optional — turn off for a photo that doesn't need it."
+msgstr ""
+
+#: inc/contact-widget.php:156
+msgid "Label"
+msgstr ""
+
+#: front-page.php:329 inc/customizer.php:1945
+msgid "Latest Articles"
+msgstr ""
+
+#: inc/customizer.php:989
+msgid "Layout and display settings for the WooCommerce shop pages."
+msgstr ""
+
+#: front-page.php:468 inc/customizer.php:73 inc/customizer.php:1398 inc/customizer.php:2002
+msgid "Learn More"
+msgstr ""
+
+#: comments.php:82
+msgid "Leave a Comment"
+msgstr ""
+
+#: inc/widgets.php:1302
+msgid "Leave all unchecked to auto-show top categories."
+msgstr ""
+
+#: inc/customizer.php:514
+msgid "Leave empty for the default (semi-transparent white)."
+msgstr ""
+
+#: inc/customizer.php:216
+msgid "Leave empty for the default dark navy. Set this if the Hero Background Image makes the default text hard to read."
+msgstr ""
+
+#: inc/customizer.php:226
+msgid "Leave empty for the default gray."
+msgstr ""
+
+#: inc/customizer.php:835
+msgid "Leave empty for the default near-white. Covers everything on the banner besides the title — breadcrumb, category badge, subtitle line, post meta — on every page that has one."
+msgstr ""
+
+#: inc/customizer.php:825
+msgid "Leave empty for the default white. Set this if a lighter Banner Background Color/Image makes it hard to read."
+msgstr ""
+
+#: inc/customizer.php:892 inc/customizer.php:1577
+msgid "Leave empty to hide the button."
+msgstr ""
+
+#: inc/customizer.php:1754
+msgid "Leave empty to hide. Recommended size: 600×700px."
+msgstr ""
+
+#: inc/customizer.php:1309
+msgid "Leave empty to show the standard WordPress.org credit."
+msgstr ""
+
+#: inc/contact-widget.php:179
+msgid "Leave empty to skip this group"
+msgstr ""
+
+#: inc/customizer.php:798
+msgid "Leave empty to use color only. Recommended size: 1920×400px (wide banner)."
+msgstr ""
+
+#: inc/customizer.php:499
+msgid "Leave empty to use the Primary Color."
+msgstr ""
+
+#: inc/customizer.php:192 inc/customizer.php:614 inc/customizer.php:774 inc/customizer.php:954
+msgid "Left"
+msgstr ""
+
+#: inc/customizer.php:1126
+msgid "Left (vertical strip)"
+msgstr ""
+
+#: inc/customizer.php:148 inc/customizer.php:852 inc/customizer.php:1371
+msgid "Left Center"
+msgstr ""
+
+#: inc/customizer.php:1028
+msgid "Left sidebar"
+msgstr ""
+
+#: inc/contact-widget.php:175
+msgid "Lines (one per line)"
+msgstr ""
+
+#: inc/customizer.php:1264
+msgid "LinkedIn URL"
+msgstr ""
+
+#: woocommerce/archive-product.php:72
+msgid "List view"
+msgstr ""
+
+#: header.php:24
+msgid "Loading..."
+msgstr ""
+
+#: header.php:280
+msgid "Login / Register"
+msgstr ""
+
+#: inc/customizer.php:24
+msgid "Logo — Transparent Header (Home Page Hero)"
+msgstr ""
+
+#: header.php:276
+msgid "Logout"
+msgstr ""
+
+#: front-page.php:283 inc/customizer.php:1852
+msgid "Long-Term Partnership"
+msgstr ""
+
+#: inc/customizer.php:362
+msgid "Lora (Editorial)"
+msgstr ""
+
+#: header.php:147
+msgid "Main Navigation"
+msgstr ""
+
+#: inc/widgets.php:792
+msgid "Menu Order"
+msgstr ""
+
+#: inc/customizer.php:245
+msgid "Menu items, WooCommerce icons, and the header button — only while the header is transparent over the Hero (before scrolling). Leave empty for the default dark ink. Once scrolled, or on any page without a transparent header, the Header Background Color setting controls this instead."
+msgstr ""
+
+#: inc/customizer.php:1722
+msgid "Mission Text"
+msgstr ""
+
+#: header.php:445
+msgid "Mobile Navigation"
+msgstr ""
+
+#: header.php:407
+msgid "Mobile navigation"
+msgstr ""
+
+#: archive.php:98
+msgid "Monthly Archive"
+msgstr ""
+
+#: inc/contact-widget.php:51
+msgid "More Info"
+msgstr ""
+
+#: inc/widgets.php:794
+msgid "Most Commented"
+msgstr ""
+
+#: header.php:260 header.php:266
+msgid "My Account"
+msgstr ""
+
+#: comments.php:97 inc/widgets.php:1354
+msgid "Name"
+msgstr ""
+
+#: comments.php:58
+msgid "Newer Comments"
+msgstr ""
+
+#: inc/widgets.php:814
+msgid "Newest First (DESC)"
+msgstr ""
+
+#: inc/customizer.php:1962
+msgid "Newsletter"
+msgstr ""
+
+#: inc/helpers.php:128 inc/widgets.php:373 inc/widgets.php:1166 page-templates/template-blog.php:151
+msgid "Next"
+msgstr ""
+
+#: single.php:221
+msgid "Next Post"
+msgstr ""
+
+#: archive.php:218 index.php:105 page-templates/template-blog.php:168
+msgid "No Posts Found"
+msgstr ""
+
+#: search.php:200
+msgid "No Results Found"
+msgstr ""
+
+#: inc/widgets.php:107 inc/widgets.php:1307
+msgid "No categories found."
+msgstr ""
+
+#. translators: %s: search query
+#: search.php:204
+msgid "No results found for \"%s\". Please try a different keyword."
+msgstr ""
+
+#: inc/customizer.php:1030
+msgid "No sidebar (full width)"
+msgstr ""
+
+#: inc/widgets.php:757
+msgid "Number of Items"
+msgstr ""
+
+#: inc/customizer.php:1542
+msgid "Number of Items to Show"
+msgstr ""
+
+#: inc/widgets.php:1325
+msgid "Number to Show (if none checked above)"
+msgstr ""
+
+#: inc/contact-widget.php:49
+msgid "Office Hours"
+msgstr ""
+
+#: comments.php:55
+msgid "Older Comments"
+msgstr ""
+
+#: inc/widgets.php:817
+msgid "Oldest First (ASC)"
+msgstr ""
+
+#: inc/customizer.php:442
+msgid "On mobile the layout stacks vertically with centered text."
+msgstr ""
+
+#: woocommerce/content-product.php:94
+msgid "On sale"
+msgstr ""
+
+#: front-page.php:279 inc/customizer.php:1848
+msgid "Ongoing Support"
+msgstr ""
+
+#: inc/widgets.php:1399
+msgid "Only slides when more categories are shown than fit in the selected columns; otherwise it just displays statically. Disabled automatically in sidebars/footer columns."
+msgstr ""
+
+#: inc/widgets.php:849
+msgid "Only visible when total posts exceed the displayed count."
+msgstr ""
+
+#: inc/customizer.php:364
+msgid "Open Sans (Clean)"
+msgstr ""
+
+#: inc/customizer.php:368
+msgid "Open Sans — Classic"
+msgstr ""
+
+#: inc/customizer.php:25
+msgid "Optional. Shown only on the home page while the header is still transparent over the hero image, and only when Header Layout = Single Row. Switches to the Site Logo above once the visitor scrolls, on every other page, and in Two Rows layout. Leave empty to always use the Site Logo above. Recommended size: 220×65px transparent PNG."
+msgstr ""
+
+#: inc/widgets.php:808
+msgid "Order"
+msgstr ""
+
+#: inc/widgets.php:784 inc/widgets.php:1351
+msgid "Order By"
+msgstr ""
+
+#: header.php:269
+msgid "Orders"
+msgstr ""
+
+#: front-page.php:140 inc/customizer.php:1635
+msgid "Our Achievements"
+msgstr ""
+
+#: inc/customizer.php:175
+msgid "Overlay Opacity (%)"
+msgstr ""
+
+#: inc/customizer.php:721
+msgid "Page Banner & Breadcrumb"
+msgstr ""
+
+#: 404.php:29 404.php:57
+msgid "Page Not Found"
+msgstr ""
+
+#: page.php:142
+msgid "Page Sidebar"
+msgstr ""
+
+#: inc/helpers.php:136 page-templates/template-blog.php:156
+msgid "Page navigation"
+msgstr ""
+
+#: page-templates/template-full-width.php:84 page-templates/template-narrow.php:58 page.php:120 single.php:150
+msgid "Pages:"
+msgstr ""
+
+#: inc/customizer.php:84 inc/customizer.php:2003
+msgid "Paste the full page URL (e.g. https://yourdomain.com/about/) copied from your browser's address bar — not just a page name."
+msgstr ""
+
+#: inc/customizer.php:95 inc/customizer.php:648 inc/customizer.php:2001
+msgid "Paste the full page URL (e.g. https://yourdomain.com/contact/) copied from your browser's address bar — not just a page name."
+msgstr ""
+
+#: inc/contact-widget.php:47
+msgid "Phone"
+msgstr ""
+
+#: inc/customizer.php:361
+msgid "Playfair Display (Luxury – Recommended)"
+msgstr ""
+
+#: inc/customizer.php:363
+msgid "Poppins (Modern Sans)"
+msgstr ""
+
+#: inc/customizer.php:367
+msgid "Poppins — Modern"
+msgstr ""
+
+#: comments.php:88
+msgid "Post Comment"
+msgstr ""
+
+#: single.php:307
+msgid "Post Sidebar"
+msgstr ""
+
+#: inc/widgets.php:718
+msgid "Post Type"
+msgstr ""
+
+#: inc/widgets.php:142
+msgid "Posts"
+msgstr ""
+
+#: inc/helpers.php:127 inc/widgets.php:369 inc/widgets.php:1162 page-templates/template-blog.php:150
+msgid "Previous"
+msgstr ""
+
+#: single.php:207
+msgid "Previous Post"
+msgstr ""
+
+#: inc/customizer.php:273
+msgid "Primary Color (Navy)"
+msgstr ""
+
+#: functions.php:173
+msgid "Primary Menu (Desktop + Mobile)"
+msgstr ""
+
+#: inc/widgets.php:993
+msgid "Product Categories"
+msgstr ""
+
+#: inc/customizer.php:1061
+msgid "Product Columns"
+msgstr ""
+
+#: inc/customizer.php:1104
+msgid "Product Page Layout"
+msgstr ""
+
+#: search.php:31
+msgid "Product Search"
+msgstr ""
+
+#: inc/widgets.php:145
+msgid "Products"
+msgstr ""
+
+#: inc/customizer.php:1050
+msgid "Products Per Page"
+msgstr ""
+
+#: inc/customizer.php:1643 inc/customizer.php:2159
+msgid "Projects Done"
+msgstr ""
+
+#: front-page.php:277 inc/customizer.php:1846
+msgid "Projects delivered on time, without cutting corners on quality."
+msgstr ""
+
+#. translators: %s: link to WordPress.org
+#: footer.php:173
+msgid "Proudly powered by %s"
+msgstr ""
+
+#: inc/widgets.php:793
+msgid "Random"
+msgstr ""
+
+#. translators: %s = average rating number
+#. translators: %s: average product rating
+#: inc/widgets.php:599 woocommerce/content-product.php:115
+msgid "Rated %s out of 5"
+msgstr ""
+
+#: archive.php:191 front-page.php:386 inc/customizer.php:886 inc/widgets.php:185 inc/widgets.php:219 inc/widgets.php:677 inc/widgets.php:940 index.php:80 page-templates/template-blog.php:127 search.php:176
+msgid "Read More"
+msgstr ""
+
+#: inc/customizer.php:891
+msgid "Read More Button Text"
+msgstr ""
+
+#: inc/widgets.php:835
+msgid "Read More Text"
+msgstr ""
+
+#: front-page.php:464 inc/customizer.php:1987
+msgid "Ready to Work Together?"
+msgstr ""
+
+#: sidebar.php:25
+msgid "Recent Posts"
+msgstr ""
+
+#: front-page.php:278 inc/customizer.php:1847
+msgid "Regular updates and honest feedback throughout every project."
+msgstr ""
+
+#: page-templates/template-full-width.php:155 page-templates/template-narrow.php:129 single.php:256
+msgid "Related Posts"
+msgstr ""
+
+#: inc/customizer.php:1160
+msgid "Related Products Count"
+msgstr ""
+
+#: inc/customizer.php:121
+msgid "Replaces the default color background. This image always fills the section edge-to-edge and crops to fit — there is no single \"perfect\" pixel size for every screen. Recommended size: 1920×950px, wide/landscape, main subject centered. Use Image Position below if the important part gets cropped off on a particular device."
+msgstr ""
+
+#: inc/helpers.php:204
+msgid "Reply"
+msgstr ""
+
+#. translators: %s: name of the comment author being replied to
+#: comments.php:84
+msgid "Reply to %s"
+msgstr ""
+
+#. translators: %s: search query
+#: search.php:40 search.php:92
+msgid "Results for: \"%s\""
+msgstr ""
+
+#: front-page.php:281 inc/customizer.php:1850
+msgid "Results-Driven"
+msgstr ""
+
+#: inc/customizer.php:194 inc/customizer.php:953
+msgid "Right"
+msgstr ""
+
+#: inc/customizer.php:149 inc/customizer.php:853 inc/customizer.php:1372
+msgid "Right Center"
+msgstr ""
+
+#: inc/customizer.php:1753
+msgid "Right Column Image"
+msgstr ""
+
+#: inc/customizer.php:1029
+msgid "Right sidebar"
+msgstr ""
+
+#: inc/customizer.php:369
+msgid "Roboto — Clean & Neutral"
+msgstr ""
+
+#: inc/customizer.php:607
+msgid "Row 2 Menu Alignment"
+msgstr ""
+
+#: inc/widgets.php:496 inc/woocommerce.php:378 woocommerce/content-product.php:30
+msgid "Sale"
+msgstr ""
+
+#: inc/customizer.php:333
+msgid "Same override, for the subtitle text below each section title."
+msgstr ""
+
+#: comments.php:120
+msgid "Save my name, email, and website for the next time I comment."
+msgstr ""
+
+#: header.php:175 header.php:246 searchform.php:16 sidebar.php:18
+msgid "Search"
+msgstr ""
+
+#: search.php:32 search.php:44 search.php:96
+msgid "Search Results"
+msgstr ""
+
+#: searchform.php:19
+msgid "Search for:"
+msgstr ""
+
+#: searchform.php:29
+msgid "Search..."
+msgstr ""
+
+#. translators: %s: search query
+#: inc/helpers.php:505
+msgid "Search: %s"
+msgstr ""
+
+#: inc/widgets.php:844
+msgid "Section Header"
+msgstr ""
+
+#: inc/customizer.php:1826
+msgid "Section Heading"
+msgstr ""
+
+#: inc/customizer.php:1528 inc/customizer.php:1838
+msgid "Section Subtitle"
+msgstr ""
+
+#: inc/customizer.php:331
+msgid "Section Subtitle Color (Override)"
+msgstr ""
+
+#: inc/customizer.php:1514
+msgid "Section Title"
+msgstr ""
+
+#: inc/customizer.php:326
+msgid "Section Title Color (Override)"
+msgstr ""
+
+#: front-page.php:280 inc/customizer.php:1849
+msgid "Secure & Reliable"
+msgstr ""
+
+#: inc/customizer.php:1744
+msgid "Select the page this button links to."
+msgstr ""
+
+#: inc/customizer.php:863
+msgid "Settings for blog listing, category, tag, and author pages."
+msgstr ""
+
+#: inc/customizer.php:903
+msgid "Settings for individual post pages."
+msgstr ""
+
+#: header.php:415
+msgid "Shop"
+msgstr ""
+
+#: inc/customizer.php:562
+msgid "Shop (WooCommerce Icons)"
+msgstr ""
+
+#: inc/customizer.php:1013
+msgid "Shop / Archive"
+msgstr ""
+
+#: inc/customizer.php:988
+msgid "Shop Settings"
+msgstr ""
+
+#: functions.php:214
+msgid "Shop Sidebar"
+msgstr ""
+
+#: woocommerce/archive-product.php:93 woocommerce/archive-product.php:133
+msgid "Shop filters"
+msgstr ""
+
+#: inc/customizer.php:456
+msgid "Short message shown on the left side of the top bar."
+msgstr ""
+
+#: inc/widgets.php:846
+msgid "Show \"View All\" Button (auto-links to archive/category)"
+msgstr ""
+
+#: inc/customizer.php:674
+msgid "Show Account Icon (Shop mode)"
+msgstr ""
+
+#: inc/widgets.php:890
+msgid "Show Add to Cart Button"
+msgstr ""
+
+#: inc/customizer.php:919
+msgid "Show Author Box"
+msgstr ""
+
+#: inc/customizer.php:733
+msgid "Show Banner on 404 Page"
+msgstr ""
+
+#: inc/customizer.php:730
+msgid "Show Banner on Archive / Blog"
+msgstr ""
+
+#: inc/customizer.php:731
+msgid "Show Banner on Pages"
+msgstr ""
+
+#: inc/customizer.php:732
+msgid "Show Banner on Search Results"
+msgstr ""
+
+#: inc/customizer.php:729
+msgid "Show Banner on Single Post"
+msgstr ""
+
+#: inc/customizer.php:1209
+msgid "Show Brand Column"
+msgstr ""
+
+#: inc/customizer.php:756 inc/customizer.php:1005
+msgid "Show Breadcrumb"
+msgstr ""
+
+#: inc/widgets.php:887
+msgid "Show Category"
+msgstr ""
+
+#: inc/widgets.php:828
+msgid "Show Category Badge"
+msgstr ""
+
+#: inc/customizer.php:870 inc/customizer.php:917
+msgid "Show Comments Count"
+msgstr ""
+
+#: inc/customizer.php:1179
+msgid "Show Cross-sells"
+msgstr ""
+
+#: inc/widgets.php:827 inc/widgets.php:886
+msgid "Show Date"
+msgstr ""
+
+#: inc/widgets.php:829
+msgid "Show Excerpt"
+msgstr ""
+
+#: inc/customizer.php:918
+msgid "Show Featured Image"
+msgstr ""
+
+#: inc/customizer.php:1802
+msgid "Show Features Section"
+msgstr ""
+
+#: inc/customizer.php:54
+msgid "Show Hero Section"
+msgstr ""
+
+#: inc/widgets.php:1378
+msgid "Show Item Count"
+msgstr ""
+
+#: inc/customizer.php:869 inc/customizer.php:916
+msgid "Show Post Author"
+msgstr ""
+
+#: inc/customizer.php:868 inc/customizer.php:915
+msgid "Show Post Date"
+msgstr ""
+
+#: inc/customizer.php:867
+msgid "Show Post Thumbnail"
+msgstr ""
+
+#: inc/widgets.php:888
+msgid "Show Price"
+msgstr ""
+
+#: inc/customizer.php:1134
+msgid "Show Product Categories"
+msgstr ""
+
+#: inc/customizer.php:1135
+msgid "Show Product Tags"
+msgstr ""
+
+#: inc/widgets.php:889
+msgid "Show Rating"
+msgstr ""
+
+#: inc/widgets.php:830
+msgid "Show Read More Button"
+msgstr ""
+
+#: inc/customizer.php:920
+msgid "Show Related Posts"
+msgstr ""
+
+#: inc/customizer.php:1138
+msgid "Show Related Products"
+msgstr ""
+
+#: inc/customizer.php:1077
+msgid "Show Result Count"
+msgstr ""
+
+#: inc/customizer.php:1133
+msgid "Show SKU"
+msgstr ""
+
+#: inc/customizer.php:661
+msgid "Show Search Icon (Shop mode)"
+msgstr ""
+
+#: inc/customizer.php:1486
+msgid "Show Section"
+msgstr ""
+
+#: inc/customizer.php:1248
+msgid "Show Social Icons in Footer"
+msgstr ""
+
+#: inc/customizer.php:483
+msgid "Show Social Icons in Top Bar Right"
+msgstr ""
+
+#: inc/customizer.php:1087
+msgid "Show Sort/Order Dropdown"
+msgstr ""
+
+#: inc/customizer.php:1132
+msgid "Show Star Rating"
+msgstr ""
+
+#: inc/widgets.php:826
+msgid "Show Thumbnail"
+msgstr ""
+
+#: inc/customizer.php:428
+msgid "Show Top Bar on Desktop"
+msgstr ""
+
+#: inc/customizer.php:441
+msgid "Show Top Bar on Mobile"
+msgstr ""
+
+#: inc/customizer.php:1137
+msgid "Show Up-sells"
+msgstr ""
+
+#: inc/widgets.php:975
+msgid "Show WooCommerce product category thumbnails (or a list of blog categories) in a grid or slider. Pick which categories to feature."
+msgstr ""
+
+#: inc/widgets.php:159
+msgid "Show posts or WooCommerce products in a Bootstrap grid or Swiper slider."
+msgstr ""
+
+#: inc/customizer.php:1180
+msgid "Show the \"You may be interested in…\" products block on the cart page."
+msgstr ""
+
+#: inc/customizer.php:757
+msgid "Show/hide breadcrumb on all pages (single, archive, search etc.). WooCommerce breadcrumb is controlled separately."
+msgstr ""
+
+#: inc/customizer.php:1006
+msgid "Show/hide breadcrumb on shop and single product pages."
+msgstr ""
+
+#: functions.php:248
+msgid "Shown above copyright. Add a Navigation Menu, Text, or Custom HTML widget."
+msgstr ""
+
+#: inc/customizer.php:470
+msgid "Shown on the right side of the top bar (with call icon)."
+msgstr ""
+
+#: inc/customizer.php:938
+msgid "Sidebar"
+msgstr ""
+
+#: inc/customizer.php:949 inc/customizer.php:1023
+msgid "Sidebar Position"
+msgstr ""
+
+#: inc/customizer.php:900
+msgid "Single Post"
+msgstr ""
+
+#: inc/customizer.php:1094
+msgid "Single Product"
+msgstr ""
+
+#: inc/customizer.php:590
+msgid "Single Row (Default)"
+msgstr ""
+
+#: inc/customizer.php:585
+msgid "Single Row: current layout, unchanged. Two Rows: menu moves to its own row below, with an always-visible search box next to the logo above it. Desktop only — mobile is unaffected either way."
+msgstr ""
+
+#: header.php:19
+msgid "Skip to content"
+msgstr ""
+
+#: inc/widgets.php:863 inc/widgets.php:1383
+msgid "Slider"
+msgstr ""
+
+#: inc/customizer.php:1257
+msgid "Social Media Links"
+msgstr ""
+
+#: inc/customizer.php:540
+msgid "Solid Background Header on Homepage"
+msgstr ""
+
+#: index.php:106
+msgid "Sorry, no posts matched your criteria. Try searching for something else."
+msgstr ""
+
+#: archive.php:219
+msgid "Sorry, no posts were found in this archive."
+msgstr ""
+
+#: 404.php:33
+msgid "Sorry, the page you're looking for can't be found."
+msgstr ""
+
+#: 404.php:62
+msgid "Sorry, the page you're looking for can't be found. Try the homepage or a search instead."
+msgstr ""
+
+#: inc/customizer.php:1136
+msgid "Square (1:1) Product Image"
+msgstr ""
+
+#. translators: %d: stat number
+#: inc/customizer.php:1655
+msgid "Stat %d — Icon class (e.g. bi bi-star)"
+msgstr ""
+
+#. translators: %d: stat number
+#: inc/customizer.php:1653
+msgid "Stat %d — Label"
+msgstr ""
+
+#. translators: %d: stat number
+#: inc/customizer.php:1651
+msgid "Stat %d — Number"
+msgstr ""
+
+#: inc/customizer.php:1629
+msgid "Stats Counter"
+msgstr ""
+
+#: front-page.php:446 inc/customizer.php:1969
+msgid "Stay Connected"
+msgstr ""
+
+#: front-page.php:444 inc/customizer.php:1968
+msgid "Stay in the Loop"
+msgstr ""
+
+#: inc/customizer.php:1110
+msgid "Sticky Gallery"
+msgstr ""
+
+#: inc/customizer.php:527
+msgid "Sticky Header (fixed on scroll)"
+msgstr ""
+
+#: inc/customizer.php:970 inc/customizer.php:1039
+msgid "Sticky Sidebar"
+msgstr ""
+
+#: searchform.php:33
+msgid "Submit Search"
+msgstr ""
+
+#: inc/customizer.php:225
+msgid "Subtitle Text Color"
+msgstr ""
+
+#: inc/contact-widget.php:50
+msgid "Support Hours"
+msgstr ""
+
+#: archive.php:86
+msgid "Tag"
+msgstr ""
+
+#: page-templates/template-full-width.php:98 page-templates/template-narrow.php:72 single.php:162
+msgid "Tags:"
+msgstr ""
+
+#: inc/customizer.php:1040
+msgid "The Shop Sidebar stays in view while the page scrolls. Applies on desktop/tablet only."
+msgstr ""
+
+#: inc/customizer.php:971
+msgid "The blog/post sidebar stays in view while the page scrolls, instead of scrolling away and leaving empty space below it. Applies on desktop/tablet only. (This controls the blog sidebar only — the Shop Sidebar has its own separate toggle under WooCommerce → Shop / Archive.)"
+msgstr ""
+
+#: inc/customizer.php:265
+msgid "Theme Colors"
+msgstr ""
+
+#: comments.php:10
+msgid "This post is password protected. Enter the password to view comments."
+msgstr ""
+
+#: inc/customizer.php:2027
+msgid "This section appears automatically when you add a widget to Appearance → Widgets → Homepage — Generic Row 1. It stays hidden when the widget area is empty."
+msgstr ""
+
+#: inc/customizer.php:2044
+msgid "This section appears automatically when you add a widget to Appearance → Widgets → Homepage — Generic Row 2. It stays hidden when the widget area is empty."
+msgstr ""
+
+#: inc/customizer.php:2061
+msgid "This section appears automatically when you add a widget to Appearance → Widgets → Homepage — Generic Row 3. It stays hidden when the widget area is empty."
+msgstr ""
+
+#: inc/customizer.php:1965
+msgid "This section appears automatically when you add a widget to Appearance → Widgets → Homepage — Newsletter. It stays hidden when the widget area is empty."
+msgstr ""
+
+#: front-page.php:282 inc/customizer.php:1851
+msgid "Thoughtful, modern designs that represent your brand with confidence."
+msgstr ""
+
+#: inc/customizer.php:1120
+msgid "Thumbnail Position"
+msgstr ""
+
+#: inc/contact-widget.php:141 inc/widgets.php:707 inc/widgets.php:791 inc/widgets.php:1274
+msgid "Title"
+msgstr ""
+
+#: inc/customizer.php:215
+msgid "Title Text Color"
+msgstr ""
+
+#: inc/customizer.php:724
+msgid "Toggle banner visibility per page type. Color, image, and alignment apply to all banners."
+msgstr ""
+
+#: header.php:189
+msgid "Toggle navigation"
+msgstr ""
+
+#: inc/customizer.php:498
+msgid "Top Bar Background Color"
+msgstr ""
+
+#: inc/customizer.php:455
+msgid "Top Bar Left Announcement Text"
+msgstr ""
+
+#: inc/customizer.php:469
+msgid "Top Bar Right Phone Number"
+msgstr ""
+
+#: inc/customizer.php:513
+msgid "Top Bar Text Color"
+msgstr ""
+
+#: inc/widgets.php:796
+msgid "Top Rated (WC)"
+msgstr ""
+
+#: inc/widgets.php:795
+msgid "Top Selling (WC)"
+msgstr ""
+
+#: front-page.php:141 inc/customizer.php:1636
+msgid "Track Record"
+msgstr ""
+
+#: inc/customizer.php:1265
+msgid "Twitter URL"
+msgstr ""
+
+#: inc/customizer.php:591
+msgid "Two Rows (Logo + Search / Menu)"
+msgstr ""
+
+#: inc/customizer.php:352
+msgid "Typography"
+msgstr ""
+
+#: inc/customizer.php:484
+msgid "URLs are set under Footer → Social Media Links."
+msgstr ""
+
+#: inc/customizer.php:1210
+msgid "Uncheck to hide the logo / description column in the first footer row."
+msgstr ""
+
+#: inc/customizer.php:1224
+msgid "Upload a separate logo for the footer (e.g. a light/white version). Leave empty to use the site logo. If no logo is set at all, the site name is shown. Recommended size: 220×65px transparent PNG."
+msgstr ""
+
+#: inc/customizer.php:298
+msgid "Used in: card borders, separator lines, post meta dividers, and horizontal rules."
+msgstr ""
+
+#: inc/customizer.php:280
+msgid "Used in: hover effects, icon highlights, badges, \"Read More\" links, and focus borders."
+msgstr ""
+
+#: inc/customizer.php:275
+msgid "Used in: navbar background, banner background, buttons, footer, section headings, and links."
+msgstr ""
+
+#: inc/customizer.php:286
+msgid "Used in: paragraphs, meta info, card descriptions, and general readable content."
+msgstr ""
+
+#: inc/customizer.php:292
+msgid "Used in: the content wrapper on blog, archive, single post, search, and page templates."
+msgstr ""
+
+#: inc/customizer.php:701 inc/customizer.php:713
+msgid "Used only when Header Layout = Two Rows. Leave empty to use the Global Primary Color."
+msgstr ""
+
+#: inc/customizer.php:608
+msgid "Used only when Header Layout = Two Rows. RTL languages mirror automatically, so there is no separate Right option."
+msgstr ""
+
+#: inc/customizer.php:1341
+msgid "Used when no background image is set."
+msgstr ""
+
+#: inc/customizer.php:787
+msgid "Used when no image is set."
+msgstr ""
+
+#: inc/customizer.php:328
+msgid "Usually not needed — section headings already auto-match each section's own Background Color. Set this only if a section uses a Background Image and the automatic color is hard to read."
+msgstr ""
+
+#: inc/widgets.php:195 inc/widgets.php:232 inc/widgets.php:689 inc/widgets.php:950
+msgid "View All"
+msgstr ""
+
+#: front-page.php:395 inc/customizer.php:1950
+msgid "View All Articles"
+msgstr ""
+
+#: header.php:306 inc/woocommerce.php:291
+msgid "View Cart"
+msgstr ""
+
+#: inc/widgets.php:528
+msgid "View Details"
+msgstr ""
+
+#: woocommerce/archive-product.php:65
+msgid "View mode"
+msgstr ""
+
+#: inc/customizer.php:626
+msgid "Visible when Header Style = Agency. Leave empty to hide."
+msgstr ""
+
+#: front-page.php:283 inc/customizer.php:1852
+msgid "We build lasting relationships — your success is our success."
+msgstr ""
+
+#: inc/customizer.php:1722 inc/customizer.php:2119
+msgid "We don't measure success by the number of projects we complete. We measure it by the problems we solve. Every website we build starts with a real question: what does this business actually need? Then we work to answer it — honestly, carefully, and completely."
+msgstr ""
+
+#: front-page.php:281 inc/customizer.php:1850
+msgid "We measure success by the growth and real impact we bring to your business."
+msgstr ""
+
+#: comments.php:111
+msgid "Website"
+msgstr ""
+
+#: front-page.php:276 inc/customizer.php:1845
+msgid "Well-structured, readable code that is easy to maintain and scale."
+msgstr ""
+
+#: inc/customizer.php:1720 inc/customizer.php:2117
+msgid "Who We Are"
+msgstr ""
+
+#: front-page.php:260 inc/customizer.php:1809
+msgid "Why Choose Us"
+msgstr ""
+
+#: front-page.php:258 inc/customizer.php:1821
+msgid "Why Work With Us"
+msgstr ""
+
+#: functions.php:270
+msgid "Widgets here override the default section layout. Leave empty to use the built-in section."
+msgstr ""
+
+#: functions.php:204
+msgid "Widgets shown in the blog / post sidebar."
+msgstr ""
+
+#: functions.php:216
+msgid "Widgets shown in the shop/category sidebar."
+msgstr ""
+
+#: inc/widgets.php:883
+msgid "WooCommerce"
+msgstr ""
+
+#: comments.php:128
+msgid "Write your comment here..."
+msgstr ""
+
+#: archive.php:94
+msgid "Year Archive"
+msgstr ""
+
+#: inc/customizer.php:1645 inc/customizer.php:2161
+msgid "Years Experience"
+msgstr ""
+
+#: inc/customizer.php:1266
+msgid "YouTube URL"
+msgstr ""
+
+#: header.php:375
+msgid "Your Cart"
+msgstr ""
+
+#: inc/customizer.php:63 inc/customizer.php:1396
+msgid "Your Growth Is Our Goal, Not Just Your Project"
+msgstr ""
+
+#: header.php:313 inc/woocommerce.php:295
+msgid "Your cart is empty."
+msgstr ""
+
+#: comments.php:91
+msgid "Your email address will not be published. Required fields are marked *"
+msgstr ""
+
+#: comments.php:100
+msgid "Your name"
+msgstr ""
+
+#. translators: %d: item number
+#: inc/customizer.php:1871
+msgid "e.g. fas fa-code, fab fa-github, bi bi-code"
+msgstr ""
+
+#. translators: %s: link to WordPress.org
+#: footer.php:174
+msgid "https://wordpress.org/"
+msgstr ""
+
+#: comments.php:114
+msgid "https://yourwebsite.com (optional)"
+msgstr ""
+
+#: comments.php:107
+msgid "your@email.com"
+msgstr ""
+
+#: inc/widgets.php:739
+msgid "— All —"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Accent (Gold)"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Accent Dark"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Black"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Body Text"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Border"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Dark"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Muted"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "On Dark"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "On Dark Muted"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Primary (Navy)"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Primary Dark"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Surface (Cream)"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Tint"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "White"
+msgstr ""
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Body Font (Poppins)"
+msgstr ""
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Heading Font (Playfair Display)"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Extra Large"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Huge"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Large"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Medium"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Small"
+msgstr ""
+
