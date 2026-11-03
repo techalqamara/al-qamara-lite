@@ -227,46 +227,68 @@ endif;
 ============================================================================= */
 
 /**
- * Desktop navbar fallback — renders plain links if no menu is assigned.
- * Passed as 'fallback_cb' in wp_nav_menu() call in header.php.
+ * Links for the menu fallbacks: Home, then up to four published top-level
+ * pages (the page set as the static front page is left out, Home already
+ * points there). Real pages only, so no link leads to a missing page.
+ *
+ * @return array[] Each item: 'label', 'url', 'current'.
+ */
+if ( ! function_exists( 'alqamara_fallback_links' ) ) :
+function alqamara_fallback_links() {
+
+    $links = [
+        [
+            'label'   => __( 'Home', 'al-qamara-lite' ),
+            'url'     => home_url( '/' ),
+            'current' => is_front_page(),
+        ],
+    ];
+
+    $pages = get_pages( [
+        'parent'      => 0,
+        'sort_column' => 'menu_order,post_title',
+        'number'      => 5,
+        'exclude'     => array_filter( [ (int) get_option( 'page_on_front' ) ] ),
+    ] );
+
+    foreach ( array_slice( $pages, 0, 4 ) as $page ) {
+        $links[] = [
+            'label'   => get_the_title( $page ),
+            'url'     => get_permalink( $page ),
+            'current' => is_page( $page->ID ) || ( is_home() && 'page' === get_option( 'show_on_front' ) && (int) get_option( 'page_for_posts' ) === $page->ID ),
+        ];
+    }
+
+    return $links;
+}
+endif;
+
+/**
+ * Desktop navbar fallback - shown until a menu is assigned to the Primary
+ * Menu location. Passed as 'fallback_cb' in wp_nav_menu() in header.php.
  */
 if ( ! function_exists( 'alqamara_nav_fallback' ) ) :
 function alqamara_nav_fallback() {
-
-    $links = [
-        esc_html__( 'Home',     'al-qamara-lite' ) => '/',
-        esc_html__( 'About',    'al-qamara-lite' ) => '/about',
-        esc_html__( 'Contact',  'al-qamara-lite' ) => '/contact',
-    ];
-
-    foreach ( $links as $label => $slug ) {
-        echo '<a href="' . esc_url( home_url( $slug ) ) . '" class="nav-item nav-link">'
-           . esc_html( $label ) . '</a>';
+    foreach ( alqamara_fallback_links() as $link ) {
+        echo '<a href="' . esc_url( $link['url'] ) . '" class="nav-item nav-link' . ( $link['current'] ? ' active" aria-current="page' : '' ) . '">'
+           . esc_html( $link['label'] ) . '</a>';
     }
 }
 endif;
 
 
 /**
- * Mobile menu fallback — renders plain links if no menu is assigned.
- * Passed as 'fallback_cb' in mobile wp_nav_menu() call in header.php.
+ * Mobile menu fallback - shown until a menu is assigned to the Primary
+ * Menu location. Passed as 'fallback_cb' in the mobile wp_nav_menu() call.
  */
 if ( ! function_exists( 'alqamara_mobile_nav_fallback' ) ) :
 function alqamara_mobile_nav_fallback() {
-
-    $links = [
-        esc_html__( 'Home',     'al-qamara-lite' ) => '/',
-        esc_html__( 'About',    'al-qamara-lite' ) => '/about',
-        esc_html__( 'Contact',  'al-qamara-lite' ) => '/contact',
-    ];
-
-    foreach ( $links as $label => $slug ) {
-        echo '<a href="' . esc_url( home_url( $slug ) ) . '" class="mobile-nav-link">'
-           . esc_html( $label ) . '</a>';
+    foreach ( alqamara_fallback_links() as $link ) {
+        echo '<a href="' . esc_url( $link['url'] ) . '" class="mobile-nav-link' . ( $link['current'] ? ' active" aria-current="page' : '' ) . '">'
+           . esc_html( $link['label'] ) . '</a>';
     }
 }
 endif;
-
 
 /* =============================================================================
    ICON HELPERS

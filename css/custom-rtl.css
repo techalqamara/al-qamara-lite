@@ -78,37 +78,46 @@
    02 · GLOBAL / BASE
    ===================================================================== */
 
-/* Page-wide safety net against any single element (e.g. a wide comparison
-   table) pushing the whole document past the viewport width — deliberately
-   on `html` ONLY, not `body`
-   regression). Two things had to be learned the hard way here:
-
-   1. Per the CSS Overflow spec, whenever overflow-x is set to a non-visible
-      value, the browser is REQUIRED to compute overflow-y as `auto`
-      instead of `visible` — writing `overflow-y: visible` explicitly does
-      NOT prevent this, the spec overrides it regardless. So overflow-x:
-      hidden always drags overflow-y along with it to `auto` on whichever
-      element(s) it's set on; there's no way around that part.
-
-   2. The actual bug was applying overflow-x:hidden to BOTH html and body.
-      That gave `<body>` its own non-visible overflow (auto, per #1), which
-      makes body a scroll-container candidate — and any `position:sticky`
-      descendant (the header navbar) then sticks relative to BODY's box
-      instead of the true viewport. Since body itself never actually
-      scrolls (html does, confirmed via document.scrollingElement), the
-      sticky navbar just scrolled away with the page instead of sticking —
-      confirmed live via getBoundingClientRect.top going thousands of
-      pixels negative instead of clamping at 0.
-
-   Fix: overflow-x:hidden on `html` alone is already enough to clip
-   horizontal overflow for the whole viewport (html is what governs the
-   viewport's scrollbox here — confirmed via document.scrollingElement).
-   Leaving `body` completely untouched (both axes stay their true default
-   `visible`) means body is never a scroll-container candidate, so
-   position:sticky correctly resolves against the viewport again —
-   confirmed live: scrollY 2001, sticky header rectTop back to 0. */
+/* Keep the scrollbar's space from the first paint: on a slow connection the
+   top of the page is painted before the rest of the HTML arrives, and the
+   scrollbar then appeared a moment later and pushed the centred page a few
+   pixels sideways. */
 html {
-    overflow-x: hidden;
+    scrollbar-gutter: stable;
+}
+
+/* Page-wide safety net against any single element (a wide table, a sideways
+   scroll animation) pushing the page past the screen width. On <body> and as
+   `clip`, not `hidden`: `clip` does not make body a scroll container, so the
+   sticky header keeps working, and body { overflow: hidden } can still lock
+   the page behind the open mobile menu and cart drawer (with `hidden` on
+   <html> the lock did not reach the page, so it scrolled behind them). */
+body {
+    overflow-x: clip;
+}
+
+/* Scroll animations (AOS, data-aos): until the page's scripts start, a
+   section is simply shown, so a section on the first screen - on phones
+   often the one right under the hero - is painted at once instead of
+   waiting invisible for the scripts. When AOS starts (js/main.js) the
+   sections on screen keep showing and the ones further down fade in as
+   they scroll into view. */
+[data-aos]:not(.aos-init) {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* Printing: leave out the parts that only make sense on a screen. */
+@media print {
+    .alqamara-skip-link,
+    .mobile-overlay,
+    .mobile-menu,
+    .alqamara-cart-drawer,
+    .alqamara-drawer-overlay,
+    .alqamara-mobile-bar,
+    .alqamara-btt-wrap {
+        display: none !important;
+    }
 }
 
 body {

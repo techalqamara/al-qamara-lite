@@ -843,15 +843,19 @@ body.woocommerce-active.alqamara-shop-header { padding-bottom: 64px; }
     margin-bottom: .5rem;
 }
 .woocommerce div.product.type-product table.variations th { font-size: .85rem; font-weight: 600; padding: .4rem 0 .4rem .5rem; }
-/* Native select — shown only when JS hasn't run yet or swatches plugin is active */
+/* Variation dropdowns (Color, Size ...): the theme's own look with a down arrow, so they
+   read as dropdowns. Drawn here because the white background below replaces WooCommerce's. */
 .woocommerce div.product.type-product table.variations td select {
     width: 100%;
     border: 1.5px solid var(--alqamara-wc-border);
     border-radius: 5px;
-    padding: .38rem .7rem;
+    padding: .38rem .7rem .38rem 2rem;
     font-size: .88rem;
     color: var(--alqamara-primary, #0f172a);
-    background: #fff;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23666666' viewBox='0 0 16 16'%3E%3Cpath d='M1.65 5.3a.75.75 0 0 1 1.06 0L8 10.59l5.29-5.3a.75.75 0 1 1 1.06 1.07l-5.82 5.82a.75.75 0 0 1-1.06 0L1.65 6.36a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E") no-repeat left .7rem center / 12px 12px;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
 }
 .woocommerce div.product.type-product table.variations td select:focus {
     border-color: var(--alqamara-accent, #b8912a);

@@ -3,6 +3,7 @@
 A clean, fast, free WordPress theme for blogs, business sites and WooCommerce stores, built on Bootstrap 5.
 
 - **WordPress.org:** https://wordpress.org/themes/al-qamara-lite/ (official download and updates)
+- **Theme homepage and guide:** https://tech.alqamara.com/al-qamara-lite/
 - **Live demo:** https://tech.alqamara.com/themes/alqamara-lite/
 - **License:** GNU General Public License v2 or later (see [LICENSE](LICENSE))
 

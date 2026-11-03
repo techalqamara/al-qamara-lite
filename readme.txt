@@ -3,7 +3,7 @@ Contributors: alqamara
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: e-commerce, custom-menu, custom-logo, custom-colors, custom-background, featured-images, footer-widgets, threaded-comments, translation-ready, full-width-template, left-sidebar, right-sidebar
@@ -56,7 +56,7 @@ No. All CSS, JavaScript, icons and fonts are included in the theme. The only out
 
 = Where do I get support? =
 
-Please use the WordPress.org support forum for this theme.
+Please use the WordPress.org support forum for this theme. A step-by-step guide with screenshots is on the theme's homepage: https://tech.alqamara.com/al-qamara-lite/
 
 == Privacy ==
 
@@ -67,7 +67,7 @@ The theme does not collect, store or send any personal data, and it adds no requ
 Al Qamara Lite, Copyright 2026 Tech Al Qamara.
 Al Qamara Lite is distributed under the terms of the GNU GPL v2 or later (see the LICENSE file).
 
-This theme bundles the third-party resources listed under "Resources" below. Each one is distributed under the license shown next to it, all of which are compatible with the GPL. No images are bundled apart from the theme screenshot (screenshot.png), which was created by the theme author and is released under the same GPL license as the theme.
+This theme bundles the third-party resources listed under "Resources" below. Each one is distributed under the license shown next to it, all of which are compatible with the GPL. No images are bundled apart from the theme screenshot (screenshot.jpg). The screenshot shows the theme's demo site; the pictures in it were created and edited by the theme author with AI image tools, and the screenshot and all pictures in it are released under CC0 1.0 (public domain), https://creativecommons.org/publicdomain/zero/1.0/
 
 == Resources ==
 
@@ -79,6 +79,14 @@ This theme bundles the third-party resources listed under "Resources" below. Eac
 * Open Sans, Lora, Poppins, Playfair Display and Roboto, SIL Open Font License 1.1, https://fonts.google.com/ (self-hosted Latin-subset .woff2 files in fonts/webfonts/, declared in fonts/text-fonts/fonts.css). Copyright holders: Open Sans, The Open Sans Project Authors; Lora, The Lora Project Authors; Poppins, Indian Type Foundry; Playfair Display, The Playfair Display Project Authors; Roboto, The Roboto Project Authors.
 
 == Changelog ==
+
+= 1.0.6 =
+* The page no longer shifts sideways when the scrollbar appears while it loads, and the page behind the open mobile menu and cart drawer no longer scrolls.
+* Sections on the first screen are shown at once instead of waiting for the scroll animation script.
+* Variation dropdowns on product pages (for example Color and Size) now show a down arrow, so they are clearly recognisable as dropdowns.
+* Printing leaves out the mobile menu, cart drawer, mobile shop bar, skip link and back-to-top button.
+* Until a menu is assigned, the menu lists Home and the site's own pages instead of fixed links that could lead to missing pages.
+* New theme description, screenshot and theme homepage (Theme URI) with a full guide.
 
 = 1.0.5 =
 * Keyboard: the open mobile menu and cart drawer keep focus inside them. Tab after the last item moves to the close button, Shift+Tab on the close button moves to the last item.
@@ -112,6 +120,9 @@ This theme bundles the third-party resources listed under "Resources" below. Eac
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.6 =
+Steadier page while loading, a working scroll lock behind the mobile menu and cart, and a menu fallback that only links to existing pages.
 
 = 1.0.5 = focus stays inside the open mobile menu and cart drawer; original files included for every minified library.
 

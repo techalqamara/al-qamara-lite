@@ -171,6 +171,16 @@
        3. AOS — ANIMATE ON SCROLL
     ========================================================================= */
     if ( typeof AOS !== 'undefined' ) {
+        /* Sections already on the screen when the scripts start were shown
+           from the first paint (see "Scroll animations" in css/custom.css):
+           they stay as they are instead of hiding and fading in again. Only
+           the sections further down animate. */
+        document.querySelectorAll( '[data-aos]' ).forEach( function( el ) {
+            if ( el.getBoundingClientRect().top < window.innerHeight ) {
+                el.removeAttribute( 'data-aos' );
+            }
+        } );
+
         AOS.init( {
             duration : 600,
             easing   : 'ease-in-out',
