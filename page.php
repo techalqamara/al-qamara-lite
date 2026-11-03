@@ -52,7 +52,7 @@ $is_wc_utility = function_exists( 'is_cart' ) && ( is_cart() || is_checkout() ||
     <?php if ( $alqamara_show_banner_p ) : ?>
     <div class="blog-page-banner">
         <div class="container">
-            <div class="blog-banner-inner<?php echo 'center' === $alqamara_banner_align ? ' text-center' : ''; ?>" data-aos="fade-down" data-aos-delay="100">
+            <div class="blog-banner-inner<?php echo 'center' === $alqamara_banner_align ? ' text-center' : ''; ?>">
 
                 <!-- Breadcrumb -->
                 <?php alqamara_breadcrumb(); ?>

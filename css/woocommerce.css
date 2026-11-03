@@ -121,13 +121,29 @@ body.woocommerce-active.alqamara-shop-header { padding-bottom: 64px; }
 .woocommerce-info,
 .woocommerce-error {
     position: relative;
-    padding: .9rem 8.5rem .9rem 1.1rem;  /* right padding reserves space for button */
+    padding: .9rem 1.1rem;
     border-radius: var(--alqamara-wc-radius);
     border-left: 4px solid;
     margin-bottom: 1.5rem;
     list-style: none;
     display: block;
     line-height: 1.5;
+}
+/* Message + button: the text takes the room it needs and the button sits at
+   the end of the row in its own column, so it never covers the text; on very
+   small screens it moves under the text. */
+.woocommerce-message:has(> a.button),
+.woocommerce-info:has(> a.button) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .6rem 1rem;
+}
+@media (max-width: 359.98px) {
+    .woocommerce-message:has(> a.button),
+    .woocommerce-info:has(> a.button) { grid-template-columns: minmax(0, 1fr); }
+    .woocommerce-message:has(> a.button) > a.button,
+    .woocommerce-info:has(> a.button) > a.button { grid-column: 1; grid-row: auto; justify-self: start; }
 }
 .woocommerce-message {
     background: #f0fdf4;
@@ -155,13 +171,13 @@ body.woocommerce-active.alqamara-shop-header { padding-bottom: 64px; }
     font-size: .88rem;
 }
 
-/* Button — absolutely pinned to right center; works on any screen width */
+/* Button - in its own column at the end of the message (see the grid rule above) */
 .woocommerce-message a.button,
 .woocommerce-info a.button {
-    position: absolute;
-    right: 1.1rem;
-    top: 50%;
-    transform: translateY(-50%);
+    position: static;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
     background: var(--alqamara-accent, #b8912a) !important;
     color: #fff !important;
     border-radius: 5px;
@@ -761,6 +777,10 @@ body.woocommerce-active.alqamara-shop-header { padding-bottom: 64px; }
     flex-wrap   : wrap;
     margin-bottom: 1rem;
 }
+/* WooCommerce's float clearfix (::before / ::after) would become an empty flex item
+   and push the quantity box sideways by one gap. */
+.woocommerce div.product.type-product form.cart::before,
+.woocommerce div.product.type-product form.cart::after { display: none; }
 
 /* Variable product: variations table + single_variation_wrap each take full width */
 .woocommerce div.product.type-product form.cart table.variations,
@@ -2544,6 +2564,340 @@ body.woocommerce-cart .wp-block-woocommerce-product-collection .wc-block-compone
     color     : var(--alqamara-accent, #b8912a) !important;
     font-size : 1.1rem !important;
 }
+
+/* 20b. Classic checkout (`[woocommerce_checkout]` shortcode) Mirrors the look of the block checkout above: */
+
+/* Remove WooCommerce's default floated 2-column layout of #customer_details */
+body.woocommerce-checkout #customer_details .col-1,
+body.woocommerce-checkout #customer_details .col-2 {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+}
+
+/* Form section cards (billing / shipping / order notes) */
+body.woocommerce-checkout .woocommerce-billing-fields,
+body.woocommerce-checkout .woocommerce-shipping-fields {
+    background    : #fff;
+    border        : 1px solid var(--alqamara-wc-border);
+    border-radius : var(--alqamara-wc-radius);
+    box-shadow    : var(--alqamara-wc-shadow, 0 1px 4px rgba(0,0,0,.08));
+    padding       : 1.5rem;
+    margin-bottom : 1rem;
+}
+/* WooCommerce prints an empty .woocommerce-shipping-fields div when the order needs no shipping address (Shipping → "Ship to billing address … */
+body.woocommerce-checkout .woocommerce-shipping-fields:not(:has(*)) {
+    display: none;
+}
+/* Order-notes card only when the notes field is actually printed (own rule so an older browser without :has() ignores just this one, not the … */
+body.woocommerce-checkout .woocommerce-additional-fields:has(.woocommerce-additional-fields__field-wrapper) {
+    background    : #fff;
+    border        : 1px solid var(--alqamara-wc-border);
+    border-radius : var(--alqamara-wc-radius);
+    box-shadow    : var(--alqamara-wc-shadow, 0 1px 4px rgba(0,0,0,.08));
+    padding       : 1.5rem;
+    margin-bottom : 1rem;
+}
+
+/* Section headings */
+body.woocommerce-checkout .woocommerce-billing-fields > h3,
+body.woocommerce-checkout .woocommerce-additional-fields > h3 {
+    font-size     : 1.3rem;
+    font-weight   : 700;
+    color         : var(--alqamara-primary, #0f172a);
+    padding-bottom: .6rem;
+    border-bottom : 2px solid var(--alqamara-wc-border);
+    margin        : 0 0 1rem;
+}
+/* "Ship to a different address?" — checkbox row, no heading underline */
+body.woocommerce-checkout #ship-to-different-address {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: .95rem;
+}
+body.woocommerce-checkout #ship-to-different-address label {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin: 0;
+    font-weight: 600;
+    cursor: pointer;
+}
+body.woocommerce-checkout .shipping_address { margin-top: 1rem; }
+
+/* Field grid: full-width rows; first/last name style pairs sit side by side */
+body.woocommerce-checkout .woocommerce-billing-fields__field-wrapper,
+body.woocommerce-checkout .woocommerce-shipping-fields__field-wrapper,
+body.woocommerce-checkout .woocommerce-additional-fields__field-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1rem;
+}
+body.woocommerce-checkout .woocommerce-billing-fields__field-wrapper .form-row,
+body.woocommerce-checkout .woocommerce-shipping-fields__field-wrapper .form-row,
+body.woocommerce-checkout .woocommerce-additional-fields__field-wrapper .form-row {
+    float: none;
+    width: 100%;
+    margin: 0 0 1rem;
+    padding: 0;
+    grid-column: 1 / -1;
+}
+body.woocommerce-checkout .woocommerce-billing-fields__field-wrapper .form-row-first,
+body.woocommerce-checkout .woocommerce-shipping-fields__field-wrapper .form-row-first { grid-column: 1; }
+body.woocommerce-checkout .woocommerce-billing-fields__field-wrapper .form-row-last,
+body.woocommerce-checkout .woocommerce-shipping-fields__field-wrapper .form-row-last  { grid-column: 2; }
+
+/* Inputs — a little taller for comfortable tapping; "(optional)" is noise because the red asterisk already marks required fields (same as … */
+body.woocommerce-checkout .form-row input.input-text,
+body.woocommerce-checkout .form-row select,
+body.woocommerce-checkout .form-row textarea {
+    padding: .65rem .85rem;
+}
+body.woocommerce-checkout .form-row textarea { min-height: 6rem; }
+body.woocommerce-checkout .form-row .optional { display: none; }
+body.woocommerce-checkout .form-row abbr.required,
+body.woocommerce-checkout .form-row .required {
+    color: var(--alqamara-wc-error);
+    text-decoration: none;
+    border: 0;
+}
+body.woocommerce-checkout .form-row.woocommerce-invalid input.input-text,
+body.woocommerce-checkout .form-row.woocommerce-invalid select,
+body.woocommerce-checkout .form-row.woocommerce-invalid .select2-selection {
+    border-color: var(--alqamara-wc-error);
+}
+
+/* select2 dropdowns (District / State) */
+body.woocommerce-checkout .select2-container--default .select2-selection--single {
+    height: auto;
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    border: 1.5px solid var(--alqamara-wc-border);
+    border-radius: var(--alqamara-wc-radius);
+    background: #fff;
+}
+body.woocommerce-checkout .select2-container--default .select2-selection--single .select2-selection__rendered {
+    flex: 1;
+    padding: .5rem 2rem .5rem .85rem;
+    line-height: 1.5;
+    font-size: .9rem;
+    color: var(--alqamara-primary, #0f172a);
+}
+body.woocommerce-checkout .select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 0;
+    height: 100%;
+    right: .4rem;
+}
+body.woocommerce-checkout .select2-container--default.select2-container--focus .select2-selection--single,
+body.woocommerce-checkout .select2-container--default.select2-container--open .select2-selection--single {
+    border-color: var(--alqamara-accent, #b8912a);
+    box-shadow: 0 0 0 3px rgba(184,145,42,.15);
+}
+
+/* Error / notice group that WooCommerce prepends inside the form */
+body.woocommerce-checkout form.woocommerce-checkout .woocommerce-NoticeGroup-checkout { margin-bottom: 1rem; }
+
+/* "Have a coupon?" — now printed inside the order-summary table, right after Subtotal (see section 6 in inc/woocommerce.php), instead of as a … */
+body.woocommerce-checkout .woocommerce-form-login-toggle .woocommerce-info { margin-bottom: 1rem; }body.woocommerce-checkout .woocommerce-form-coupon-toggle .woocommerce-info {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    font-size: .85rem;
+}
+body.woocommerce-checkout .woocommerce-form-coupon-toggle .woocommerce-info a.showcoupon {
+    color: var(--alqamara-accent, #b8912a);
+    font-weight: 600;
+    text-decoration: underline;
+}
+body.woocommerce-checkout form.checkout_coupon {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    margin: .6rem 0 0;
+}
+body.woocommerce-checkout form.checkout_coupon > p:first-child { flex: 0 0 100%; margin: 0 0 .3rem; font-size: .8rem; }
+body.woocommerce-checkout form.checkout_coupon .form-row-first { flex: 1 1 140px; float: none; width: auto; margin: 0; }
+body.woocommerce-checkout form.checkout_coupon .form-row-first input {
+    width: 100%;
+    padding: .5rem .7rem;
+    font-size: .85rem;
+    border: 1.5px solid var(--alqamara-wc-border);
+    border-radius: var(--alqamara-wc-radius);
+}
+body.woocommerce-checkout form.checkout_coupon .form-row-last  { flex: 0 0 auto;  float: none; width: auto; margin: 0; }
+body.woocommerce-checkout form.checkout_coupon .form-row-last button {
+    padding: .5rem .9rem;
+    font-size: .85rem;
+    white-space: nowrap;
+}
+body.woocommerce-checkout form.checkout_coupon .clear { display: none; }
+
+/* Order summary — one white card made of the "Your order" heading + table */
+body.woocommerce-checkout form.woocommerce-checkout #order_review_heading {
+    margin: 0;
+    padding: 1.25rem 1.25rem 0;
+    background: #fff;
+    border: 1px solid var(--alqamara-wc-border);
+    border-bottom: 0;
+    border-radius: var(--alqamara-wc-radius) var(--alqamara-wc-radius) 0 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--alqamara-primary, #0f172a);
+}
+body.woocommerce-checkout form.woocommerce-checkout #order_review_heading::after {
+    content: '';
+    display: block;
+    margin-top: .6rem;
+    border-bottom: 2px solid var(--alqamara-wc-border);
+}
+body.woocommerce-checkout form.woocommerce-checkout #order_review {
+    background: #fff;
+    border: 1px solid var(--alqamara-wc-border);
+    border-top: 0;
+    border-radius: 0 0 var(--alqamara-wc-radius) var(--alqamara-wc-radius);
+    padding: .5rem 1.25rem 1.25rem;
+}
+
+/* Order review table */
+body.woocommerce-checkout #order_review table.shop_table {
+    width: 100%;
+    border: 0;
+    border-collapse: collapse;
+    margin: 0 0 1rem;
+}
+body.woocommerce-checkout #order_review table.shop_table th,
+body.woocommerce-checkout #order_review table.shop_table td {
+    padding: .7rem 0;
+    border: 0;
+    border-bottom: 1px solid var(--alqamara-wc-border);
+    background: transparent;
+    vertical-align: top;
+}
+body.woocommerce-checkout #order_review table.shop_table thead th {
+    font-size: .75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--alqamara-wc-muted);
+}
+body.woocommerce-checkout #order_review table.shop_table thead th:last-child,
+body.woocommerce-checkout #order_review table.shop_table td:last-child { text-align: right; }
+body.woocommerce-checkout #order_review table.shop_table tfoot th { text-align: left; font-weight: 600; }
+body.woocommerce-checkout #order_review table.shop_table tfoot td[data-title="Shipping"] { text-align: left; }
+body.woocommerce-checkout #order_review table.shop_table .order-total th,
+body.woocommerce-checkout #order_review table.shop_table .order-total td {
+    font-size: 1.05rem;
+    font-weight: 700;
+    border-bottom: 0;
+}
+body.woocommerce-checkout #order_review table.shop_table .order-total th { color: var(--alqamara-primary, #0f172a); }
+body.woocommerce-checkout #order_review table.shop_table .order-total td { color: var(--alqamara-accent, #b8912a); }
+
+/* Shipping method choices (e.g. inside / outside Dhaka) */
+body.woocommerce-checkout #order_review ul#shipping_method {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+/* Each shipping option is a card; the chosen one is highlighted. */
+body.woocommerce-checkout #order_review ul#shipping_method li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin: 0 0 .45rem;
+    padding: .55rem .75rem;
+    background: #fff;
+    border: 1.5px solid var(--alqamara-wc-border, #e5e7eb);
+    border-radius: 8px;
+    text-align: start;
+    transition: border-color .15s, background .15s;
+}
+body.woocommerce-checkout #order_review ul#shipping_method li:has(input:checked),
+body.woocommerce-checkout #order_review ul#shipping_method li:only-child {
+    border-color: var(--alqamara-accent, #b8912a);
+    background: color-mix(in srgb, var(--alqamara-accent, #b8912a) 7%, #fff 93%);
+}
+body.woocommerce-checkout #order_review ul#shipping_method li:last-child { margin-bottom: 0; }
+body.woocommerce-checkout #order_review ul#shipping_method input[type="radio"] { flex-shrink: 0; margin: 0; }
+body.woocommerce-checkout #order_review ul#shipping_method label {
+    flex: 1 1 auto;
+    margin: 0;
+    cursor: pointer;
+    font-weight: 600;
+    line-height: 1.35;
+}
+/* The whole card is clickable: the label stretches over it. */
+body.woocommerce-checkout #order_review ul#shipping_method label::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+body.woocommerce-checkout #order_review ul#shipping_method label .amount { font-weight: 700; }
+body.woocommerce-checkout #order_review input[type="radio"] { accent-color: var(--alqamara-accent, #b8912a); }/* Rows WITHOUT a thumbnail (images toggle off) keep WooCommerce's own default markup — style its quantity text to match. */
+body.woocommerce-checkout #order_review td.product-name .product-quantity {
+    color: var(--alqamara-wc-muted);
+    font-weight: 500;
+}
+
+/* Payment box: flat inside the white summary card */
+body.woocommerce-checkout #order_review #payment {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+}
+body.woocommerce-checkout #order_review #payment .place-order { padding: 0; margin: 0; }
+body.woocommerce-checkout #payment .woocommerce-terms-and-conditions-wrapper,
+body.woocommerce-checkout #payment .woocommerce-privacy-policy-text {
+    font-size: .82rem;
+    color: var(--alqamara-wc-muted);
+    margin-bottom: 1rem;
+}
+body.woocommerce-checkout #payment #place_order { float: none; }
+
+/* Desktop (≥992px): form cards left, sticky order summary right */
+@media (min-width: 992px) {
+    body.woocommerce-checkout form.woocommerce-checkout {
+        display: grid;
+        grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
+        grid-template-rows: auto auto 1fr;
+        grid-template-areas:
+            "notice  notice"
+            "details heading"
+            "details review";
+        column-gap: 1.75rem;
+        align-items: start;
+    }
+    body.woocommerce-checkout form.woocommerce-checkout .woocommerce-NoticeGroup-checkout { grid-area: notice; }
+    body.woocommerce-checkout form.woocommerce-checkout #customer_details    { grid-area: details; margin-bottom: 0; }
+    body.woocommerce-checkout form.woocommerce-checkout #order_review_heading { grid-area: heading; }
+    body.woocommerce-checkout form.woocommerce-checkout #order_review {
+        grid-area: review;
+        position: sticky;
+        top: calc( var(--alqamara-header-total-h, 80px) + 1.5rem );
+    }
+}
+
+/* Tablet / mobile: single column — cards, then the summary below */
+@media (max-width: 991.98px) {
+    body.woocommerce-checkout form.woocommerce-checkout #order_review_heading { margin-top: 1.5rem; }
+}
+@media (max-width: 575.98px) {
+    body.woocommerce-checkout .woocommerce-billing-fields__field-wrapper .form-row-first,
+    body.woocommerce-checkout .woocommerce-billing-fields__field-wrapper .form-row-last,
+    body.woocommerce-checkout .woocommerce-shipping-fields__field-wrapper .form-row-first,
+    body.woocommerce-checkout .woocommerce-shipping-fields__field-wrapper .form-row-last { grid-column: 1 / -1; }
+    body.woocommerce-checkout .woocommerce-billing-fields,
+    body.woocommerce-checkout .woocommerce-shipping-fields { padding: 1.1rem; }
+}
+
+
 
 /* ── 20. Responsive ─────────────────────────────────────────────────────── */
 
@@ -4341,9 +4695,233 @@ body.woocommerce-account #alqamara-wc-main > .woocommerce::after {
 
 
 
-/* Visible keyboard focus on the quantity box and the product search field. */
-.quantity:focus-within,
+/* Visible keyboard focus on a plain quantity box and the product search field. A box with
+   - / + buttons gets its frame only from the keyboard (see QUANTITY STEPPER below), so a
+   mouse click on - or + no longer draws a frame round it. */
+.quantity:not(:has(.alqamara-qty-btn)):focus-within,
 .woocommerce-product-search:focus-within {
     outline: 2px solid var(--alqamara-accent, #b8912a);
     outline-offset: 2px;
 }
+
+/* =====================================================================
+   QUANTITY STEPPER (- / +) - buttons from inc/woocommerce.php
+   One bordered box: minus, number, plus. Used on the single product page
+   (sized to the Add to cart button) and on the classic cart page.
+   ===================================================================== */
+.quantity:has(> .alqamara-qty-btn) {
+    display: inline-flex;
+    align-items: stretch;
+    border: 1.5px solid var(--alqamara-wc-border, #e5e7eb);
+    border-radius: var(--alqamara-wc-radius, 5px);
+    overflow: hidden;
+    background: #fff;
+}
+.quantity:has(> .alqamara-qty-btn) .qty {
+    width: 44px !important;
+    min-height: 38px;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin: 0;
+    padding: 0 !important;
+    text-align: center;
+    font-weight: 600;
+    background: #fff;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+.quantity:has(> .alqamara-qty-btn) .qty::-webkit-outer-spin-button,
+.quantity:has(> .alqamara-qty-btn) .qty::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.quantity:has(> .alqamara-qty-btn) .qty:focus {
+    outline: none;
+    background: #fbf6e8;
+}
+.alqamara-qty-btn {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 0 0 34px;
+    width: 34px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: #fff;
+    color: var(--alqamara-wc-muted, #6b7280);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s, color .15s;
+}
+.alqamara-qty-minus { border-inline-end: 1.5px solid var(--alqamara-wc-border, #e5e7eb); }
+.alqamara-qty-plus  { border-inline-start: 1.5px solid var(--alqamara-wc-border, #e5e7eb); }
+.alqamara-qty-btn:hover {
+    background: var(--alqamara-accent, #b8912a);
+    color: #fff;
+}
+.alqamara-qty-btn:active { filter: brightness(.94); }
+/* Keyboard focus frame round the whole box - not on mouse clicks. */
+.quantity:has(.alqamara-qty-btn:focus-visible) {
+    outline: 2px solid #9a7520;
+    outline-offset: 2px;
+}
+.alqamara-qty-btn:focus-visible { outline: none; }
+/* Single product page: the box (with its 1.5px border) is as tall as the 42px Add to cart button. */
+.woocommerce div.product.type-product form.cart .quantity:has(> .alqamara-qty-btn) { height: 42px; box-sizing: border-box; }
+.woocommerce div.product.type-product form.cart .quantity:has(> .alqamara-qty-btn) .qty { height: 39px; min-height: 39px; }
+.woocommerce div.product.type-product form.cart .alqamara-qty-btn { height: 39px; }
+/* Variable products: after a variation is chosen WooCommerce shows the field
+   with an inline "display: block", which would stack - 1 + vertically. */
+.quantity[style*="display: block"]:has(> .alqamara-qty-btn) { display: inline-flex !important; }
+.woocommerce div.product.type-product form.cart .quantity[style*="display: block"]:has(> .alqamara-qty-btn) { display: flex !important; }
+/* A product that can be bought only once has a hidden field: hide its empty box. */
+.quantity:has(> input.qty[type="hidden"]) { display: none !important; }
+
+/* =====================================================================
+   SMALL LAYOUT FIXES
+   ===================================================================== */
+/* Shop with 5 or 6 columns: 4 on laptops, the full count on wide screens
+   (before, these fell back to the 3-column base). */
+@media (min-width: 992px) {
+    .woocommerce ul.products.columns-5,
+    .woocommerce-page ul.products.columns-5,
+    .woocommerce ul.products.columns-6,
+    .woocommerce-page ul.products.columns-6 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (min-width: 1200px) {
+    .woocommerce ul.products.columns-5,
+    .woocommerce-page ul.products.columns-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .woocommerce ul.products.columns-6,
+    .woocommerce-page ul.products.columns-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+/* Small phones: the Add to cart button keeps a readable width, and on a
+   variable product the quantity + button row may wrap instead of running
+   off the screen. */
+@media (max-width: 480px) {
+    .woocommerce div.product.type-product .single_add_to_cart_button { min-width: 110px; }
+    .woocommerce div.product.type-product form.cart .woocommerce-variation-add-to-cart { flex-wrap: wrap !important; }
+}
+/* Payment method logos (classic checkout) at one tidy size. */
+.woocommerce-checkout #payment ul.payment_methods label img {
+    height: 35px;
+    max-height: 35px;
+    width: auto;
+    max-width: 100px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+/* "No products were found" (woocommerce/loop/no-products-found.php) */
+.alqamara-no-products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 1.5rem;
+    width: 100%;
+}
+.alqamara-no-products__icon {
+    font-size: 3.5rem;
+    line-height: 1;
+    color: var(--alqamara-accent, #b8912a);
+    margin-bottom: 1.25rem;
+    opacity: .75;
+}
+.alqamara-no-products__title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--alqamara-primary, #0f172a);
+    margin-bottom: .5rem;
+}
+.alqamara-no-products__msg {
+    font-size: .95rem;
+    color: #64748b;
+    max-width: 420px;
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
+}
+
+/* My Account dashboard cards (woocommerce/myaccount/dashboard.php) */
+.alqamara-account-greeting {
+    font-size    : .9rem !important;
+    color        : var(--alqamara-wc-muted) !important;
+    margin-bottom: 1.5rem !important;
+}
+.alqamara-account-cards {
+    display : flex !important;
+    flex-direction: column !important;
+    gap     : 1.25rem !important;
+}
+.alqamara-account-card {
+    border       : 1px solid var(--alqamara-wc-border) !important;
+    border-radius: var(--alqamara-wc-radius) !important;
+    padding      : 1.25rem 1.4rem !important;
+    background   : #fff !important;
+}
+.alqamara-account-card__header {
+    /* This IS the full-width divider to keep — it spans the whole header row, from the heading on the left to the Edit/View-all link on the right … */
+    display        : flex !important;
+    justify-content: space-between !important;
+    align-items    : center !important;
+    border-bottom  : 2px solid var(--alqamara-wc-border) !important;
+    padding-bottom : .6rem !important;
+    margin-bottom  : 1rem !important;
+}
+.alqamara-account-card__header h2 {
+    /* §26d ("Section headings inside content") applies a border-bottom to EVERY h2/h3 under .woocommerce-MyAccount-content, sized to the h2's own … */
+    border-bottom : none !important;
+    padding-bottom: 0 !important;
+    margin        : 0 !important;
+    font-size     : 1rem !important;
+    font-weight   : 700 !important;
+    color         : var(--alqamara-primary, #0f172a) !important;
+    display       : flex !important;
+    align-items   : center !important;
+    gap           : .45rem !important;
+}
+.alqamara-account-card__header h2 i { color: var(--alqamara-accent, #b8912a) !important; }
+.alqamara-account-card__link {
+    font-size      : .8rem !important;
+    font-weight    : 600 !important;
+    color          : var(--alqamara-accent, #b8912a) !important;
+    text-decoration: none !important;
+    white-space    : nowrap !important;
+}
+.alqamara-account-card__link:hover { text-decoration: underline !important; }
+
+/* Recent orders list */
+.alqamara-account-orders-list { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+.alqamara-account-orders-list__item + .alqamara-account-orders-list__item { border-top: 1px solid var(--alqamara-wc-border) !important; }
+.alqamara-account-orders-list__link {
+    display        : flex !important;
+    flex-wrap      : wrap !important;
+    align-items    : center !important;
+    gap            : .5rem .75rem !important;
+    padding        : .65rem 0 !important;
+    text-decoration: none !important;
+    color          : inherit !important;
+}
+.alqamara-account-orders-list__num  { font-weight: 700 !important; color: var(--alqamara-primary, #0f172a) !important; font-size: .88rem !important; }
+.alqamara-account-orders-list__date { font-size: .78rem !important; color: var(--alqamara-wc-muted) !important; }
+.alqamara-account-orders-list__total { margin-left: auto !important; font-weight: 700 !important; font-size: .88rem !important; color: var(--alqamara-primary, #0f172a) !important; }
+.alqamara-account-empty { font-size: .88rem !important; color: var(--alqamara-wc-muted) !important; margin: 0 !important; }
+.alqamara-account-empty a { color: var(--alqamara-accent, #b8912a) !important; font-weight: 600 !important; }
+
+/* Account summary (name/email) */
+.alqamara-account-summary { margin: 0 0 1.1rem !important; }
+.alqamara-account-summary__row {
+    display        : flex !important;
+    justify-content: space-between !important;
+    gap            : 1rem !important;
+    font-size      : .875rem !important;
+    padding        : .35rem 0 !important;
+}
+.alqamara-account-summary__row dt { color: var(--alqamara-wc-muted) !important; font-weight: 600 !important; margin: 0 !important; }
+.alqamara-account-summary__row dd { color: var(--alqamara-primary, #0f172a) !important; margin: 0 !important; text-align: right !important; }
+.alqamara-account-address + .alqamara-account-address { margin-top: .85rem !important; }

@@ -37,7 +37,7 @@ defined( 'ABSPATH' ) || exit;
    Must be defined first — all inc/ files depend on these.
 ============================================================================= */
 
-define( 'ALQAMARA_VERSION', '1.0.5'                        );
+define( 'ALQAMARA_VERSION', '1.0.7'                        );
 define( 'ALQAMARA_DIR',     get_template_directory()     );
 define( 'ALQAMARA_URI',     get_template_directory_uri() );
 define( 'ALQAMARA_CSS',     ALQAMARA_URI . '/css'            );

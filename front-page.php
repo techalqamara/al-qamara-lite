@@ -83,16 +83,16 @@ get_header();
 
                     <?php $hero_title = alqamara_hero( 'title' ); ?>
                     <?php if ( $hero_title ) : ?>
-                    <h1 class="hero-title" data-aos="fade-down"><?php echo esc_html( $hero_title ); ?></h1>
+                    <h1 class="hero-title"><?php echo esc_html( $hero_title ); ?></h1>
                     <?php endif; ?>
 
                     <?php $hero_subtitle = alqamara_hero( 'subtitle' ); ?>
                     <?php if ( $hero_subtitle ) : ?>
-                    <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100"><?php echo wp_kses_post( $hero_subtitle ); ?></p>
+                    <p class="hero-subtitle"><?php echo wp_kses_post( $hero_subtitle ); ?></p>
                     <?php endif; ?>
 
                     <?php if ( $btn1_text || $btn2_text ) : ?>
-                    <div class="d-flex flex-wrap gap-3 <?php echo esc_attr( $btn_flex ); ?>" data-aos="fade-up" data-aos-delay="200">
+                    <div class="hero-actions d-flex flex-wrap gap-3 <?php echo esc_attr( $btn_flex ); ?>">
                         <?php if ( $btn1_text ) : ?>
                         <a href="<?php echo esc_url( alqamara_hero( 'btn1_url' ) ); ?>" class="btn btn-hero-primary">
                             <?php echo esc_html( $btn1_text ); ?>

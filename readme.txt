@@ -3,7 +3,7 @@ Contributors: alqamara
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: e-commerce, custom-menu, custom-logo, custom-colors, custom-background, featured-images, footer-widgets, threaded-comments, translation-ready, full-width-template, left-sidebar, right-sidebar
@@ -67,7 +67,7 @@ The theme does not collect, store or send any personal data, and it adds no requ
 Al Qamara Lite, Copyright 2026 Tech Al Qamara.
 Al Qamara Lite is distributed under the terms of the GNU GPL v2 or later (see the LICENSE file).
 
-This theme bundles the third-party resources listed under "Resources" below. Each one is distributed under the license shown next to it, all of which are compatible with the GPL. No images are bundled apart from the theme screenshot (screenshot.jpg). The screenshot shows the theme's demo site; the pictures in it were created and edited by the theme author with AI image tools, and the screenshot and all pictures in it are released under CC0 1.0 (public domain), https://creativecommons.org/publicdomain/zero/1.0/
+This theme bundles the third-party resources listed under "Resources" below. Each one is distributed under the license shown next to it, all of which are compatible with the GPL. No images are bundled apart from the theme screenshot (screenshot.png). The screenshot shows the theme's demo site; the pictures in it were created and edited by the theme author with AI image tools, and the screenshot and all pictures in it are released under CC0 1.0 (public domain), https://creativecommons.org/publicdomain/zero/1.0/
 
 == Resources ==
 
@@ -79,6 +79,19 @@ This theme bundles the third-party resources listed under "Resources" below. Eac
 * Open Sans, Lora, Poppins, Playfair Display and Roboto, SIL Open Font License 1.1, https://fonts.google.com/ (self-hosted Latin-subset .woff2 files in fonts/webfonts/, declared in fonts/text-fonts/fonts.css). Copyright holders: Open Sans, The Open Sans Project Authors; Lora, The Lora Project Authors; Poppins, Indian Type Foundry; Playfair Display, The Playfair Display Project Authors; Roboto, The Roboto Project Authors.
 
 == Changelog ==
+
+= 1.0.7 =
+* Single product and cart pages: the quantity field now has - and + buttons.
+* Cart drawer redesigned: each product shows its picture, name, quantity and price with a remove button; the subtotal and the View Cart / Checkout buttons stay at the bottom. For logged-in users it now opens below the WordPress toolbar.
+* My Account: the dashboard shows two cards, account details with addresses and the most recent orders.
+* Classic checkout (shortcode) styled to match the rest of the shop: form cards, two-column fields and an order summary that stays in view on large screens.
+* Notices with a button (for example "View cart" or "Browse products") no longer let the button cover the text.
+* Product pictures that are not square now fill their card instead of leaving an empty strip.
+* The top bar is only shown when it has text, a phone number or a social link.
+* "No products found" page with a clear message and a link back to all products.
+* Hero and page banner text is visible from the first paint; sliders keep their card width while they load; the page behind the open cart drawer no longer scrolls.
+* Shop with 5 or 6 columns now uses them on wide screens; small fixes for small phones, keyboard focus and footer widget headings.
+* Theme files are now loaded with the current version number, so browsers fetch the new styles after an update.
 
 = 1.0.6 =
 * The page no longer shifts sideways when the scrollbar appears while it loads, and the page behind the open mobile menu and cart drawer no longer scrolls.
@@ -120,6 +133,9 @@ This theme bundles the third-party resources listed under "Resources" below. Eac
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.7 =
+Shop design update: quantity buttons, a redesigned cart drawer, My Account dashboard cards and a styled classic checkout.
 
 = 1.0.6 =
 Steadier page while loading, a working scroll lock behind the mobile menu and cart, and a menu fallback that only links to existing pages.

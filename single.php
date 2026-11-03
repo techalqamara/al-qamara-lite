@@ -25,7 +25,7 @@ the_post();
     <?php if ( $alqamara_show_banner_s ) : ?>
     <div class="blog-page-banner">
         <div class="container">
-            <div class="blog-banner-inner<?php echo 'center' === $alqamara_banner_align ? ' text-center' : ''; ?>" data-aos="fade-down" data-aos-delay="100">
+            <div class="blog-banner-inner<?php echo 'center' === $alqamara_banner_align ? ' text-center' : ''; ?>">
 
                 <!-- Breadcrumb -->
                 <?php alqamara_breadcrumb(); ?>

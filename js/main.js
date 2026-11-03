@@ -506,7 +506,9 @@
                                                Posts Widget's .alqamara-pw-prev/.alqamara-pw-next
                                                classes directly, so no new bindings needed)
     ========================================================================= */
-    $( document ).ready( function() {
+    /* The sliders start once Swiper is there: normally at DOM ready; if an optimisation
+       plugin delays or reorders the scripts so Swiper arrives later, on window load. */
+    function alqamaraInitSwipers() {
 
         if ( typeof Swiper === 'undefined' ) { return; }
 
@@ -632,6 +634,13 @@
             $navNext.on( 'click', function() { swiperI.slideNext(); } );
         } );
 
+    }
+    $( document ).ready( function() {
+        if ( typeof Swiper !== 'undefined' ) {
+            alqamaraInitSwipers();
+        } else {
+            $( window ).on( 'load', alqamaraInitSwipers );
+        }
     } );
 
 
@@ -713,3 +722,87 @@
     }
 
 } )();
+
+/* =========================================================================
+   QUANTITY STEPPER (- / +)
+   The buttons are printed by inc/woocommerce.php around the quantity field.
+   They respect the field's min, max and step, and fire "change" so
+   WooCommerce's own scripts (variation price, cart update button) notice.
+========================================================================= */
+( function( $ ) {
+    'use strict';
+
+    $( document ).on( 'click', '.alqamara-qty-btn', function() {
+        var input = $( this ).closest( '.quantity' ).find( 'input.qty' ).get( 0 );
+        if ( ! input || input.disabled || input.readOnly ) {
+            return;
+        }
+        var step = parseFloat( input.step ) || 1;
+        var min  = '' !== input.min ? parseFloat( input.min ) : 0;
+        var max  = '' !== input.max ? parseFloat( input.max ) : Infinity;
+        var cur  = parseFloat( input.value );
+        if ( isNaN( cur ) ) {
+            cur = min;
+        }
+        var next = $( this ).hasClass( 'alqamara-qty-minus' ) ? cur - step : cur + step;
+        next = Math.min( max, Math.max( min, next ) );
+        if ( next === cur ) {
+            return;
+        }
+        input.value = next;
+        $( input ).trigger( 'change' );
+        input.dispatchEvent( new Event( 'input', { bubbles: true } ) );
+    } );
+} )( jQuery );
+
+/* =========================================================================
+   CART BADGE + DRAWER SYNC FOR THE BLOCK CART / CHECKOUT
+   The Cart and Checkout blocks change the cart through WooCommerce's Store
+   API, which does not send the classic "fragments". When the number of
+   items in the block cart changes, fetch fresh fragments once so the header
+   badge, the mobile bar badge and the cart drawer show the same cart.
+========================================================================= */
+( function( $ ) {
+    'use strict';
+
+    var params = window.wc_add_to_cart_params || window.woocommerce_params;
+    if ( ! params || ! params.wc_ajax_url ) {
+        return;
+    }
+    var url   = params.wc_ajax_url.toString().replace( '%%endpoint%%', 'get_refreshed_fragments' );
+    var timer = null;
+    var prev  = -1;
+
+    function refresh() {
+        clearTimeout( timer );
+        timer = setTimeout( function() {
+            $.post( url ).done( function( data ) {
+                if ( data && data.fragments ) {
+                    $.each( data.fragments, function( selector, html ) {
+                        $( selector ).replaceWith( html );
+                    } );
+                }
+            } );
+        }, 500 );
+    }
+
+    function watch() {
+        if ( ! window.wp || ! window.wp.data || ! window.wp.data.select( 'wc/store/cart' ) ) {
+            return;
+        }
+        window.wp.data.subscribe( function() {
+            var store = window.wp.data.select( 'wc/store/cart' );
+            var cart  = store && store.getCartData ? store.getCartData() : null;
+            if ( ! cart ) {
+                return;
+            }
+            var count = parseInt( undefined !== cart.items_count ? cart.items_count : ( cart.itemsCount || 0 ), 10 );
+            if ( prev !== -1 && count !== prev ) {
+                refresh();
+            }
+            prev = count;
+        } );
+    }
+
+    $( window ).on( 'load', watch );
+} )( jQuery );

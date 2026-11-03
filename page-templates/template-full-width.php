@@ -28,7 +28,7 @@ $alqamara_banner_align  = get_theme_mod( 'alqamara_banner_alignment', 'left' );
     <?php if ( $alqamara_show_banner_p ) : ?>
     <div class="blog-page-banner">
         <div class="container">
-            <div class="blog-banner-inner<?php echo 'center' === $alqamara_banner_align ? ' text-center' : ''; ?>" data-aos="fade-down" data-aos-delay="100">
+            <div class="blog-banner-inner<?php echo 'center' === $alqamara_banner_align ? ' text-center' : ''; ?>">
 
                 <?php alqamara_breadcrumb(); ?>
 

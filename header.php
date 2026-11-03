@@ -91,7 +91,7 @@ if ( ! $use_transparent_header ) { $nav_class .= ' alqamara-header-solid'; }
          TOP BAR — always in flow, scrolls away naturally
          Never sticky; no sticky/non-sticky option.
     ════════════════════════════════════════════════ -->
-    <?php if ( $show_topbar ) :
+    <?php
         $topbar_text        = get_theme_mod( 'alqamara_topbar_text', '' );
         $topbar_phone       = get_theme_mod( 'alqamara_topbar_phone', '' );
         $topbar_show_social = (bool) get_theme_mod( 'alqamara_topbar_show_social', 1 );
@@ -102,7 +102,19 @@ if ( ! $use_transparent_header ) { $nav_class .= ' alqamara-header-solid'; }
             'alqamara_linkedin'  => [ 'icon' => 'fa-linkedin-in', 'label' => 'LinkedIn'  ],
             'alqamara_youtube'   => [ 'icon' => 'fa-youtube',     'label' => 'YouTube'   ],
         ];
+        // Only print the bar when it has something to show: text, a phone number or at least one social link.
+        $alqamara_tb_has_social = false;
+        if ( $topbar_show_social ) {
+            foreach ( array_keys( $alqamara_tb_socials ) as $alqamara_tb_mod ) {
+                if ( get_theme_mod( $alqamara_tb_mod, '' ) ) {
+                    $alqamara_tb_has_social = true;
+                    break;
+                }
+            }
+        }
+        $show_topbar = $show_topbar && ( $topbar_text || $topbar_phone || $alqamara_tb_has_social );
     ?>
+    <?php if ( $show_topbar ) : ?>
     <div class="alqamara-topbar py-1 small <?php echo esc_attr( $tb_vis ); ?>">
         <div class="container">
             <div class="d-flex flex-column flex-sm-row align-items-center gap-1 gap-sm-3">
@@ -492,6 +504,20 @@ if ( ! $use_transparent_header ) { $nav_class .= ' alqamara-header-solid'; }
         </div>
         <?php endif; ?>
     </div><!-- /#mobileMenu -->
+
+<?php
+// Header height for the hero pull-up (--alqamara-header-total-h), set here before the first paint.
+// js/main.js keeps it in sync on load and resize; waiting for that alone made the page jump once.
+// The data-* attributes ask cache and optimisation plugins to leave this tiny script in place.
+wp_print_inline_script_tag(
+	"(function(){var d=document,h=0,t=d.querySelector('.alqamara-topbar'),n=d.querySelector('.alqamara-navbar-wrap');function o(e){var s=getComputedStyle(e);return e.offsetHeight+parseFloat(s.marginTop)+parseFloat(s.marginBottom);}if(t&&t.offsetHeight>0){h+=o(t);}if(n){h+=o(n);}d.documentElement.style.setProperty('--alqamara-header-total-h',h+'px');})();",
+	array(
+		'data-no-optimize' => '1',
+		'data-no-defer'    => '1',
+		'data-cfasync'     => 'false',
+	)
+);
+?>
 
 <!-- WCAG — Skip Link target. See the anchor near the top of this file. -->
 <main id="main-content" class="alqamara-main" tabindex="-1">

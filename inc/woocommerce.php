@@ -424,3 +424,36 @@ function alqamara_wc_inline_css() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'alqamara_wc_inline_css', 30 );
+
+/* =============================================================================
+   QUANTITY STEPPER (- / +)
+   Adds a minus and a plus button around WooCommerce's classic quantity field
+   (single product page, classic cart page). Only an editable number field gets
+   them: a product that can be bought once has a hidden field instead.
+   The buttons only change the number in the field; js/main.js wires them.
+============================================================================= */
+if ( ! function_exists( 'alqamara_qty_stepper_type' ) ) :
+function alqamara_qty_stepper_type( $type ) {
+	$GLOBALS['alqamara_qty_stepper'] = ( 'number' === $type );
+	return $type;
+}
+endif;
+add_filter( 'woocommerce_quantity_input_type', 'alqamara_qty_stepper_type', 999 );
+
+if ( ! function_exists( 'alqamara_qty_stepper_minus' ) ) :
+function alqamara_qty_stepper_minus() {
+	if ( ! empty( $GLOBALS['alqamara_qty_stepper'] ) ) {
+		echo '<button type="button" class="alqamara-qty-btn alqamara-qty-minus" aria-label="' . esc_attr__( 'Decrease quantity', 'al-qamara-lite' ) . '">&minus;</button>';
+	}
+}
+endif;
+add_action( 'woocommerce_before_quantity_input_field', 'alqamara_qty_stepper_minus' );
+
+if ( ! function_exists( 'alqamara_qty_stepper_plus' ) ) :
+function alqamara_qty_stepper_plus() {
+	if ( ! empty( $GLOBALS['alqamara_qty_stepper'] ) ) {
+		echo '<button type="button" class="alqamara-qty-btn alqamara-qty-plus" aria-label="' . esc_attr__( 'Increase quantity', 'al-qamara-lite' ) . '">+</button>';
+	}
+}
+endif;
+add_action( 'woocommerce_after_quantity_input_field', 'alqamara_qty_stepper_plus' );

@@ -2,12 +2,12 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Al Qamara Lite 1.0.6\n"
+"Project-Id-Version: Al Qamara Lite 1.0.7\n"
 "Report-Msgid-Bugs-To: https://tech.alqamara.com/contact/\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-02 17:19+00:00\n"
+"POT-Creation-Date: 2026-11-03 13:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of items in the cart
-#: header.php:301
+#: header.php:313
 msgid "%d item(s)"
 msgstr ""
 
@@ -73,6 +73,11 @@ msgstr[1] ""
 
 #: inc/widgets.php:108
 msgid "&#8212; All &#8212;"
+msgstr ""
+
+#. translators: %s: product name
+#: woocommerce/cart/mini-cart.php:80
+msgid "&ldquo;%s&rdquo; has been removed from your cart"
 msgstr ""
 
 #: inc/customizer.php:1561
@@ -115,8 +120,16 @@ msgstr ""
 msgid "Accent Color (Gold)"
 msgstr ""
 
-#: header.php:431
+#: header.php:443
 msgid "Account"
+msgstr ""
+
+#: woocommerce/myaccount/dashboard.php:37
+msgid "Account Details"
+msgstr ""
+
+#: woocommerce/myaccount/dashboard.php:77
+msgid "Add"
 msgstr ""
 
 #: functions.php:235
@@ -249,6 +262,10 @@ msgstr ""
 msgid "Beyond Development: We Build Relationships That Last"
 msgstr ""
 
+#: woocommerce/myaccount/dashboard.php:64 woocommerce/myaccount/dashboard.php:67
+msgid "Billing address"
+msgstr ""
+
 #. Template Name of the theme
 #: page-templates/template-blank-canvas.php
 msgid "Blank Canvas"
@@ -367,7 +384,7 @@ msgstr ""
 msgid "Cancel Reply"
 msgstr ""
 
-#: header.php:291 header.php:373 header.php:426 inc/customizer.php:1169
+#: header.php:303 header.php:385 header.php:438 inc/customizer.php:1169
 msgid "Cart"
 msgstr ""
 
@@ -411,7 +428,7 @@ msgstr ""
 msgid "Check back soon for new posts."
 msgstr ""
 
-#: header.php:309 inc/woocommerce.php:292
+#: header.php:321 inc/woocommerce.php:292 woocommerce/cart/mini-cart.php:100
 msgid "Checkout"
 msgstr ""
 
@@ -431,11 +448,11 @@ msgstr ""
 msgid "Client Satisfaction"
 msgstr ""
 
-#: header.php:377
+#: header.php:389
 msgid "Close cart"
 msgstr ""
 
-#: header.php:454
+#: header.php:466
 msgid "Close menu"
 msgstr ""
 
@@ -499,6 +516,10 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
+#: inc/woocommerce.php:446
+msgid "Decrease quantity"
+msgstr ""
+
 #: inc/customizer.php:560
 msgid "Default (Navbar only)"
 msgstr ""
@@ -536,7 +557,11 @@ msgstr ""
 msgid "Displays social icons below the brand description. URLs are set under Social Media Links."
 msgstr ""
 
-#: comments.php:104 inc/contact-widget.php:46
+#: woocommerce/myaccount/dashboard.php:39 woocommerce/myaccount/dashboard.php:77
+msgid "Edit"
+msgstr ""
+
+#: comments.php:104 inc/contact-widget.php:46 woocommerce/myaccount/dashboard.php:54
 msgid "Email"
 msgstr ""
 
@@ -713,6 +738,11 @@ msgstr ""
 msgid "Heading Font (H1–H6)"
 msgstr ""
 
+#. translators: 1: user display name, 2: logout URL
+#: woocommerce/myaccount/dashboard.php:26
+msgid "Hello %1$s (not %1$s? <a href=\"%2$s\">Log out</a>)"
+msgstr ""
+
 #: inc/customizer.php:120
 msgid "Hero Background Image"
 msgstr ""
@@ -783,6 +813,10 @@ msgstr ""
 
 #: inc/customizer.php:1364
 msgid "Image Position"
+msgstr ""
+
+#: inc/woocommerce.php:455
+msgid "Increase quantity"
 msgstr ""
 
 #: inc/customizer.php:1267
@@ -912,7 +946,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: header.php:280
+#: header.php:292
 msgid "Login / Register"
 msgstr ""
 
@@ -920,7 +954,7 @@ msgstr ""
 msgid "Logo — Transparent Header (Home Page Hero)"
 msgstr ""
 
-#: header.php:276
+#: header.php:288
 msgid "Logout"
 msgstr ""
 
@@ -932,7 +966,7 @@ msgstr ""
 msgid "Lora (Editorial)"
 msgstr ""
 
-#: header.php:147
+#: header.php:159
 msgid "Main Navigation"
 msgstr ""
 
@@ -948,11 +982,11 @@ msgstr ""
 msgid "Mission Text"
 msgstr ""
 
-#: header.php:445
+#: header.php:457
 msgid "Mobile Navigation"
 msgstr ""
 
-#: header.php:407
+#: header.php:419
 msgid "Mobile navigation"
 msgstr ""
 
@@ -968,11 +1002,11 @@ msgstr ""
 msgid "Most Commented"
 msgstr ""
 
-#: header.php:260 header.php:266
+#: header.php:272 header.php:278
 msgid "My Account"
 msgstr ""
 
-#: comments.php:97 inc/widgets.php:1354
+#: comments.php:97 inc/widgets.php:1354 woocommerce/myaccount/dashboard.php:45
 msgid "Name"
 msgstr ""
 
@@ -1011,6 +1045,18 @@ msgstr ""
 
 #: inc/widgets.php:107 inc/widgets.php:1307
 msgid "No categories found."
+msgstr ""
+
+#: woocommerce/loop/no-products-found.php:37
+msgid "No products found"
+msgstr ""
+
+#: woocommerce/loop/no-products-found.php:47
+msgid "No products matched your filters. Try clearing the filters or browse all products."
+msgstr ""
+
+#: woocommerce/loop/no-products-found.php:35
+msgid "No products yet"
 msgstr ""
 
 #. translators: %s: search query
@@ -1082,11 +1128,16 @@ msgstr ""
 msgid "Order"
 msgstr ""
 
+#. translators: %s: order number
+#: woocommerce/myaccount/dashboard.php:116
+msgid "Order #%s"
+msgstr ""
+
 #: inc/widgets.php:784 inc/widgets.php:1351
 msgid "Order By"
 msgstr ""
 
-#: header.php:269
+#: header.php:281
 msgid "Orders"
 msgstr ""
 
@@ -1237,6 +1288,10 @@ msgstr ""
 msgid "Ready to Work Together?"
 msgstr ""
 
+#: woocommerce/myaccount/dashboard.php:89
+msgid "Recent Orders"
+msgstr ""
+
 #: sidebar.php:25
 msgid "Recent Posts"
 msgstr ""
@@ -1251,6 +1306,11 @@ msgstr ""
 
 #: inc/customizer.php:1160
 msgid "Related Products Count"
+msgstr ""
+
+#. translators: %s: product name
+#: woocommerce/cart/mini-cart.php:75
+msgid "Remove %s from cart"
 msgstr ""
 
 #: inc/customizer.php:121
@@ -1311,7 +1371,7 @@ msgstr ""
 msgid "Save my name, email, and website for the next time I comment."
 msgstr ""
 
-#: header.php:175 header.php:246 searchform.php:16 sidebar.php:18
+#: header.php:187 header.php:258 searchform.php:16 sidebar.php:18
 msgid "Search"
 msgstr ""
 
@@ -1372,7 +1432,11 @@ msgstr ""
 msgid "Settings for individual post pages."
 msgstr ""
 
-#: header.php:415
+#: woocommerce/myaccount/dashboard.php:63
+msgid "Shipping address"
+msgstr ""
+
+#: header.php:427
 msgid "Shop"
 msgstr ""
 
@@ -1382,6 +1446,10 @@ msgstr ""
 
 #: inc/customizer.php:1013
 msgid "Shop / Archive"
+msgstr ""
+
+#: woocommerce/cart/mini-cart.php:110
+msgid "Shop Now"
 msgstr ""
 
 #: inc/customizer.php:988
@@ -1660,6 +1728,10 @@ msgstr ""
 msgid "Square (1:1) Product Image"
 msgstr ""
 
+#: woocommerce/myaccount/dashboard.php:131
+msgid "Start shopping"
+msgstr ""
+
 #. translators: %d: stat number
 #: inc/customizer.php:1655
 msgid "Stat %d — Icon class (e.g. bi bi-star)"
@@ -1707,6 +1779,10 @@ msgstr ""
 msgid "Subtitle Text Color"
 msgstr ""
 
+#: woocommerce/cart/mini-cart.php:92
+msgid "Subtotal"
+msgstr ""
+
 #: inc/contact-widget.php:50
 msgid "Support Hours"
 msgstr ""
@@ -1734,6 +1810,10 @@ msgstr ""
 
 #: inc/customizer.php:265
 msgid "Theme Colors"
+msgstr ""
+
+#: woocommerce/loop/no-products-found.php:45
+msgid "This category does not have any products yet. Browse the full collection instead."
 msgstr ""
 
 #: comments.php:10
@@ -1776,7 +1856,7 @@ msgstr ""
 msgid "Toggle banner visibility per page type. Color, image, and alignment apply to all banners."
 msgstr ""
 
-#: header.php:189
+#: header.php:201
 msgid "Toggle navigation"
 msgstr ""
 
@@ -1880,12 +1960,20 @@ msgstr ""
 msgid "View All Articles"
 msgstr ""
 
-#: header.php:306 inc/woocommerce.php:291
+#: woocommerce/loop/no-products-found.php:53
+msgid "View All Products"
+msgstr ""
+
+#: header.php:318 inc/woocommerce.php:291 woocommerce/cart/mini-cart.php:99
 msgid "View Cart"
 msgstr ""
 
 #: inc/widgets.php:528
 msgid "View Details"
+msgstr ""
+
+#: woocommerce/myaccount/dashboard.php:91
+msgid "View all"
 msgstr ""
 
 #: woocommerce/archive-product.php:65
@@ -1956,11 +2044,19 @@ msgstr ""
 msgid "Years Experience"
 msgstr ""
 
+#: woocommerce/myaccount/dashboard.php:130
+msgid "You have not placed any orders yet."
+msgstr ""
+
+#: woocommerce/myaccount/dashboard.php:81
+msgid "You have not set this address yet."
+msgstr ""
+
 #: inc/customizer.php:1266
 msgid "YouTube URL"
 msgstr ""
 
-#: header.php:375
+#: header.php:387
 msgid "Your Cart"
 msgstr ""
 
@@ -1968,7 +2064,7 @@ msgstr ""
 msgid "Your Growth Is Our Goal, Not Just Your Project"
 msgstr ""
 
-#: header.php:313 inc/woocommerce.php:295
+#: header.php:325 inc/woocommerce.php:295 woocommerce/cart/mini-cart.php:109
 msgid "Your cart is empty."
 msgstr ""
 
